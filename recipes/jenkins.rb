@@ -4,6 +4,7 @@ dir = "/home/#{owner}"
 user owner do
   shell '/bin/bash'
   action :create
+  home dir
 end
 
 group owner do
@@ -16,11 +17,9 @@ directory dir do
   action :create
 end
 
-tomcat 'jenkins' do
+tomcat "jenkins" do
   owner owner
   base dir
   port node[:tomcat][:instances][:jenkins][:port]
   shutdown_port node[:tomcat][:instances][:jenkins][:shutdown_port]
 end
-
-

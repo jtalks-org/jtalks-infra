@@ -1,0 +1,33 @@
+TOMCAT_DIRECTORY=<%= @home_dir %>
+TOMCAT_USER=<%= @owner %>
+TOMCAT_GROUP=<%= @owner_group %>
+
+case "$1" in
+
+start)
+chown $TOMCAT_USER.$TOMCAT_GROUP -R $TOMCAT_DIRECTORY
+su $TOMCAT_USER -c "$TOMCAT_DIRECTORY/bin/startup.sh >& /dev/null"
+echo started.
+exit 0
+;;
+
+stop)
+su $TOMCAT_USER -c "$TOMCAT_DIRECTORY/bin/shutdown.sh >& /dev/null"
+echo stopped.
+exit 0
+;;
+
+restart)
+$0 stop
+sleep 5
+$0 start
+exit 0
+;;
+
+*)
+
+echo "Usage: $0 {start|stop|restart}"
+exit 1
+;;
+
+esac

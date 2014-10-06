@@ -15,6 +15,6 @@ suites:
   - name: jenkins
     run_list:
       - recipe[ark]
-      - recipe[jtalks-infra::common]
+      - recipe[git]
       - recipe[java]
       - recipe[jtalks-infra::jenkins]
