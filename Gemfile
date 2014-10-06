@@ -1,0 +1,8 @@
+source 'https://rubygems.org'
+gem 'test-kitchen'
+gem 'kitchen-vagrant'
+gem 'rspec', '3.0.0'
+gem 'rspec-core', '3.0.0'
+gem 'rspec-expectations', '3.0.0'
+gem 'serverspec', '2.0.1'
+gem 'berkshelf'

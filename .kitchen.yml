@@ -1,0 +1,20 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+  require_chef_omnibus: true
+
+platforms:
+  - name: ubuntu-14.04
+    run-list:
+      - recipe[apt]
+
+suites:
+  - name: jenkins
+    run_list:
+      - recipe[ark]
+      - recipe[jtalks-infra::common]
+      - recipe[java]
+      - recipe[jtalks-infra::jenkins]
