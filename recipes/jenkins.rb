@@ -11,12 +11,6 @@ group owner do
   action :create
 end
 
-directory dir do
-  owner owner
-  mode 00700
-  action :create
-end
-
 tomcat "jenkins" do
   owner owner
   base dir
