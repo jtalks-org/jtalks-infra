@@ -46,6 +46,13 @@ define :tomcat, :owner => 'root', :base => '/home', :owner_group => nil, :port =
                   :owner => params[:owner],
                   :owner_group => params[:owner_group]})
   end
+
+  # create service
+  service "#{params[:name]}" do
+    supports :restart => true
+    action :enable
+  end
+
   execute "tomcat should use faster random generator" do
     command "echo 'CATALINA_OPTS=\"-Djava.security.egd=file:/dev/./urandom $CATALINA_OPTS\"' >> #{setenv_sh}"
     not_if { File.exist?(setenv_sh) }

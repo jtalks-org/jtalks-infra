@@ -1,6 +1,9 @@
 # Variables of environment
 default[:jtalks][:path][:init_script] = '/etc/init.d'
 
+# Variables of backup server
+default[:jtalks][:backup][:jenkins][:hostname] = 'ci.jtalks.org'
+
 #Java
 default[:java][:install_flavor] = 'oracle'
 default[:java][:jdk_version] = 7
@@ -15,6 +18,7 @@ default[:tomcat][:download_url] = "http://apache-mirror.rbc.ru/pub/apache/tomcat
 
 #Jenkins
 default[:jtalks][:jenkins][:user] = 'jenkins'
+default[:jenkins][:source_url] = 'http://mirrors.jenkins-ci.org/war-stable/latest/jenkins.war'
 default[:tomcat][:instances][:jenkins][:port] = 8080
 default[:tomcat][:instances][:jenkins][:shutdown_port] = 8010
 
