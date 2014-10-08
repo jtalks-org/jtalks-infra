@@ -1,5 +1,4 @@
 .kitchen/
-files/default/private/
 .kitchen.local.yml
 .idea/
 *.lock

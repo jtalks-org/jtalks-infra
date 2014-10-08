@@ -1,25 +1,36 @@
-define :ssh, :user => 'root', :ssh_dir => '.ssh', :key_name => 'id_rsa', :cookbook_path => nil, :hostnames => [],
-       :private_perm => '0600', :public_perm => '0754'  do
-
+# Definition to setting SSH environment to user. Adds ssh keys from /files/default/private/keys/{username}/{key_name}.
+# Tunes config file with mapping hostname to ssh key. Adds hash pair (hostname, key), to known_hosts file. Sets
+# permissions to files of SSH environment.
+define :ssh_settings, :user => 'root', :ssh_dir => '.ssh', :key_name => 'id_rsa', :source_key_dir => nil, :hostnames => [] do
+ 
+  private_perm = "0600"
+  public_perm = "0754"
+  
   directory "#{params[:ssh_dir]}" do
     owner params[:user]
     group params[:user]
-    mode params[:public_perm]
+    mode public_perm
     action :create
   end
 
   cookbook_file "#{params[:ssh_dir]}/#{params[:key_name]}" do
     owner params[:user]
     group params[:user]
-    source "#{params[:cookbook_path]}/#{params[:key_name]}"
-    mode params[:private_perm]
+    source "#{params[:source_key_dir]}/#{params[:key_name]}"
+    mode private_perm
   end
 
   cookbook_file "#{params[:ssh_dir]}/#{params[:key_name]}.pub" do
     owner params[:user]
     group params[:user]
-    source "#{params[:cookbook_path]}/#{params[:key_name]}.pub"
-    mode params[:public_perm]
+    source "#{params[:source_key_dir]}/#{params[:key_name]}.pub"
+    mode public_perm
+  end
+
+  ["config", "known_hosts"].each do |file|
+    file "#{params[:ssh_dir]}/#{file}" do
+      action :delete
+    end
   end
 
   params[:hostnames].each do |hostname|
@@ -29,18 +40,18 @@ define :ssh, :user => 'root', :ssh_dir => '.ssh', :key_name => 'id_rsa', :cookbo
     end
 
     ssh_util_known_hosts "#{hostname}" do
-      hashed true
+      hashed false
       user "#{params[:user]}"
     end
   end
 
-  execute "chmod #{params[:public_perm]} #{params[:ssh_dir]}/config"
+  execute "chmod #{public_perm} #{params[:ssh_dir]}/config"
 
   # if user has same key, he has access to this server
   file "#{params[:ssh_dir]}/authorized_keys" do
     owner params[:user]
     group params[:user]
-    mode params[:private_perm]
+    mode private_perm
     action :create
   end
   execute "cat #{params[:ssh_dir]}/#{params[:key_name]}.pub >> #{params[:ssh_dir]}/authorized_keys"
