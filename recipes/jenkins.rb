@@ -68,7 +68,7 @@ git "#{dir}/#{node[:jenkins][:configs][:git][:repository_name]}" do
   revision node[:jenkins][:configs][:git][:branch]
 end
 
-execute "rm -Rf #{dir}/.jenkins/config.xml; rm -Rf #{dir}/.jenkins/jobs; mv * #{dir}/.jenkins;" do
+execute "rm -Rf #{dir}/.jenkins/*.xml; rm -Rf #{dir}/.jenkins/jobs; mv * #{dir}/.jenkins;" do
   user owner
   group owner
   cwd "#{dir}/#{node[:jenkins][:configs][:git][:repository_name]}/jenkins-config"

@@ -1,4 +1,5 @@
-define :tomcat, :owner => 'root', :base => '/home', :owner_group => nil, :port => 8080, :shutdown_port => 8001 do
+define :tomcat, :owner => 'root', :base => '/home', :owner_group => nil, :port => 8080, :shutdown_port => 8001,
+ :jvm_opts => '-Xmx256m -XX:MaxPermSize=384m' do
   if params[:owner_group] == nil
     params[:owner_group] = params[:owner]
   end
@@ -42,14 +43,16 @@ define :tomcat, :owner => 'root', :base => '/home', :owner_group => nil, :port =
     source 'tomcat.service.erb'
     mode '775'
     variables({
+                  :service_name => params[:name],
                   :home_dir => "#{params[:base]}/tomcat",
                   :owner => params[:owner],
-                  :owner_group => params[:owner_group]})
+                  :owner_group => params[:owner_group],
+                  :jvm_opts => params[:jvm_opts]})
   end
 
   # create service
   service "#{params[:name]}" do
-    supports :restart => true
+    supports :restart => true, :status => true
     action :enable
   end
 
