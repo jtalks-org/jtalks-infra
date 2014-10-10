@@ -2,7 +2,6 @@ owner = node[:jenkins][:user]
 dir = "/home/#{owner}"
 
 # Add user
-
 user owner do
   shell '/bin/bash'
   action :create
@@ -23,6 +22,43 @@ ssh_settings owner do
   hostnames ["*.#{node[:jtalks][:backup][:hostname]}", "#{node[:jtalks][:backup][:hostname]}"]
 end
 
+cookbook_file "/tmp/root" do
+  owner owner
+  group owner
+  source "#{node[:jtalks][:chef_db_passwords_dir]}/root"
+end
+
+# Allow IP address in crowd via insert to db of crowd
+
+pass = lambda  { IO.readlines("/tmp/root")[0] }
+template "/tmp/db_script" do
+  source 'mysql.crowd.remote.address.erb'
+  owner owner
+  group owner
+  variables({
+                :db_user => "root",
+                :db_pass => pass.call,
+                :ip => node[:jtalks][:ip].call,
+                :db_name => node[:jtalks][:db][:name][:crowd],
+                :app_name => node[:jtalks][:crowd][:app_name][:jenkins]})
+end
+
+# copy script to add ip to crowd, run it and remove.if record exist then recreate
+execute "scp /tmp/db_script #{owner}@#{node[:jtalks][:backup][:hostname]}:/tmp" do
+  user owner
+  group owner
+end
+execute "ssh #{owner}@#{node[:jtalks][:backup][:hostname]} '/bin/bash /tmp/db_script;'" do
+  user owner
+  group owner
+end
+
+execute "rm -Rf root db_script; ssh #{owner}@#{node[:jtalks][:backup][:hostname]} 'rm -Rf /tmp/db_script'" do
+  cwd "/tmp"
+  user owner
+  group owner
+end
+
 # Install Tomcat
 
 tomcat "jenkins" do
@@ -33,6 +69,7 @@ tomcat "jenkins" do
 end
 
 # Install Jenkins
+
 remote_file File.join("#{dir}/tomcat/webapps/jenkins.war") do
   source   node[:jenkins][:sources][:url]
   owner    owner
@@ -41,6 +78,7 @@ remote_file File.join("#{dir}/tomcat/webapps/jenkins.war") do
 end
 
 # Install plugins
+
 # creates directory if jenkins not deploed yet
 directory "#{dir}/.jenkins/plugins" do
   owner owner
@@ -83,5 +121,3 @@ end
 service "jenkins" do
   action :restart
 end
-
-

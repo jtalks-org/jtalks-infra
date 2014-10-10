@@ -1,8 +1,16 @@
-# Variables of environment
+#Variables of environment
 default[:jtalks][:path][:init_script] = "/etc/init.d"
+default[:jtalks][:chef_db_passwords_dir] = "private/db_passwords"
+default[:jtalks][:ip] = lambda { (%x(curl "http://www.telize.com/ip")).strip! }
 
-# Variables of backup server. applications might be on different servers with same hostname of first level
+#Variables of backup server. applications might be on different servers with same hostname of first level
 default[:jtalks][:backup][:hostname] = "jtalks.org"
+
+#Mysql
+default[:jtalks][:db][:name][:crowd] = "crowd"
+
+#Crowd
+default[:jtalks][:crowd][:app_name][:jenkins] = "jenkins"
 
 #Java
 default[:java][:install_flavor] = "oracle"

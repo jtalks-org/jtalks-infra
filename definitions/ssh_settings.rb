@@ -54,5 +54,7 @@ define :ssh_settings, :user => 'root', :ssh_dir => '.ssh', :key_name => 'id_rsa'
     mode private_perm
     action :create
   end
-  execute "cat #{params[:ssh_dir]}/#{params[:key_name]}.pub >> #{params[:ssh_dir]}/authorized_keys"
+
+  execute "rm -Rf #{params[:ssh_dir]}/authorized_keys; cat #{params[:ssh_dir]}/#{params[:key_name]}.pub >>" +
+          "#{params[:ssh_dir]}/authorized_keys"
 end
