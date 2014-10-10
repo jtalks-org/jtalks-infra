@@ -1,13 +1,18 @@
+
 #Variables of environment
 default[:jtalks][:path][:init_script] = "/etc/init.d"
 default[:jtalks][:chef_db_passwords_dir] = "private/db_passwords"
-default[:jtalks][:ip] = lambda { (%x(curl "http://www.telize.com/ip")).strip! }
+#default[:jtalks][:ip] = lazy { (%x(curl "http://www.telize.com/ip")).strip! }
+default[:jtalks][:ip] = lazy { uri = URI.parse("http://www.telize.com/ip")
+                               Net::HTTP.get_response(uri).body.strip!
+                             }
 
 #Variables of backup server. applications might be on different servers with same hostname of first level
 default[:jtalks][:backup][:hostname] = "jtalks.org"
 
 #Mysql
 default[:jtalks][:db][:name][:crowd] = "crowd"
+default[:jtalks][:db][:users][:root] = lazy { IO.read("#{Chef::Config[:cookbook_path][0]}/jtalks-infra/files/default/private/db_passwords/root") }
 
 #Crowd
 default[:jtalks][:crowd][:app_name][:jenkins] = "jenkins"

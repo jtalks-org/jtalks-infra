@@ -22,39 +22,28 @@ ssh_settings owner do
   hostnames ["*.#{node[:jtalks][:backup][:hostname]}", "#{node[:jtalks][:backup][:hostname]}"]
 end
 
-cookbook_file "/tmp/root" do
-  owner owner
-  group owner
-  source "#{node[:jtalks][:chef_db_passwords_dir]}/root"
-end
-
 # Allow IP address in crowd via insert to db of crowd
 
-pass = lambda  { IO.readlines("/tmp/root")[0] }
-template "/tmp/db_script" do
+template "create-crowd-script" do
   source 'mysql.crowd.remote.address.erb'
   owner owner
   group owner
+  path "/tmp/db_script"
   variables({
                 :db_user => "root",
-                :db_pass => pass.call,
-                :ip => node[:jtalks][:ip].call,
+                :db_pass => "#{node[:jtalks][:db][:users][:root].call}",
+                :ip => "#{node[:jtalks][:ip].call}",
                 :db_name => node[:jtalks][:db][:name][:crowd],
                 :app_name => node[:jtalks][:crowd][:app_name][:jenkins]})
+  not_if {"#{node[:jtalks][:ip].call}" == ""}
 end
 
 # copy script to add ip to crowd, run it and remove.if record exist then recreate
-execute "scp /tmp/db_script #{owner}@#{node[:jtalks][:backup][:hostname]}:/tmp" do
-  user owner
-  group owner
-end
-execute "ssh #{owner}@#{node[:jtalks][:backup][:hostname]} '/bin/bash /tmp/db_script;'" do
-  user owner
-  group owner
-end
-
-execute "rm -Rf root db_script; ssh #{owner}@#{node[:jtalks][:backup][:hostname]} 'rm -Rf /tmp/db_script'" do
-  cwd "/tmp"
+execute "run-crowd-script" do
+  command "
+      scp /tmp/db_script #{owner}@#{node[:jtalks][:backup][:hostname]}:/tmp;
+      ssh #{owner}@#{node[:jtalks][:backup][:hostname]} '/bin/bash /tmp/db_script;';
+      rm -Rf /tmp/root /tmp/db_script; ssh #{owner}@#{node[:jtalks][:backup][:hostname]} 'rm -Rf /tmp/db_script'"
   user owner
   group owner
 end
@@ -74,7 +63,6 @@ remote_file File.join("#{dir}/tomcat/webapps/jenkins.war") do
   source   node[:jenkins][:sources][:url]
   owner    owner
   group    owner
-  notifies :restart, 'service[jenkins]'
 end
 
 # Install plugins
@@ -101,21 +89,18 @@ end
 # Restore configs
 git "#{dir}/#{node[:jenkins][:configs][:git][:repository_name]}" do
   user    owner
-  group    owner
+  group   owner
   repository node[:jenkins][:configs][:git][:source_url]
   revision node[:jenkins][:configs][:git][:branch]
 end
 
-execute "rm -Rf #{dir}/.jenkins/*.xml; rm -Rf #{dir}/.jenkins/jobs; mv * #{dir}/.jenkins;" do
+execute "restore-jenkins-config" do
+  command "
+    rm -Rf #{dir}/.jenkins/*.xml; rm -Rf #{dir}/.jenkins/jobs;
+    mv #{dir}/#{node[:jenkins][:configs][:git][:repository_name]}/jenkins-config/* #{dir}/.jenkins;
+    rm -Rf #{dir}/#{node[:jenkins][:configs][:git][:repository_name]};"
   user owner
   group owner
-  cwd "#{dir}/#{node[:jenkins][:configs][:git][:repository_name]}/jenkins-config"
-end
-
-execute "rm -Rf #{node[:jenkins][:configs][:git][:repository_name]}" do
-  user owner
-  group owner
-  cwd dir
 end
 
 service "jenkins" do
