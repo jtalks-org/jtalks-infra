@@ -1,2 +1,0 @@
-mysql -uroot --password='<%= @db_pass %>' -b crowd -e "delete from cwd_application_address where remote_address='<%= @ip %>' and application_id = (select id from cwd_application where application_name='<%= @app_name %>')"
-mysql -u<%= @db_user %> --password='<%= @db_pass %>' -b <%= @db_name %> -e "insert into cwd_application_address select id, '<%= @ip %>', NULL, 0 from cwd_application where application_name='<%= @app_name %>'"

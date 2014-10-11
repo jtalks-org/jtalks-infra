@@ -1,21 +1,8 @@
-
 #Variables of environment
 default[:jtalks][:path][:init_script] = "/etc/init.d"
-default[:jtalks][:chef_db_passwords_dir] = "private/db_passwords"
-#default[:jtalks][:ip] = lazy { (%x(curl "http://www.telize.com/ip")).strip! }
-default[:jtalks][:ip] = lazy { uri = URI.parse("http://www.telize.com/ip")
-                               Net::HTTP.get_response(uri).body.strip!
-                             }
 
 #Variables of backup server. applications might be on different servers with same hostname of first level
 default[:jtalks][:backup][:hostname] = "jtalks.org"
-
-#Mysql
-default[:jtalks][:db][:name][:crowd] = "crowd"
-default[:jtalks][:db][:users][:root] = lazy { IO.read("#{Chef::Config[:cookbook_path][0]}/jtalks-infra/files/default/private/db_passwords/root") }
-
-#Crowd
-default[:jtalks][:crowd][:app_name][:jenkins] = "jenkins"
 
 #Java
 default[:java][:install_flavor] = "oracle"
@@ -31,9 +18,6 @@ default[:tomcat][:download_url] = "http://apache-mirror.rbc.ru/pub/apache/tomcat
 
 #Jenkins
 default[:jenkins][:user] = "jenkins"
-default[:jenkins][:configs][:git][:repository_name] = "jtalks-infra-files"
-default[:jenkins][:configs][:git][:source_url] = "git@jtalks.org:#{node[:jenkins][:configs][:git][:repository_name]}"
-default[:jenkins][:configs][:git][:branch] = "master"
 default[:jenkins][:version] = "1.566"
 default[:jenkins][:sources][:url] = "http://mirrors.jenkins-ci.org/war/#{node[:jenkins][:version]}/jenkins.war"
 default[:jenkins][:sources][:plugins_url] = "http://updates.jenkins-ci.org/download/plugins"
@@ -47,7 +31,7 @@ default[:jenkins][:plugins]["build-name-setter"] = "1.3"
 default[:jenkins][:plugins]["copy-to-slave"] = "1.4.3"
 default[:jenkins][:plugins]["createjobadvanced"] = "1.8"
 default[:jenkins][:plugins]["credentials"] = "1.10"
-default[:jenkins][:plugins]["crowd2"] = "1.5"
+default[:jenkins][:plugins]["crowd2"] = "1.8"
 default[:jenkins][:plugins]["cvs"] = "2.8"
 default[:jenkins][:plugins]["description-setter"] = "1.8"
 default[:jenkins][:plugins]["email-ext"] = "2.29"
@@ -88,4 +72,3 @@ default[:jenkins][:plugins]["subversion"] = "1.45"
 default[:jenkins][:plugins]["throttle-concurrents"] = "1.8.2"
 default[:jenkins][:plugins]["token-macro"] = "1.6"
 default[:jenkins][:plugins]["translation"] = "1.10"
-
