@@ -3,8 +3,8 @@ define :tomcat, :owner => 'root', :base => '/home', :owner_group => nil, :port =
   if params[:owner_group] == nil
     params[:owner_group] = params[:owner]
   end
-  setenv_sh = "#{params[:base]}/tomcat/bin/setenv.sh"
-  webapps = "#{params[:base]}/tomcat/webapps"
+  setenv_sh = "#{params[:base]}/#{params[:name]}/bin/setenv.sh"
+  webapps = "#{params[:base]}/#{params[:name]}/webapps"
 
   result_folder_name = "apache-tomcat-#{node[:tomcat][:version]}"
 
@@ -25,12 +25,12 @@ define :tomcat, :owner => 'root', :base => '/home', :owner_group => nil, :port =
     cwd "#{params[:base]}/#{result_folder_name}/bin"
     user params[:owner]
   end
-  link "#{params[:base]}/tomcat" do
+  link "#{params[:base]}/#{params[:name]}" do
     to "#{params[:base]}/#{result_folder_name}"
     owner params[:owner]
     group params[:owner_group]
   end
-  template "#{params[:base]}/tomcat/conf/server.xml" do
+  template "#{params[:base]}/#{params[:name]}/conf/server.xml" do
     source 'tomcat.server.xml.erb'
     mode '0644'
     owner params[:owner]
@@ -44,7 +44,7 @@ define :tomcat, :owner => 'root', :base => '/home', :owner_group => nil, :port =
     mode '775'
     variables({
                   :service_name => params[:name],
-                  :home_dir => "#{params[:base]}/tomcat",
+                  :home_dir => "#{params[:base]}/#{params[:name]}",
                   :owner => params[:owner],
                   :owner_group => params[:owner_group],
                   :jvm_opts => params[:jvm_opts]})

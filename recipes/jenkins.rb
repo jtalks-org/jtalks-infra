@@ -33,7 +33,7 @@ end
 
 # Install Jenkins
 
-remote_file File.join("#{dir}/tomcat/webapps/jenkins.war") do
+remote_file File.join("#{dir}/jenkins/webapps/jenkins.war") do
   source   node[:jenkins][:sources][:url]
   owner    owner
   group    owner
