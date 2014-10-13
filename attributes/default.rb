@@ -9,6 +9,7 @@ default[:mysql][:version] = '5.5'
 default[:mysql][:client][:version] = "#{node[:mysql][:version]}"
 default[:mysql][:server_root_password] = 'root'
 default[:mysql][:server_debian_password] = nil
+default[:mysql][:connector][:download_url] = "http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.33.zip"
 
 #Java
 default[:java][:install_flavor] = "oracle"
@@ -27,14 +28,19 @@ default[:atlassian][:user] = "atlassian"
 default[:atlassian][:home_dir] = "/home/#{node[:atlassian][:user]}/var"
 ##crowd
 default[:crowd][:user] = node[:atlassian][:user]
-default[:crowd][:version] = "2.7.2"
+default[:crowd][:version] = "2.3.1"
 default[:crowd][:download_external_libs] = "http://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-#{node[:crowd][:version]}.tar.gz"
 default[:crowd][:download_url] = "http://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-#{node[:crowd][:version]}-war.zip"
+default[:crowd][:app][:name] = "crowd"
+default[:crowd][:app][:password] = "crowd"
+default[:crowd][:app][:server_url] = "http\://localhost:8081/crowd"
+default[:crowd][:app][:license_text] = "fail"
 default[:tomcat][:instances][:crowd][:port] = 8081
 default[:tomcat][:instances][:crowd][:shutdown_port] = 8011
 default[:db][:crowd][:user] = "crowd"
 default[:db][:crowd][:name] = "#{node[:db][:crowd][:user]}"
 default[:db][:crowd][:password] = "crowd"
+default[:db][:crowd][:backup_path] = "crowd.sql"   # for test backup contains the user admin/admin (login/password)
 
 #Jenkins
 default[:jenkins][:user] = "jenkins"
