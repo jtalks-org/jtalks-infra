@@ -49,6 +49,12 @@ default[:jenkins][:sources][:url] = "http://mirrors.jenkins-ci.org/war/#{node[:j
 default[:jenkins][:sources][:plugins_url] = "http://updates.jenkins-ci.org/download/plugins"
 default[:tomcat][:instances][:jenkins][:port] = 8080
 default[:tomcat][:instances][:jenkins][:shutdown_port] = 8010
+default[:jenkins][:crowd][:application] = "jenkins"
+default[:jenkins][:crowd][:password] = "jenkins"
+default[:jenkins][:crowd][:group] = "jira-users"
+default[:jenkins][:crowd][:domain] = "localhost"
+default[:jenkins][:config][:backup_path] = "jenkins.config.xml"
+
 ## plugins
 default[:jenkins][:plugins]["ansicolor"] = "0.3.1"
 default[:jenkins][:plugins]["ant"] = "1.2"

@@ -63,3 +63,23 @@ end
 service "jenkins" do
   action :restart
 end
+
+#Configuration
+bash "install_plugins_before_add_config_and_wait_5_minutes_after_start" do
+ code  <<-EOH
+     wget -t 100 localhost:#{node[:tomcat][:instances][:jenkins][:port]}/jenkins;
+     sleep 300
+ EOH
+ user owner
+ group owner
+end
+
+cookbook_file "#{dir}/.jenkins/config.xml" do
+  owner owner
+  group owner
+  source "#{node[:jenkins][:config][:backup_path]}"
+end
+
+service "jenkins" do
+  action :restart
+end

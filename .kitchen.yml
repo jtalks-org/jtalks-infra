@@ -2,10 +2,8 @@
 driver:
   name: vagrant
   network:
-#    - ["public_network", {bridge: "eth0"}]
-      - ["forwarded_port", {guest: 8080, host: 8080}]
-      - ["forwarded_port", {guest: 8081, host: 8081}]
-      - ["private_network", {ip: "192.168.33.33"}]
+     - ["forwarded_port", {guest: 8080, host: 8080}]
+     - ["forwarded_port", {guest: 8081, host: 8081}]
 
 provisioner:
   name: chef_solo
@@ -13,8 +11,6 @@ provisioner:
 
 platforms:
   - name: ubuntu-14.04
-    run-list:
-      - recipe[apt]
 
 suites:
   - name: jenkins
@@ -22,12 +18,16 @@ suites:
       - recipe[ark]
       - recipe[git]
       - recipe[java]
-      - recipe[jtalks-infra::jenkins]
-  - name: crowd
-    run_list:
-      - recipe[ark]
-      - recipe[java]
       - recipe[mysql::server]
       - recipe[mysql::client]
       - recipe[database::mysql]
       - recipe[jtalks-infra::crowd]
+      - recipe[jtalks-infra::jenkins]
+  - name: crowd
+    run_list:
+       - recipe[ark]
+       - recipe[java]
+       - recipe[mysql::server]
+       - recipe[mysql::client]
+       - recipe[database::mysql]
+       - recipe[jtalks-infra::crowd]
