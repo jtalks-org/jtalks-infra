@@ -40,7 +40,7 @@ default[:tomcat][:instances][:crowd][:shutdown_port] = 8011
 default[:db][:crowd][:user] = "crowd"
 default[:db][:crowd][:name] = "#{node[:db][:crowd][:user]}"
 default[:db][:crowd][:password] = "crowd"
-default[:db][:crowd][:backup_path] = "crowd.sql"   # for test backup contains the user admin/admin (login/password)
+default[:db][:crowd][:backup_path] = "crowd.sql"   # for test backup contains all users  from production with password "1"
 
 #Jenkins
 default[:jenkins][:user] = "jenkins"
