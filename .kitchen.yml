@@ -2,6 +2,7 @@
 driver:
   name: vagrant
   network:
+     - ["forwarded_port", {guest: 80, host: 80}]
      - ["forwarded_port", {guest: 8080, host: 8080}]
      - ["forwarded_port", {guest: 8081, host: 8081}]
 
@@ -21,8 +22,10 @@ suites:
       - recipe[mysql::server]
       - recipe[mysql::client]
       - recipe[database::mysql]
+      - recipe[nginx]
       - recipe[jtalks-infra::crowd]
       - recipe[jtalks-infra::jenkins]
+      - recipe[jtalks-infra::nginx]
   - name: crowd
     run_list:
        - recipe[ark]
@@ -30,4 +33,18 @@ suites:
        - recipe[mysql::server]
        - recipe[mysql::client]
        - recipe[database::mysql]
+       - recipe[nginx]
        - recipe[jtalks-infra::crowd]
+       - recipe[jtalks-infra::nginx]
+  - name: server
+    run_list:
+       - recipe[ark]
+       - recipe[git]
+       - recipe[java]
+       - recipe[mysql::server]
+       - recipe[mysql::client]
+       - recipe[database::mysql]
+       - recipe[nginx]
+       - recipe[jtalks-infra::crowd]
+       - recipe[jtalks-infra::jenkins]
+       - recipe[jtalks-infra::nginx]

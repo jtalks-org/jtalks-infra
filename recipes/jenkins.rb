@@ -19,7 +19,7 @@ ssh_settings owner do
   key_name "jtalks-infra"
   source_key_dir "private/keys/#{owner}"
   # *.hostname to all subdomains
-  hostnames ["*.#{node[:jtalks][:backup][:hostname]}", "#{node[:jtalks][:backup][:hostname]}"]
+  hostnames ["*.#{node[:jtalks][:hostname]}", "#{node[:jtalks][:hostname]}"]
 end
 
 # Install Maven
@@ -42,7 +42,7 @@ end
 
 # Install Jenkins
 
-remote_file File.join("#{dir}/jenkins/webapps/jenkins.war") do
+remote_file File.join("#{dir}/jenkins/webapps/ROOT.war") do
   source   node[:jenkins][:sources][:url]
   owner    owner
   group    owner

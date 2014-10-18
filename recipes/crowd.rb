@@ -72,12 +72,12 @@ execute "unpack and remove archive" do
   user owner
   group owner
   cwd "#{dir}/crowd/webapps"
-  command "unzip crowd.zip -d #{dir}/crowd/webapps/crowd; rm -Rf crowd.zip"
+  command "unzip crowd.zip -d #{dir}/crowd/webapps/ROOT; rm -Rf crowd.zip"
 end
 
 # Restore configs
 
-file "#{dir}/crowd/webapps/crowd/WEB-INF/classes/crowd-init.properties" do
+file "#{dir}/crowd/webapps/ROOT/WEB-INF/classes/crowd-init.properties" do
   owner params[:owner]
   group params[:owner_group]
   content "crowd.home=#{node[:atlassian][:home_dir]}/crowd"

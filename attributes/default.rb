@@ -1,9 +1,7 @@
 #Variables of environment
 default[:jtalks][:path][:init_script] = "/etc/init.d"
 default[:jtalks][:cookbook_path] = "#{Chef::Config[:cookbook_path][0]}/jtalks-infra/files/default"
-
-#Variables of backup server. applications might be on different servers with same hostname of first level
-default[:jtalks][:backup][:hostname] = "jtalks.org"
+default[:jtalks][:hostname] = "localhost"
 
 #Database
 default[:mysql][:version] = '5.5'
@@ -39,7 +37,7 @@ default[:crowd][:download_external_libs] = "http://www.atlassian.com/software/cr
 default[:crowd][:download_url] = "http://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-#{node[:crowd][:version]}-war.zip"
 default[:crowd][:app][:name] = "crowd"
 default[:crowd][:app][:password] = "crowd"
-default[:crowd][:app][:server_url] = "http\://localhost:8081/crowd"
+default[:crowd][:app][:server_url] = "http\://localhost:8081"
 default[:crowd][:app][:license_text] = "fail"
 default[:tomcat][:instances][:crowd][:port] = 8081
 default[:tomcat][:instances][:crowd][:shutdown_port] = 8011
@@ -47,6 +45,9 @@ default[:db][:crowd][:user] = "crowd"
 default[:db][:crowd][:name] = "#{node[:db][:crowd][:user]}"
 default[:db][:crowd][:password] = "crowd"
 default[:db][:crowd][:backup_path] = "crowd/crowd.sql"   # for test backup contains all users  from production with password "1"
+default[:nginx][:site][:crowd][:name] = "#{node[:crowd][:user]}"
+default[:nginx][:site][:crowd][:host] = "crowd.#{node[:jtalks][:hostname]}"
+default[:nginx][:site][:crowd][:context_path] = "/"
 
 #Jenkins
 default[:jenkins][:user] = "jenkins"
@@ -62,6 +63,9 @@ default[:jenkins][:crowd][:domain] = "localhost"
 default[:jenkins][:config][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jenkins/config.xml"
 default[:jenkins][:config_jobs][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jenkins/jobs"
 default[:jenkins][:maven][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jenkins/maven/settings.xml"
+default[:nginx][:site][:jenkins][:name] = "#{node[:jenkins][:user]}"
+default[:nginx][:site][:jenkins][:host] = "ci.#{node[:jtalks][:hostname]}"
+default[:nginx][:site][:jenkins][:context_path] = "/"
 
 ## plugins
 default[:jenkins][:plugins]["ansicolor"] = "0.3.1"
