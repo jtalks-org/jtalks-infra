@@ -22,6 +22,15 @@ ssh_settings owner do
   hostnames ["*.#{node[:jtalks][:backup][:hostname]}", "#{node[:jtalks][:backup][:hostname]}"]
 end
 
+# Install Maven
+
+maven "maven" do
+  owner owner
+  base dir
+  version "3"
+  settings_path node[:jenkins][:maven][:backup_path]
+end
+
 # Install Tomcat
 
 tomcat "jenkins" do
@@ -66,18 +75,40 @@ end
 
 #Configuration
 bash "install_plugins_before_add_config_and_wait_5_minutes_after_start" do
- code  <<-EOH
+code  <<-EOH
      wget -t 100 localhost:#{node[:tomcat][:instances][:jenkins][:port]}/jenkins;
      sleep 300
- EOH
- user owner
- group owner
+EOH
+user owner
+group owner
 end
 
-cookbook_file "#{dir}/.jenkins/config.xml" do
-  owner owner
+
+execute "restore-jenkins-config-and-jobs" do
+  command "
+    rm -Rf #{dir}/.jenkins/*.xml; rm -Rf #{dir}/.jenkins/jobs;
+    cp -R #{node[:jenkins][:config_jobs][:backup_path]} #{dir}/.jenkins;
+    cp #{node[:jenkins][:config][:backup_path]} #{dir}/.jenkins;"
+  user owner
   group owner
-  source "#{node[:jenkins][:config][:backup_path]}"
+end
+
+execute "chown -R #{owner}.#{owner} #{dir}/.jenkins"
+
+# Replace configs
+replace_config "replace repo path" do
+  search_pattern "<securityRealm.*</cookieDomain>"
+  replace_string "<securityRealm class=\"de.theit.jenkins.crowd.CrowdSecurityRealm\" plugin=\"crowd2@1.8\">
+    <url>#{node[:crowd][:app][:server_url]}</url>
+    <applicationName>#{node[:jenkins][:crowd][:application]}</applicationName>
+    <password>#{node[:jenkins][:crowd][:password]}</password>
+    <group>#{node[:jenkins][:crowd][:group]}</group>
+    <nestedGroups>false</nestedGroups>
+    <useSSO>true</useSSO>
+    <sessionValidationInterval>2</sessionValidationInterval>
+    <cookieDomain>#{node[:jenkins][:crowd][:domain]}</cookieDomain>"
+  path "#{dir}/.jenkins/config.xml"
+  user owner
 end
 
 service "jenkins" do

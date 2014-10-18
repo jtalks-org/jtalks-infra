@@ -1,5 +1,6 @@
 #Variables of environment
 default[:jtalks][:path][:init_script] = "/etc/init.d"
+default[:jtalks][:cookbook_path] = "#{Chef::Config[:cookbook_path][0]}/jtalks-infra/files/default"
 
 #Variables of backup server. applications might be on different servers with same hostname of first level
 default[:jtalks][:backup][:hostname] = "jtalks.org"
@@ -15,6 +16,11 @@ default[:mysql][:connector][:download_url] = "http://dev.mysql.com/get/Downloads
 default[:java][:install_flavor] = "oracle"
 default[:java][:jdk_version] = 7
 default[:java][:oracle][:accept_oracle_download_terms] = true
+
+# Maven
+default[:maven]['3'][:version] = "3.2.3"
+default[:maven]['3'][:url] = "http://apache-mirror.rbc.ru/pub/apache/maven/maven-3/#{node[:maven]['3'][:version]}/binaries/apache-maven-#{node[:maven]['3'][:version]}-bin.tar.gz"
+
 
 #Tomcat variables
 default[:tomcat][:major_version] = "8"
@@ -40,7 +46,7 @@ default[:tomcat][:instances][:crowd][:shutdown_port] = 8011
 default[:db][:crowd][:user] = "crowd"
 default[:db][:crowd][:name] = "#{node[:db][:crowd][:user]}"
 default[:db][:crowd][:password] = "crowd"
-default[:db][:crowd][:backup_path] = "crowd.sql"   # for test backup contains all users  from production with password "1"
+default[:db][:crowd][:backup_path] = "crowd/crowd.sql"   # for test backup contains all users  from production with password "1"
 
 #Jenkins
 default[:jenkins][:user] = "jenkins"
@@ -53,7 +59,9 @@ default[:jenkins][:crowd][:application] = "jenkins"
 default[:jenkins][:crowd][:password] = "jenkins"
 default[:jenkins][:crowd][:group] = "jira-users"
 default[:jenkins][:crowd][:domain] = "localhost"
-default[:jenkins][:config][:backup_path] = "jenkins.config.xml"
+default[:jenkins][:config][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jenkins/config.xml"
+default[:jenkins][:config_jobs][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jenkins/jobs"
+default[:jenkins][:maven][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jenkins/maven/settings.xml"
 
 ## plugins
 default[:jenkins][:plugins]["ansicolor"] = "0.3.1"
