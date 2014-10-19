@@ -3,7 +3,7 @@
   <disabledAdministrativeMonitors>
     <string>jenkins.security.RekeySecretAdminMonitor</string>
   </disabledAdministrativeMonitors>
-  <version>1.566</version>
+  <version>1.514</version>
   <numExecutors>8</numExecutors>
   <mode>NORMAL</mode>
   <useSecurity>true</useSecurity>
@@ -57,14 +57,14 @@
     <permission>hudson.scm.SCM.Tag:ci-admins</permission>
   </authorizationStrategy>
   <securityRealm class="de.theit.jenkins.crowd.CrowdSecurityRealm" plugin="crowd2@1.8">
-    <url>http://localhost:8081/crowd</url>
+    <url>http://crowd.jtalks.org/crowd</url>
     <applicationName>jenkins</applicationName>
-    <password>jenkins</password>
+    <password>hgjd8rh#45</password>
     <group>jira-users</group>
     <nestedGroups>false</nestedGroups>
     <useSSO>true</useSSO>
     <sessionValidationInterval>2</sessionValidationInterval>
-    <cookieDomain>localhost</cookieDomain>
+    <cookieDomain>.jtalks.org</cookieDomain>
     <cookieTokenkey>crowd.token_key</cookieTokenkey>
     <useProxy>false</useProxy>
     <httpProxyHost></httpProxyHost>
@@ -99,7 +99,274 @@ SM (Server Management) - builds to redeploy servers, backup/restore databases.&#
   <clouds/>
   <slaves/>
   <quietPeriod>5</quietPeriod>
+  <scmCheckoutRetryCount>0</scmCheckoutRetryCount>
   <views>
+    <listView>
+      <owner class="hudson" reference="../../.."/>
+      <name>JCommune</name>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+      <jobNames>
+        <comparator class="hudson.util.CaseInsensitiveComparator"/>
+        <string>JC. Func Tests. Full Regression</string>
+        <string>JC. Run-Tests-If-Branch-Changed</string>
+        <string>JC. To Performance</string>
+        <string>JC. W3C Validation</string>
+        <string>JC. W3C Validation. Win2008 + Firefox</string>
+        <string>JC. W3C Validation. Win2012 + Chrome</string>
+      </jobNames>
+      <jobFilters/>
+      <columns>
+        <hudson.views.StatusColumn/>
+        <jenkins.plugins.extracolumns.LastBuildConsoleColumn plugin="extra-columns@1.8"/>
+        <jenkins.plugins.extracolumns.ConfigureProjectColumn plugin="extra-columns@1.8"/>
+        <hudson.views.BuildButtonColumn/>
+        <hudson.views.JobColumn/>
+        <hudson.views.LastDurationColumn/>
+        <jenkins.plugins.extracolumns.TestResultColumn plugin="extra-columns@1.8">
+          <testResultFormat>1</testResultFormat>
+        </jenkins.plugins.extracolumns.TestResultColumn>
+        <jenkins.plugins.extracolumns.DescriptionColumn plugin="extra-columns@1.8">
+          <displayName>false</displayName>
+          <trim>true</trim>
+          <displayLength>1</displayLength>
+        </jenkins.plugins.extracolumns.DescriptionColumn>
+      </columns>
+      <includeRegex>JC.*</includeRegex>
+      <recurse>false</recurse>
+    </listView>
+    <listView>
+      <owner class="hudson" reference="../../.."/>
+      <name>Poulpe</name>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+      <jobNames>
+        <comparator class="hudson.util.CaseInsensitiveComparator"/>
+      </jobNames>
+      <jobFilters/>
+      <columns>
+        <hudson.views.StatusColumn/>
+        <jenkins.plugins.extracolumns.LastBuildConsoleColumn plugin="extra-columns@1.8"/>
+        <jenkins.plugins.extracolumns.ConfigureProjectColumn plugin="extra-columns@1.8"/>
+        <hudson.views.BuildButtonColumn/>
+        <hudson.views.JobColumn/>
+        <hudson.views.LastDurationColumn/>
+        <jenkins.plugins.extracolumns.TestResultColumn plugin="extra-columns@1.8">
+          <testResultFormat>1</testResultFormat>
+        </jenkins.plugins.extracolumns.TestResultColumn>
+        <jenkins.plugins.extracolumns.DescriptionColumn plugin="extra-columns@1.8">
+          <displayName>false</displayName>
+          <trim>true</trim>
+          <displayLength>1</displayLength>
+        </jenkins.plugins.extracolumns.DescriptionColumn>
+      </columns>
+      <includeRegex>Poulpe.*</includeRegex>
+      <recurse>false</recurse>
+    </listView>
+    <listView>
+      <owner class="hudson" reference="../../.."/>
+      <name>Server Managment</name>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+      <jobNames>
+        <comparator class="hudson.util.CaseInsensitiveComparator" reference="../../../listView[2]/jobNames/comparator"/>
+        <string>SM. DEV. Fill Sample Data</string>
+        <string>SM. DEV. Recreate Database</string>
+        <string>SM. Install Pochta</string>
+        <string>SM. Jenkins configuration backup</string>
+      </jobNames>
+      <jobFilters/>
+      <columns>
+        <hudson.views.StatusColumn/>
+        <jenkins.plugins.extracolumns.LastBuildConsoleColumn plugin="extra-columns@1.8"/>
+        <jenkins.plugins.extracolumns.ConfigureProjectColumn plugin="extra-columns@1.8"/>
+        <hudson.views.BuildButtonColumn/>
+        <hudson.views.JobColumn/>
+        <hudson.views.LastDurationColumn/>
+        <jenkins.plugins.extracolumns.DescriptionColumn plugin="extra-columns@1.8">
+          <displayName>false</displayName>
+          <trim>false</trim>
+          <displayLength>1</displayLength>
+        </jenkins.plugins.extracolumns.DescriptionColumn>
+      </columns>
+      <includeRegex>SM.*</includeRegex>
+      <recurse>false</recurse>
+    </listView>
+    <listView>
+      <owner class="hudson" reference="../../.."/>
+      <name>Common</name>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+      <jobNames>
+        <comparator class="hudson.util.CaseInsensitiveComparator" reference="../../../listView[2]/jobNames/comparator"/>
+      </jobNames>
+      <jobFilters/>
+      <columns>
+        <hudson.views.StatusColumn/>
+        <jenkins.plugins.extracolumns.LastBuildConsoleColumn plugin="extra-columns@1.8"/>
+        <hudson.views.BuildButtonColumn/>
+        <jenkins.plugins.extracolumns.ConfigureProjectColumn plugin="extra-columns@1.8"/>
+        <hudson.views.JobColumn/>
+        <hudson.views.LastDurationColumn/>
+        <jenkins.plugins.extracolumns.TestResultColumn plugin="extra-columns@1.8">
+          <testResultFormat>1</testResultFormat>
+        </jenkins.plugins.extracolumns.TestResultColumn>
+        <jenkins.plugins.extracolumns.DescriptionColumn plugin="extra-columns@1.8">
+          <displayName>false</displayName>
+          <trim>false</trim>
+          <displayLength>1</displayLength>
+        </jenkins.plugins.extracolumns.DescriptionColumn>
+      </columns>
+      <includeRegex>Common.*</includeRegex>
+      <recurse>false</recurse>
+    </listView>
+    <listView>
+      <owner class="hudson" reference="../../.."/>
+      <name>Antarcticle</name>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+      <jobNames>
+        <comparator class="hudson.util.CaseInsensitiveComparator"/>
+        <string>Ant. To Dev</string>
+      </jobNames>
+      <jobFilters/>
+      <columns>
+        <hudson.views.StatusColumn/>
+        <jenkins.plugins.extracolumns.LastBuildConsoleColumn plugin="extra-columns@1.8"/>
+        <jenkins.plugins.extracolumns.ConfigureProjectColumn plugin="extra-columns@1.8"/>
+        <hudson.views.BuildButtonColumn/>
+        <hudson.views.JobColumn/>
+        <hudson.views.LastDurationColumn/>
+        <jenkins.plugins.extracolumns.DescriptionColumn plugin="extra-columns@1.8">
+          <displayName>false</displayName>
+          <trim>false</trim>
+          <displayLength>1</displayLength>
+        </jenkins.plugins.extracolumns.DescriptionColumn>
+      </columns>
+      <includeRegex>Ant.*</includeRegex>
+      <recurse>false</recurse>
+    </listView>
+    <au.com.centrumsystems.hudson.plugin.buildpipeline.BuildPipelineView plugin="build-pipeline-plugin@1.3.3">
+      <owner class="hudson" reference="../../.."/>
+      <name>JCommune. Pipeline</name>
+      <description>The steps JCommune should go through starting from commit and finishing with deploying to PROD. At the start of pipeline the war file is created and the same war file is used on every env.</description>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+      <selectedJob>JC. Unit Tests</selectedJob>
+      <noOfDisplayedBuilds>10</noOfDisplayedBuilds>
+      <buildViewTitle>JCommune Pipeline</buildViewTitle>
+      <triggerOnlyLatestJob>false</triggerOnlyLatestJob>
+      <alwaysAllowManualTrigger>true</alwaysAllowManualTrigger>
+      <showPipelineParameters>false</showPipelineParameters>
+      <refreshFrequency>1</refreshFrequency>
+      <showPipelineDefinitionHeader>true</showPipelineDefinitionHeader>
+      <displayProgressBar>false</displayProgressBar>
+    </au.com.centrumsystems.hudson.plugin.buildpipeline.BuildPipelineView>
+    <au.com.centrumsystems.hudson.plugin.buildpipeline.BuildPipelineView plugin="build-pipeline-plugin@1.3.3">
+      <owner class="hudson" reference="../../.."/>
+      <name>Poulpe. Pipeline</name>
+      <description>The steps the Poulpe should go through starting from commit and finishing with deploying to PROD. At the start of pipeline the war file is created and the same war file is used on every env.</description>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+      <selectedJob>Poulpe. Run Unit Tests</selectedJob>
+      <noOfDisplayedBuilds>10</noOfDisplayedBuilds>
+      <buildViewTitle>Pouple Pipeline</buildViewTitle>
+      <triggerOnlyLatestJob>false</triggerOnlyLatestJob>
+      <alwaysAllowManualTrigger>true</alwaysAllowManualTrigger>
+      <showPipelineParameters>false</showPipelineParameters>
+      <refreshFrequency>1</refreshFrequency>
+      <showPipelineDefinitionHeader>true</showPipelineDefinitionHeader>
+      <displayProgressBar>false</displayProgressBar>
+    </au.com.centrumsystems.hudson.plugin.buildpipeline.BuildPipelineView>
+    <listView>
+      <owner class="hudson" reference="../../.."/>
+      <name>All</name>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+      <jobNames>
+        <comparator class="hudson.util.CaseInsensitiveComparator"/>
+        <string>Ant. To PREPROD</string>
+        <string>Ant. To PROD</string>
+        <string>JC. Func Tests</string>
+        <string>JC. Functional Tests. HtmlUnit</string>
+        <string>JC. Functional Tests. iPad + Safari</string>
+        <string>JC. Functional Tests. Linux + Firefox</string>
+        <string>JC. Functional Tests. Win2012 + Chrome</string>
+        <string>JC. Run Load Tests - 3 users</string>
+        <string>JC. To BeginInTesting</string>
+        <string>JC. W3C Validation. iPad + Safari</string>
+        <string>JTalksSite. To DEV</string>
+        <string>JTalksSite. To PROD</string>
+        <string>Pochta. Unit Tests</string>
+        <string>Poulpe. To AUTOTESTS</string>
+        <string>Poulpe. To BeginInTesting</string>
+        <string>Tort. Unit Tests</string>
+      </jobNames>
+      <jobFilters/>
+      <columns>
+        <hudson.views.StatusColumn/>
+        <jenkins.plugins.extracolumns.LastBuildConsoleColumn plugin="extra-columns@1.8"/>
+        <jenkins.plugins.extracolumns.ConfigureProjectColumn plugin="extra-columns@1.8"/>
+        <hudson.views.BuildButtonColumn/>
+        <hudson.views.JobColumn/>
+        <hudson.views.LastDurationColumn/>
+        <jenkins.plugins.extracolumns.DescriptionColumn plugin="extra-columns@1.8">
+          <displayName>false</displayName>
+          <trim>true</trim>
+          <displayLength>1</displayLength>
+        </jenkins.plugins.extracolumns.DescriptionColumn>
+      </columns>
+      <includeRegex>.*</includeRegex>
+      <recurse>false</recurse>
+    </listView>
+    <au.com.centrumsystems.hudson.plugin.buildpipeline.BuildPipelineView plugin="build-pipeline-plugin@1.3.3">
+      <owner class="hudson" reference="../../.."/>
+      <name>Antarcticle. Pipeline</name>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+      <selectedJob>Ant. Run Tests</selectedJob>
+      <noOfDisplayedBuilds>10</noOfDisplayedBuilds>
+      <buildViewTitle></buildViewTitle>
+      <triggerOnlyLatestJob>false</triggerOnlyLatestJob>
+      <alwaysAllowManualTrigger>true</alwaysAllowManualTrigger>
+      <showPipelineParameters>false</showPipelineParameters>
+      <refreshFrequency>10</refreshFrequency>
+      <showPipelineDefinitionHeader>true</showPipelineDefinitionHeader>
+      <displayProgressBar>false</displayProgressBar>
+    </au.com.centrumsystems.hudson.plugin.buildpipeline.BuildPipelineView>
+    <listView>
+      <owner class="hudson" reference="../../.."/>
+      <name>Tools And Libs</name>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+      <jobNames>
+        <comparator class="hudson.util.CaseInsensitiveComparator"/>
+        <string>Pochta. Release</string>
+      </jobNames>
+      <jobFilters/>
+      <columns>
+        <hudson.views.StatusColumn/>
+        <jenkins.plugins.extracolumns.LastBuildConsoleColumn plugin="extra-columns@1.8"/>
+        <jenkins.plugins.extracolumns.ConfigureProjectColumn plugin="extra-columns@1.8"/>
+        <hudson.views.JobColumn/>
+        <hudson.views.LastSuccessColumn/>
+        <hudson.views.LastFailureColumn/>
+        <hudson.views.LastDurationColumn/>
+        <hudson.views.BuildButtonColumn/>
+      </columns>
+      <includeRegex>(Tort|Pochta).*</includeRegex>
+      <recurse>false</recurse>
+    </listView>
   </views>
   <primaryView>All</primaryView>
   <slaveAgentPort>0</slaveAgentPort>
@@ -114,6 +381,62 @@ SM (Server Management) - builds to redeploy servers, backup/restore databases.&#
             <comparator class="hudson.util.CaseInsensitiveComparator"/>
           </default>
           <int>28</int>
+          <string></string>
+          <string></string>
+          <string>BACKUP_DB</string>
+          <string>/home/jenkins/backup/db</string>
+          <string>BACKUP_WAR</string>
+          <string>/home/jenkins/backup/war</string>
+          <string>DEV_BACKUP_DIR</string>
+          <string>/home/tomcat/app_backups</string>
+          <string>DEV_IP</string>
+          <string>176.9.66.108</string>
+          <string>DEV_JTALKS_GROUP</string>
+          <string>jtalks</string>
+          <string>DEV_JTALKS_USER</string>
+          <string>jtalks</string>
+          <string>DEV_MYSQL_USER</string>
+          <string>root</string>
+          <string>DEV_SSH</string>
+          <string>tomcat@176.9.66.108</string>
+          <string>DEV_SSH_JTALKS</string>
+          <string>jtalks@176.9.66.108</string>
+          <string>DEV_TOMCAT_DEPLOY</string>
+          <string>/home/tomcat/app/tomcat-deploy/webapps</string>
+          <string>DEV_TOMCAT_DIR</string>
+          <string>/home/tomcat/app</string>
+          <string>DEV_TOMCAT_GROUP</string>
+          <string>tomcat</string>
+          <string>DEV_TOMCAT_JAVATALKS</string>
+          <string>/home/tomcat/app/tomcat-javatalks/webapps</string>
+          <string>DEV_TOMCAT_UAT</string>
+          <string>/home/tomcat/app/tomcat-uat/webapps</string>
+          <string>DEV_TOMCAT_USER</string>
+          <string>tomcat</string>
+          <string>PROD_BACKUP_DIR</string>
+          <string>/home/jtalks/apps_backup</string>
+          <string>PROD_GROUP</string>
+          <string>jtalks</string>
+          <string>PROD_IP</string>
+          <string>213.239.201.68</string>
+          <string>PROD_JCOMMUNE_DIR</string>
+          <string>/home/jtalks/apps/jcommune/tomcat-jcommune/webapps</string>
+          <string>PROD_MYSQL_USER</string>
+          <string>root</string>
+          <string>PROD_POULPE_DIR</string>
+          <string>/home/jtalks/apps/poulpe/tomcat-poulpe/webapps</string>
+          <string>PROD_SSH</string>
+          <string>jtalks@213.239.201.68</string>
+          <string>PROD_USER</string>
+          <string>jtalks</string>
+          <string>SSH_TO_POCHTA</string>
+          <string>pochta@176.9.66.108</string>
+          <string>SSH_TO_SITE</string>
+          <string>site@176.9.66.108</string>
+          <string>TEST_SERVER_ANTARCTICLE_SSH</string>
+          <string>antarcticle@5.9.40.180</string>
+          <string>TEST_SERVER_TOMCAT_SSH</string>
+          <string>tomcat@5.9.40.180</string>
         </tree-map>
       </envVars>
     </hudson.slaves.EnvironmentVariablesNodeProperty>

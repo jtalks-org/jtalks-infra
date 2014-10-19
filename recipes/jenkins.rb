@@ -17,7 +17,7 @@ ssh_settings owner do
   user owner
   ssh_dir "#{dir}/.ssh"
   key_name "jtalks-infra"
-  source_key_dir "private/keys/#{owner}"
+  source_key_dir "keys/#{owner}"
   # *.hostname to all subdomains
   hostnames ["*.#{node[:jtalks][:hostname]}", "#{node[:jtalks][:hostname]}"]
 end
@@ -74,10 +74,10 @@ service "jenkins" do
 end
 
 #Configuration
-bash "install_plugins_before_add_config_and_wait_5_minutes_after_start" do
+bash "install_plugins_before_add_config_and_wait_2_minutes_after_start" do
 code  <<-EOH
      wget -t 100 localhost:#{node[:tomcat][:instances][:jenkins][:port]}/jenkins;
-     sleep 300
+     sleep 120
 EOH
 user owner
 group owner
@@ -87,8 +87,11 @@ end
 execute "restore-jenkins-config-and-jobs" do
   command "
     rm -Rf #{dir}/.jenkins/*.xml; rm -Rf #{dir}/.jenkins/jobs;
-    cp -R #{node[:jenkins][:config_jobs][:backup_path]} #{dir}/.jenkins;
-    cp #{node[:jenkins][:config][:backup_path]} #{dir}/.jenkins;"
+    cp -R #{node[:jenkins][:config][:backup_path]}/*.xml #{dir}/.jenkins;
+    cp -R #{node[:jenkins][:config][:backup_path]}/*.key #{dir}/.jenkins;
+    cp -R #{node[:jenkins][:config][:backup_path]}/jobs #{dir}/.jenkins;
+    cp -R #{node[:jenkins][:config][:backup_path]}/secrets #{dir}/.jenkins;
+    cp -R #{node[:jenkins][:config][:backup_path]}/users #{dir}/.jenkins;"
   user owner
   group owner
 end
@@ -106,7 +109,7 @@ replace_config "replace repo path" do
     <nestedGroups>false</nestedGroups>
     <useSSO>true</useSSO>
     <sessionValidationInterval>2</sessionValidationInterval>
-    <cookieDomain>#{node[:jenkins][:crowd][:domain]}</cookieDomain>"
+    <cookieDomain>#{node[:jenkins][:crowd][:cookie_domain]}</cookieDomain>"
   path "#{dir}/.jenkins/config.xml"
   user owner
 end

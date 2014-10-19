@@ -101,23 +101,22 @@ template "#{node[:atlassian][:home_dir]}/crowd/crowd.properties" do
   variables({
                 :app_name => node[:crowd][:app][:name],
                 :app_password => node[:crowd][:app][:password],
-                :server_url => node[:crowd][:app][:server_url]})
+                :server_url => node[:crowd][:app][:server_url],
+                :cookie_domain => node[:crowd][:app][:cookie_domain]})
 end
 
 # Restore database from backup
-cookbook_file "/tmp/crowd.sql" do
-  owner owner
-  group owner
-  source "#{node[:db][:crowd][:backup_path]}"
-end
-
 execute "restore database" do
   command "
-  mysql -u #{node[:db][:crowd][:user]} --password='#{node[:db][:crowd][:password]}' -b #{node[:db][:crowd][:name]} < /tmp/crowd.sql;
-  rm -Rf /tmp/crowd.sql
+  mysql -u #{node[:db][:crowd][:user]} --password='#{node[:db][:crowd][:password]}' -b #{node[:db][:crowd][:name]} < #{node[:db][:crowd][:backup_path]};
   "
   user owner
   group owner
+end
+
+mysql_execute "set cookie domain" do
+  app_name "crowd"
+  command "update cwd_property set property_value='#{node[:crowd][:app][:cookie_domain]}' where property_name='domain'"
 end
 
 service "crowd" do

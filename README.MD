@@ -10,6 +10,6 @@ Chef Cookbook of JTalks's infrastructure
 
 ## Using
 
-- add content of directory private to /files/default/private directory from private
-  repository (jtalks-infra-files).
+- add content from private repository (jtalks-infra-files) to files/.
+- replace dummy backups of databases
 - Run `kitchen converge` to startup a VM with the cookbooks and kitchen verify to run the integration tests.

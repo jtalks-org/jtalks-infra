@@ -1,4 +1,4 @@
-# Definition to setting SSH environment to user. Adds ssh keys from /files/default/private/keys/{username}/{key_name}.
+# Definition to setting SSH environment to user. Adds ssh keys from /files/default/keys/{username}/{key_name}.
 # Tunes config file with mapping hostname to ssh key. Adds hash pair (hostname, key), to known_hosts file. Sets
 # permissions to files of SSH environment.
 define :ssh_settings, :user => 'root', :ssh_dir => '.ssh', :key_name => 'id_rsa', :source_key_dir => nil, :hostnames => [] do
