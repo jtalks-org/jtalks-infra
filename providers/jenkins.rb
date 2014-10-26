@@ -165,7 +165,7 @@ def update_jenkins
     command "rm -Rf #{app_dir}/webapps/ROOT; rm -Rf #{dir}/.jenkins/plugins/*;"
   end
 
-  # Download ad unpack Crowd
+  # Download ad unpack Jenkins
   download_and_unpack_app_and_plugins
 
   service "#{current_resource.service_name}" do
