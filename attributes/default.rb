@@ -31,7 +31,6 @@ default[:tomcat][:download_url] = "http://apache-mirror.rbc.ru/pub/apache/tomcat
 default[:atlassian][:user] = "atlassian"
 default[:atlassian][:home_dir] = "/home/#{node[:atlassian][:user]}/var"
 ##crowd
-default[:crowd][:user] = node[:atlassian][:user]
 default[:crowd][:version] = "2.3.1"
 default[:crowd][:download_external_libs] = "http://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-#{node[:crowd][:version]}.tar.gz"
 default[:crowd][:download_url] = "http://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-#{node[:crowd][:version]}-war.zip"
@@ -46,7 +45,7 @@ default[:db][:crowd][:user] = "crowd"
 default[:db][:crowd][:name] = "#{node[:db][:crowd][:user]}"
 default[:db][:crowd][:password] = "crowd"
 default[:db][:crowd][:backup_path] = "#{node[:jtalks][:cookbook_path]}/crowd/crowd.sql"   # for test backup contains all users  from production with password "1"
-default[:nginx][:site][:crowd][:name] = "#{node[:crowd][:user]}"
+default[:nginx][:site][:crowd][:name] = "crowd"
 default[:nginx][:site][:crowd][:host] = "crowd.#{node[:jtalks][:hostname]}"
 default[:nginx][:site][:crowd][:context_path] = "/"
 
