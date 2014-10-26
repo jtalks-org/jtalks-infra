@@ -52,8 +52,8 @@ default[:nginx][:site][:crowd][:context_path] = "/"
 #Jenkins
 default[:jenkins][:user] = "jenkins"
 default[:jenkins][:version] = "1.566"
-default[:jenkins][:sources][:url] = "http://mirrors.jenkins-ci.org/war/#{node[:jenkins][:version]}/jenkins.war"
-default[:jenkins][:sources][:plugins_url] = "http://updates.jenkins-ci.org/download/plugins"
+default[:jenkins][:download_url] = "http://mirrors.jenkins-ci.org/war/#{node[:jenkins][:version]}/jenkins.war"
+default[:jenkins][:plugins_download_url] = "http://updates.jenkins-ci.org/download/plugins"
 default[:tomcat][:instances][:jenkins][:port] = 8080
 default[:tomcat][:instances][:jenkins][:shutdown_port] = 8010
 default[:jenkins][:crowd][:application] = "jenkins"

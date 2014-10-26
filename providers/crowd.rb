@@ -20,7 +20,7 @@ action :update do
       update_crowd
     end
   else
-    Chef::Log.info "#{ @new_resource } not installed - nothing to do. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+    Chef::Log.info "#{ @new_resource } not installed - nothing to do."
   end
 end
 
