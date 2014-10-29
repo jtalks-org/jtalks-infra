@@ -61,6 +61,7 @@ def install_jenkins
   crowd_app_password = "#{current_resource.crowd_app_password}"
   crowd_group = "#{current_resource.crowd_group}"
   crowd_cookie_domain = "#{current_resource.crowd_cookie_domain}"
+  maven_version = "3"
 
 # Add user
   user owner do
@@ -77,7 +78,7 @@ def install_jenkins
   ssh_settings owner do
     user owner
     ssh_dir "#{dir}/.ssh"
-    key_name "jtalks-infra"
+    key_name "id_rsa"
     source_key_dir "keys/#{owner}"
     # *.hostname to all subdomains
     hostnames ["*.#{server_hostname}", "#{server_hostname}"]
@@ -88,7 +89,7 @@ def install_jenkins
   maven "maven" do
     owner owner
     base dir
-    version "3"
+    version maven_version
     settings_path "#{maven_backup_path}"
   end
 
@@ -145,6 +146,53 @@ def install_jenkins
     <sessionValidationInterval>2</sessionValidationInterval>
     <cookieDomain>#{crowd_cookie_domain}</cookieDomain>"
     path "#{dir}/.jenkins/config.xml"
+    user owner
+  end
+
+  replace_config "replace_jdk_path" do
+    search_pattern "<jdks.*</jdks>"
+    replace_string "<jdks>
+      <jdk>
+        <name>JDK</name>
+        <home>/usr/lib/jvm/default-java</home>
+        <properties/>
+      </jdk>
+    </jdks>"
+    path "#{dir}/.jenkins/config.xml"
+    user owner
+    end
+
+  replace_config "replace_maven_path" do
+    search_pattern "<installations.*</installations>"
+    replace_string "<installations>
+    <hudson.tasks.Maven_-MavenInstallation>
+      <name>maven#{maven_version}</name>
+      <home>#{dir}/maven#{maven_version}</home>
+      <properties/>
+    </hudson.tasks.Maven_-MavenInstallation>
+   </installations>"
+    path "#{dir}/.jenkins/hudson.tasks.Maven.xml"
+    user owner
+    end
+
+  replace_config "replace_cvs_key" do
+    search_pattern "<privateKeyLocation.*</knownHostsLocation>"
+    replace_string "<privateKeyLocation>#{dir}/.ssh/id_rsa</privateKeyLocation>
+      <privateKeyPassword></privateKeyPassword>
+      <knownHostsLocation>#{dir}/.ssh/known_hosts</knownHostsLocation>"
+    path "#{dir}/.jenkins/hudson.scm.CVSSCM.xml"
+    user owner
+  end
+
+  replace_config "replace_maven_global_settings" do
+    search_pattern "<settingsProvider.*</globalSettingsProvider>"
+    replace_string "<settingsProvider class=\"jenkins.mvn.FilePathSettingsProvider\">
+        <path>#{dir}/maven#{maven_version}/conf/settings.xml</path>
+      </settingsProvider>
+      <globalSettingsProvider class=\"jenkins.mvn.FilePathGlobalSettingsProvider\">
+        <path>#{dir}/maven#{maven_version}/conf/settings.xml</path>
+      </globalSettingsProvider>"
+    path "#{dir}/.jenkins/jenkins.mvn.GlobalMavenConfig.xml"
     user owner
   end
 
