@@ -54,8 +54,8 @@ def install_crowd
   app_dir = "#{user_home}/#{current_resource.service_name}"
   data_dir = "#{current_resource.data_dir}/#{current_resource.service_name}"
   db_name = "#{node[:db][current_resource.db_config_name][:name]}"
-  db_user = "#{node[:db][current_resource.db_config_name][:name]}"
-  db_password = "#{node[:db][current_resource.db_config_name][:name]}"
+  db_user = "#{node[:db][current_resource.db_config_name][:user]}"
+  db_password = "#{node[:db][current_resource.db_config_name][:password]}"
   license_text = "#{current_resource.app_conf_license_text}"
   tomcat_port = current_resource.tomcat_port
   tomcat_shutdown_port = current_resource.tomcat_shutdown_port
