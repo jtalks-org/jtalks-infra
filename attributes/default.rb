@@ -62,7 +62,6 @@ default[:tomcat][:instances][:jenkins][:jvm_opts] = "-Xmx256m -XX:MaxPermSize=38
 default[:jenkins][:crowd][:application] = "jenkins"
 default[:jenkins][:crowd][:password] = "jenkins"
 default[:jenkins][:crowd][:group] = "jira-users"
-default[:jenkins][:crowd][:cookie_domain] = "#{node[:jtalks][:hostname]}"
 default[:jenkins][:config][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jenkins"
 default[:jenkins][:maven][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jenkins/maven/settings.xml"
 default[:nginx][:site][:jenkins][:name] = "#{node[:jenkins][:user][:name]}"

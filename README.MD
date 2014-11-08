@@ -19,8 +19,8 @@ Chef Cookbook of JTalks's infrastructure
 
 - install Chef  `apt-get install build-essential autoconf ruby ruby-bundler chef`
 - create solo.rb (config file)
-	`log_level          :info
-     	log_location	   "/var/chef/log"
+	    `log_level          :info
+     	log_location	   STDOUT
      	file_cache_path    "/var/chef/cache"
         file_backup_path   "/var/chef/backup"
      	cookbook_path      "/var/chef/cookbooks"
@@ -29,6 +29,6 @@ Chef Cookbook of JTalks's infrastructure
 - actualize directory of project <files> (from private git repository and from previosly server)
 - copy all files of project to target server
 - install dependencies (gems: Berkshelf, etc) `cd <directory of project files>; bundle install`
-- install cookbook (from directory of project files) `berks vendor /var/chef/cookbooks`
+- install cookbook (from directory of project files) `rm -Rf /var/chef/cookbooks; berks vendor /var/chef/cookbooks`
 - check attributes and recipes in server.json
-- run chef   `chef-solo -j attributes/server.json`
+- run chef   `chef-solo -j /var/chef/cookbooks/jtalks-infra/files/default/attributes/server.json`

@@ -14,6 +14,6 @@ jtalks_infra_jenkins "jenkins" do
   crowd_app_name node[:jenkins][:crowd][:application]
   crowd_app_password node[:jenkins][:crowd][:password]
   crowd_group node[:jenkins][:crowd][:group]
-  crowd_cookie_domain node[:jenkins][:crowd][:cookie_domain]
+  crowd_cookie_domain node[:crowd][:app][:cookie_domain]
   init_scripts_path node[:jtalks][:path][:init_script]
 end
