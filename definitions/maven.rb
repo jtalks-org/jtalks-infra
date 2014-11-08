@@ -16,42 +16,37 @@ define :maven, :owner => 'root', :base => '/home', :owner_group => nil, :version
     not_if { File.exists?("#{base_dir}/maven#{version}-repo") }
   end
 
-  execute "chown -R #{params[:owner]}.#{params[:owner]} #{base_dir}/maven#{version}-repo"
-
   # Install Maven
   ark result_folder_name do
     url  node[:maven][version][:url]
     path base_dir
     owner params[:owner]
     action :put
+    not_if { File.exists?("#{base_dir}/#{result_folder_name}") }
   end
 
   link "#{base_dir}/maven#{version}" do
     to "#{base_dir}/#{result_folder_name}"
     owner params[:owner]
     group params[:owner_group]
+    not_if { File.exists?("#{base_dir}/maven#{version}") }
   end
 
   # Restore configs
-  execute "restore settings.xml" do
+  execute "restore #{base_dir}/maven#{version} settings.xml" do
     command "cp #{params[:settings_path]} #{result_folder_name}/conf/"
     cwd base_dir
+    user params[:owner]
+    group params[:owner]
     only_if { File.exist?(params[:settings_path]) }
   end
 
-  execute "chown -R #{params[:owner]}.#{params[:owner_group]} #{result_folder_name}" do
-    cwd base_dir
-  end
-  execute "chmod -R 755 #{result_folder_name}" do
-    cwd base_dir
-    user params[:owner]
-  end
-
   # Replace configs
-  replace_config "replace repo path" do
-    search_pattern "<localRepository>.*</localRepository>"
-    replace_string "<localRepository>#{base_dir}/maven#{version}-repo</localRepository>"
-    path "#{base_dir}/#{result_folder_name}/conf/settings.xml"
-    user params[:owner]
+  jtalks_infra_replacer "maven_settings_xml" do
+    owner params[:owner]
+    group params[:owner]
+    file "#{base_dir}/#{result_folder_name}/conf/settings.xml"
+    replace "<localRepository>.*</localRepository>"
+    with "<localRepository>#{base_dir}/maven#{version}-repo</localRepository>"
   end
 end

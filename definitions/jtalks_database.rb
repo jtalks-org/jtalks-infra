@@ -18,6 +18,6 @@ define :jtalks_database do
     database_name node[:db][app_name][:name]
     privileges [:all]
     host '%'
-    action [:create, :grant]
+    action [:drop, :create, :grant]
   end
 end

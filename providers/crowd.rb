@@ -4,34 +4,28 @@ def whyrun_supported?
   true
 end
 
-action :install do
-  if @current_resource.exists
-    Chef::Log.info "#{ @new_resource } already exists - nothing to do."
-  else
-    converge_by("Install #{ @new_resource }") do
-      install_crowd
-    end
-  end
-end
+use_inline_resources
 
-action :update do
-  if @current_resource.exists
-    converge_by("Update #{ @new_resource }") do
-      update_crowd
-    end
-  else
-    Chef::Log.info "#{ @new_resource } not installed - nothing to do."
-  end
+action :install_or_update do
+  prepare
+
+  install_or_update_tomcat
+
+  install_or_update_crowd
+
+  configure
 end
 
 def load_current_resource
   @current_resource = Chef::Resource::JtalksInfraCrowd.new(@new_resource.name)
   @current_resource.service_name(@new_resource.service_name)
+  @current_resource.version(@new_resource.version)
   @current_resource.download_url(@new_resource.download_url)
   @current_resource.user(@new_resource.user)
   @current_resource.data_dir(@new_resource.data_dir)
   @current_resource.tomcat_port(@new_resource.tomcat_port)
   @current_resource.tomcat_shutdown_port(@new_resource.tomcat_shutdown_port)
+  @current_resource.tomcat_jvm_opts(@new_resource.tomcat_jvm_opts)
   @current_resource.mysql_connector_url(@new_resource.mysql_connector_url)
   @current_resource.ext_libs_url(@new_resource.ext_libs_url)
   @current_resource.db_config_name(@new_resource.db_config_name)
@@ -41,38 +35,24 @@ def load_current_resource
   @current_resource.app_conf_url(@new_resource.app_conf_url)
   @current_resource.app_conf_cookie_domain(@new_resource.app_conf_cookie_domain)
   @current_resource.db_backup_path(@new_resource.db_backup_path)
+  @current_resource.init_scripts_path(@new_resource.init_scripts_path)
 
   if Pathname.new("/home/#{@new_resource.user}/#{@current_resource.service_name}/webapps/ROOT").exist?
     @current_resource.exists = true
   end
 end
 
-#Install method
-def install_crowd
+def prepare
   owner = "#{current_resource.user}"
   user_home = "/home/#{owner}"
-  app_dir = "#{user_home}/#{current_resource.service_name}"
   data_dir = "#{current_resource.data_dir}/#{current_resource.service_name}"
-  db_name = "#{node[:db][current_resource.db_config_name][:name]}"
-  db_user = "#{node[:db][current_resource.db_config_name][:user]}"
-  db_password = "#{node[:db][current_resource.db_config_name][:password]}"
-  license_text = "#{current_resource.app_conf_license_text}"
-  tomcat_port = current_resource.tomcat_port
-  tomcat_shutdown_port = current_resource.tomcat_shutdown_port
-  app_name = "#{current_resource.app_conf_name}"
-  app_password = "#{current_resource.app_conf_password}"
-  app_url = "#{current_resource.app_conf_url}"
-  app_cookie_domain = "#{current_resource.app_conf_cookie_domain}"
-
-  # Database
-  jtalks_database "#{current_resource.db_config_name}"
-
   # Add user
   user owner do
     shell '/bin/bash'
     action :create
     home user_home
     supports :manage_home => true
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 
   group owner do
@@ -87,46 +67,35 @@ def install_crowd
   directory "#{data_dir}" do
     owner owner
     group owner
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 
-  #Install Tomcat
-  tomcat "#{current_resource.service_name}" do
-    owner owner
-    base user_home
-    port tomcat_port
-    shutdown_port tomcat_shutdown_port
-  end
+  # Database
+  jtalks_database "#{current_resource.db_config_name}"
+end
 
-# Install Crowd
-  ark "mysql_connector" do
-    url "#{current_resource.mysql_connector_url}"
-    path "/tmp"
+# Configure crowd
+def configure
+  owner = "#{current_resource.user}"
+  user_home = "/home/#{owner}"
+  app_dir = "#{user_home}/#{current_resource.service_name}"
+  data_dir = "#{current_resource.data_dir}/#{current_resource.service_name}"
+  db_name = "#{node[:db][current_resource.db_config_name][:name]}"
+  db_user = "#{node[:db][current_resource.db_config_name][:user]}"
+  db_password = "#{node[:db][current_resource.db_config_name][:password]}"
+  license_text = "#{current_resource.app_conf_license_text}"
+  app_name = "#{current_resource.app_conf_name}"
+  app_password = "#{current_resource.app_conf_password}"
+  app_url = "#{current_resource.app_conf_url}"
+  app_cookie_domain = "#{current_resource.app_conf_cookie_domain}"
+
+  # Restore configs
+  file "#{app_dir}/webapps/ROOT/WEB-INF/classes/crowd-init.properties" do
     owner owner
     group owner
-    action :put
+    content "crowd.home=#{data_dir}"
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
-
-  execute "cp mysql-connector*.jar #{app_dir}/lib; rm -Rf /tmp/mysql_connector" do
-    cwd "/tmp/mysql_connector"
-    user owner
-    group owner
-  end
-
-  ark "external_crowd_libs" do
-    url  "#{current_resource.ext_libs_url}"
-    path "/tmp"
-    owner owner
-    action :put
-  end
-
-  execute "cp activation-* jta-* mail-* #{app_dir}/lib; rm -Rf /tmp/external_crowd_libs" do
-    cwd "/tmp/external_crowd_libs/apache-tomcat/lib"
-    user owner
-    group owner
-  end
-
-  # Download ad unpack Crowd
-  download_and_unpack
 
   template "#{data_dir}/crowd.cfg.xml" do
     source 'crowd.cfg.xml.erb'
@@ -138,6 +107,7 @@ def install_crowd
                   :db_password => db_password,
                   :license_text => license_text
               })
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 
   template "#{data_dir}/crowd.properties" do
@@ -150,68 +120,108 @@ def install_crowd
                   :server_url => app_url,
                   :cookie_domain => app_cookie_domain
               })
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 
-# Restore database from backup
-  execute "restore database" do
-    command "
-  mysql -u #{db_user} --password='#{db_password}' -b #{db_name} < #{current_resource.db_backup_path};
-  "
-    user owner
-    group owner
+  #if new installation than restore database
+  if !(@current_resource.exists)
+    # Restore database from backup
+    execute "restore database" do
+      command "
+    mysql -u #{db_user} --password='#{db_password}' -b #{db_name} < #{current_resource.db_backup_path};
+    "
+      user owner
+      group owner
+    end
   end
 
   mysql_execute "set cookie domain" do
     app_name "#{db_name}"
     command "update cwd_property set property_value='#{app_cookie_domain}' where property_name='domain'"
   end
+end
 
-  service "#{current_resource.service_name}" do
-    action :restart
+
+def install_or_update_tomcat
+  owner = "#{current_resource.user}"
+  user_home = "/home/#{owner}"
+  app_dir = "#{user_home}/#{current_resource.service_name}"
+  tomcat_port = current_resource.tomcat_port
+  tomcat_shutdown_port = current_resource.tomcat_shutdown_port
+  tomcat_jvm_opts = "#{current_resource.tomcat_jvm_opts}"
+
+  tomcat "#{current_resource.service_name}" do
+    owner owner
+    base user_home
+    port tomcat_port
+    shutdown_port tomcat_shutdown_port
+    jvm_opts tomcat_jvm_opts
+  end
+  #libraries copying always but notify restart server only if have change (need to update tomcat)
+  ark "mysql_connector" do
+    url "#{current_resource.mysql_connector_url}"
+    path "/tmp"
+    owner owner
+    group owner
+    action :put
+    not_if {Pathname.new("/tmp/mysql_connector").exist?}
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
+  end
+
+  execute "add_connector_to_tomcat" do
+    command "cp mysql-connector*.jar #{app_dir}/lib;"
+    cwd "/tmp/mysql_connector"
+    user owner
+    group owner
+  end
+
+  ark "external_crowd_libs" do
+    url  "#{current_resource.ext_libs_url}"
+    path "/tmp"
+    owner owner
+    action :put
+    not_if {Pathname.new("/tmp/external_crowd_libs").exist?}
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
+  end
+
+  execute "add_external_libs_to_tomcat" do
+    command "cp activation-* jta-* mail-* #{app_dir}/lib;"
+    cwd "/tmp/external_crowd_libs/apache-tomcat/lib"
+    user owner
+    group owner
   end
 end
 
-#Update method
-def update_crowd
+def install_or_update_crowd
   owner = "#{current_resource.user}"
   app_dir = "/home/#{owner}/#{current_resource.service_name}"
+  version = "#{current_resource.version}"
+
+  remote_file "#{app_dir}/webapps/crowd-#{version}.zip" do
+    source "#{current_resource.download_url}"
+    owner owner
+    group owner
+    notifies :run, "execute[remove_previous_version]", :immediately
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
+    not_if { Pathname.new("#{app_dir}/webapps/crowd-#{version}.zip}").exist? }
+  end
 
   execute "remove_previous_version" do
     user owner
     group owner
     command "rm -Rf #{app_dir}/webapps/ROOT"
+    action :nothing
+    notifies :run, "execute[unpack_and_remove_archive]", :immediately
   end
 
-  # Download ad unpack Crowd
-  download_and_unpack
-
-  service "#{current_resource.service_name}" do
-    action :restart
-  end
-end
-
-def download_and_unpack
-  owner = "#{current_resource.user}"
-  app_dir = "/home/#{owner}/#{current_resource.service_name}"
-  data_dir = "#{current_resource.data_dir}/#{current_resource.service_name}"
-
-  remote_file "#{app_dir}/webapps/crowd.zip" do
-    source "#{current_resource.download_url}"
-    owner owner
-    group owner
-  end
-
-  execute "unpack and remove archive" do
+  execute "unpack_and_remove_archive" do
     user owner
     group owner
     cwd "#{app_dir}/webapps"
-    command "unzip crowd.zip -d #{app_dir}/webapps/ROOT; rm -Rf crowd.zip"
-  end
-
-  # Restore configs
-  file "#{app_dir}/webapps/ROOT/WEB-INF/classes/crowd-init.properties" do
-    owner owner
-    group owner
-    content "crowd.home=#{data_dir}"
+    command "rm -Rf #{app_dir}/webapps/ROOT; unzip crowd-#{version}.zip -d #{app_dir}/webapps/ROOT"
+    action :nothing
   end
 end
+
+
+

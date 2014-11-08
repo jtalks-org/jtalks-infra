@@ -4,34 +4,28 @@ def whyrun_supported?
   true
 end
 
-action :install do
-  if @current_resource.exists
-    Chef::Log.info "#{ @new_resource } already exists - nothing to do."
-  else
-    converge_by("Install #{ @new_resource }") do
-      install_jenkins
-    end
-  end
-end
+use_inline_resources
 
-action :update do
-  if @current_resource.exists
-    converge_by("Update #{ @new_resource }") do
-      update_jenkins
-    end
-  else
-    Chef::Log.info "#{ @new_resource } not installed - nothing to do."
-  end
+action :install_or_update do
+  prepare
+
+  install_or_update_tomcat
+
+  install_or_update_jenkins
+
+  configure
 end
 
 def load_current_resource
   @current_resource = Chef::Resource::JtalksInfraJenkins.new(@new_resource.name)
   @current_resource.service_name(@new_resource.service_name)
+  @current_resource.version(@new_resource.version)
   @current_resource.user(@new_resource.user)
-  @current_resource.server_hostname(@new_resource.server_hostname)
+  @current_resource.known_hosts(@new_resource.known_hosts)
   @current_resource.maven_backup_path(@new_resource.maven_backup_path)
   @current_resource.tomcat_port(@new_resource.tomcat_port)
   @current_resource.tomcat_shutdown_port(@new_resource.tomcat_shutdown_port)
+  @current_resource.tomcat_jvm_opts(@new_resource.tomcat_jvm_opts)
   @current_resource.download_url(@new_resource.download_url)
   @current_resource.plugins_download_url(@new_resource.plugins_download_url)
   @current_resource.plugins_map(@new_resource.plugins_map)
@@ -41,34 +35,26 @@ def load_current_resource
   @current_resource.crowd_app_password(@new_resource.crowd_app_password)
   @current_resource.crowd_group(@new_resource.crowd_group)
   @current_resource.crowd_cookie_domain(@new_resource.crowd_cookie_domain)
+  @current_resource.init_scripts_path(@new_resource.init_scripts_path)
 
   if Pathname.new("/home/#{@new_resource.user}/#{@current_resource.service_name}/webapps/ROOT").exist?
     @current_resource.exists = true
   end
 end
 
-#Install method
-def install_jenkins
+def prepare
   owner = "#{current_resource.user}"
   dir = "/home/#{owner}"
-  tomcat_port = current_resource.tomcat_port
-  tomcat_shutdown_port = current_resource.tomcat_shutdown_port
-  server_hostname = current_resource.server_hostname
+  hostnames = current_resource.known_hosts
   maven_backup_path = current_resource.maven_backup_path
-
-  crowd_url = "#{current_resource.crowd_url}"
-  crowd_app_name = "#{current_resource.crowd_app_name}"
-  crowd_app_password = "#{current_resource.crowd_app_password}"
-  crowd_group = "#{current_resource.crowd_group}"
-  crowd_cookie_domain = "#{current_resource.crowd_cookie_domain}"
   maven_version = "3"
-
-# Add user
+  # Add user
   user owner do
     shell '/bin/bash'
     action :create
     home dir
     supports :manage_home => true
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 
   group owner do
@@ -81,10 +67,10 @@ def install_jenkins
     key_name "id_rsa"
     source_key_dir "keys/#{owner}"
     # *.hostname to all subdomains
-    hostnames ["*.#{server_hostname}", "#{server_hostname}"]
+    hostnames hostnames
   end
 
-# Install Maven
+  # Install (if not installed) Maven and config
 
   maven "maven" do
     owner owner
@@ -92,33 +78,20 @@ def install_jenkins
     version maven_version
     settings_path "#{maven_backup_path}"
   end
+end
 
-# Install Tomcat
+# Configure crowd
+def configure
+  owner = "#{current_resource.user}"
+  dir = "/home/#{owner}"
+  crowd_url = "#{current_resource.crowd_url}"
+  crowd_app_name = "#{current_resource.crowd_app_name}"
+  crowd_app_password = "#{current_resource.crowd_app_password}"
+  crowd_group = "#{current_resource.crowd_group}"
+  crowd_cookie_domain = "#{current_resource.crowd_cookie_domain}"
+  maven_version = "3"
 
-  tomcat "#{current_resource.service_name}" do
-    owner owner
-    base dir
-    port tomcat_port
-    shutdown_port tomcat_shutdown_port
-  end
-
-  download_and_unpack_app_and_plugins
-
-  service "#{current_resource.service_name}" do
-    action :restart
-  end
-
-#Configuration
-  bash "install_plugins_before_add_config_and_wait_2_minutes_after_start" do
-    code  <<-EOH
-     wget -t 100 localhost:#{tomcat_port}/jenkins;
-     sleep 120
-    EOH
-    user owner
-    group owner
-  end
-
-
+  # restore config if new install jenkins
   execute "restore-jenkins-config-and-jobs" do
     command "
     rm -Rf #{dir}/.jenkins/*.xml; rm -Rf #{dir}/.jenkins/jobs;
@@ -129,129 +102,172 @@ def install_jenkins
     cp -R #{current_resource.config_backup_path}/users #{dir}/.jenkins;"
     user owner
     group owner
+    not_if { current_resource.exists }
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 
-  execute "chown -R #{owner}.#{owner} #{dir}/.jenkins"
-
-# Replace configs
-  replace_config "replace repo path" do
-    search_pattern "<securityRealm.*</cookieDomain>"
-    replace_string "<securityRealm class=\"de.theit.jenkins.crowd.CrowdSecurityRealm\" plugin=\"crowd2@1.8\">
-    <url>#{crowd_url}</url>
-    <applicationName>#{crowd_app_name}</applicationName>
-    <password>#{crowd_app_password}</password>
-    <group>#{crowd_group}</group>
-    <nestedGroups>false</nestedGroups>
-    <useSSO>true</useSSO>
-    <sessionValidationInterval>2</sessionValidationInterval>
-    <cookieDomain>#{crowd_cookie_domain}</cookieDomain>"
-    path "#{dir}/.jenkins/config.xml"
-    user owner
+  jtalks_infra_replacer "jenkins_realm_config" do
+    owner owner
+    group owner
+    file "#{dir}/.jenkins/config.xml"
+    replace "<securityRealm.*</securityRealm>"
+    with "<securityRealm class=\"de.theit.jenkins.crowd.CrowdSecurityRealm\" plugin=\"crowd2@1.8\">
+         <url>#{crowd_url}</url>
+         <applicationName>#{crowd_app_name}</applicationName>
+         <password>#{crowd_app_password}</password>
+         <group>#{crowd_group}</group>
+         <nestedGroups>false</nestedGroups>
+         <useSSO>true</useSSO>
+         <sessionValidationInterval>2</sessionValidationInterval>
+         <cookieDomain>#{crowd_cookie_domain}</cookieDomain>
+         <cookieTokenkey>crowd.token_key</cookieTokenkey>
+         <useProxy>false</useProxy>
+         <httpProxyHost></httpProxyHost>
+         <httpProxyPort></httpProxyPort>
+         <httpProxyUsername></httpProxyUsername>
+         <httpProxyPassword></httpProxyPassword>
+         <socketTimeout>20000</socketTimeout>
+         <httpTimeout>5000</httpTimeout>
+         <httpMaxConnections>20</httpMaxConnections>
+      </securityRealm>"
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 
-  replace_config "replace_jdk_path" do
-    search_pattern "<jdks.*</jdks>"
-    replace_string "<jdks>
-      <jdk>
-        <name>JDK</name>
-        <home>/usr/lib/jvm/default-java</home>
+  jtalks_infra_replacer "jenkins_jdk_config" do
+    owner owner
+    group owner
+    file "#{dir}/.jenkins/config.xml"
+    replace "<jdks.*</jdks>"
+    with "<jdks>
+         <jdk>
+           <name>JDK</name>
+           <home>/usr/lib/jvm/default-java</home>
+           <properties/>
+         </jdk>
+       </jdks>"
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
+  end
+
+  jtalks_infra_replacer "jenkins_maven_config" do
+    owner owner
+    group owner
+    file "#{dir}/.jenkins/hudson.tasks.Maven.xml"
+    replace "<installations.*</installations>"
+     with "<installations>
+      <hudson.tasks.Maven_-MavenInstallation>
+        <name>maven#{maven_version}</name>
+        <home>#{dir}/maven#{maven_version}</home>
         <properties/>
-      </jdk>
-    </jdks>"
-    path "#{dir}/.jenkins/config.xml"
-    user owner
-    end
-
-  replace_config "replace_maven_path" do
-    search_pattern "<installations.*</installations>"
-    replace_string "<installations>
-    <hudson.tasks.Maven_-MavenInstallation>
-      <name>maven#{maven_version}</name>
-      <home>#{dir}/maven#{maven_version}</home>
-      <properties/>
-    </hudson.tasks.Maven_-MavenInstallation>
-   </installations>"
-    path "#{dir}/.jenkins/hudson.tasks.Maven.xml"
-    user owner
-    end
-
-  replace_config "replace_cvs_key" do
-    search_pattern "<privateKeyLocation.*</knownHostsLocation>"
-    replace_string "<privateKeyLocation>#{dir}/.ssh/id_rsa</privateKeyLocation>
-      <privateKeyPassword></privateKeyPassword>
-      <knownHostsLocation>#{dir}/.ssh/known_hosts</knownHostsLocation>"
-    path "#{dir}/.jenkins/hudson.scm.CVSSCM.xml"
-    user owner
+      </hudson.tasks.Maven_-MavenInstallation>
+  </installations>"
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 
-  replace_config "replace_maven_global_settings" do
-    search_pattern "<settingsProvider.*</globalSettingsProvider>"
-    replace_string "<settingsProvider class=\"jenkins.mvn.FilePathSettingsProvider\">
+  jtalks_infra_replacer "cvs_key_config" do
+    owner owner
+    group owner
+    file "#{dir}/.jenkins/hudson.scm.CVSSCM.xml"
+    replace "<privateKeyLocation.*</knownHostsLocation>"
+    with "<privateKeyLocation>#{dir}/.ssh/id_rsa</privateKeyLocation>
+       <privateKeyPassword></privateKeyPassword>
+       <knownHostsLocation>#{dir}/.ssh/known_hosts</knownHostsLocation>"
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
+  end
+
+  jtalks_infra_replacer "replace_maven_global_settings" do
+    owner owner
+    group owner
+    file "#{dir}/.jenkins/jenkins.mvn.GlobalMavenConfig.xml"
+    replace "<settingsProvider.*</globalSettingsProvider>"
+    with "<settingsProvider class=\"jenkins.mvn.FilePathSettingsProvider\">
         <path>#{dir}/maven#{maven_version}/conf/settings.xml</path>
       </settingsProvider>
       <globalSettingsProvider class=\"jenkins.mvn.FilePathGlobalSettingsProvider\">
         <path>#{dir}/maven#{maven_version}/conf/settings.xml</path>
       </globalSettingsProvider>"
-    path "#{dir}/.jenkins/jenkins.mvn.GlobalMavenConfig.xml"
-    user owner
-  end
-
-  service "#{current_resource.service_name}" do
-    action :restart
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 end
 
-#Update method
-def update_jenkins
+def install_or_update_tomcat
   owner = "#{current_resource.user}"
   dir = "/home/#{owner}"
-  app_dir = "/home/#{owner}/#{current_resource.service_name}"
+  tomcat_port = current_resource.tomcat_port
+  tomcat_shutdown_port = current_resource.tomcat_shutdown_port
+  tomcat_jvm_opts = "#{current_resource.tomcat_jvm_opts}"
+
+  tomcat "#{current_resource.service_name}" do
+    owner owner
+    base dir
+    port tomcat_port
+    shutdown_port tomcat_shutdown_port
+    jvm_opts tomcat_jvm_opts
+  end
+
+end
+
+def install_or_update_jenkins
+  owner = "#{current_resource.user}"
+  dir = "/home/#{owner}"
+  plugins_map = current_resource.plugins_map
+  app_dir = "#{dir}/#{current_resource.service_name}"
+  version = "#{current_resource.version}"
+
+  remote_file "#{dir}/#{current_resource.service_name}/webapps/jenkins-#{version}" do
+    source   "#{current_resource.download_url}"
+    owner owner
+    group owner
+    notifies :run, "execute[remove_previous_version]", :immediately
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
+    not_if { Pathname.new("#{dir}/#{current_resource.service_name}/webapps/jenkins-#{version}").exist? }
+  end
 
   execute "remove_previous_version" do
     user owner
     group owner
-    command "rm -Rf #{app_dir}/webapps/ROOT; rm -Rf #{dir}/.jenkins/plugins/*;"
+    command "
+     rm -Rf #{app_dir}/webapps/ROOT;
+     cp #{dir}/#{current_resource.service_name}/webapps/jenkins-#{version} #{dir}/#{current_resource.service_name}/webapps/ROOT.war;
+     rm -Rf #{dir}/.jenkins/plugins/*;"
+    action :nothing
   end
 
-  # Download ad unpack Jenkins
-  download_and_unpack_app_and_plugins
-
-  service "#{current_resource.service_name}" do
-    action :restart
-  end
-end
-
-def download_and_unpack_app_and_plugins
-  owner = "#{current_resource.user}"
-  dir = "/home/#{owner}"
-  plugins_map = current_resource.plugins_map
-
-  # Install Jenkins
-
-  remote_file ::File.join("#{dir}/#{current_resource.service_name}/webapps/ROOT.war") do
-    source   "#{current_resource.download_url}"
-    owner    owner
-    group    owner
-  end
-
-# Install plugins
-
-# creates directory if jenkins not deploed yet
-  directory "#{dir}/.jenkins/plugins" do
+  # Install plugins
+  directory "#{dir}/.jenkins" do
     owner owner
     group owner
-    recursive true
     not_if { Pathname.new("#{dir}/.jenkins").exist? }
   end
 
-  execute "chown -R #{owner}.#{owner} #{dir}/.jenkins"
+  # creates directory if jenkins not deploy yet
+  directory "#{dir}/.jenkins/plugins" do
+    owner owner
+    group owner
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
+  end
 
   plugins_map.each do |name, version|
-    remote_file ::File.join("#{dir}/.jenkins/plugins/#{name}.hpi") do
+    remote_file "#{dir}/.jenkins/plugins/#{name}.hpi" do
       source   "#{current_resource.plugins_download_url}/#{name}/#{version}/#{name}.hpi"
       owner    owner
       group    owner
-      not_if { Pathname.new("#{dir}/.jenkins/plugins/#{name}.hpi").exist? }
+      not_if { Pathname.new("#{dir}/.jenkins/plugins/#{name}.hpi").exist? || Pathname.new("#{dir}/.jenkins/plugins/#{name}.jpi").exist? }
+      notifies :restart, "service[#{current_resource.service_name}]", :delayed
+    end
+  end
+
+  #if new installation than start service to deploy (install plugins)
+  if !(@current_resource.exists)
+    service "#{current_resource.service_name}" do
+      action :restart
+    end
+
+    bash "install_plugins_before_add_config_and_wait_3_minutes_after_start" do
+      code  <<-EOH
+        sleep 180
+      EOH
+      user owner
+      group owner
     end
   end
 end

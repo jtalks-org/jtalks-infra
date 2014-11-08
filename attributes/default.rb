@@ -22,25 +22,26 @@ default[:maven]['3'][:url] = "http://apache-mirror.rbc.ru/pub/apache/maven/maven
 
 #Tomcat variables
 default[:tomcat][:major_version] = "8"
-default[:tomcat][:minor_version] = "0.12"
+default[:tomcat][:minor_version] = "0.14"
 default[:tomcat][:version] = "#{node[:tomcat][:major_version]}.#{node[:tomcat][:minor_version]}"
 default[:tomcat][:download_url] = "http://apache-mirror.rbc.ru/pub/apache/tomcat/tomcat-#{node[:tomcat][:major_version]}/" +
     "v#{node[:tomcat][:version]}/bin/apache-tomcat-#{node[:tomcat][:version]}.zip"
 
 #Atlassian
-default[:atlassian][:user] = "atlassian"
-default[:atlassian][:home_dir] = "/home/#{node[:atlassian][:user]}/var"
+default[:atlassian][:user][:name] = "atlassian"
+default[:atlassian][:user][:home_dir] = "/home/#{node[:atlassian][:user][:name]}/var"
 ##crowd
+default[:tomcat][:instances][:crowd][:port] = 8081
+default[:tomcat][:instances][:crowd][:shutdown_port] = 8011
+default[:tomcat][:instances][:crowd][:jvm_opts] = "-Xmx256m -XX:MaxPermSize=384m"
 default[:crowd][:version] = "2.3.1"
 default[:crowd][:download_external_libs] = "http://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-#{node[:crowd][:version]}.tar.gz"
 default[:crowd][:download_url] = "http://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-#{node[:crowd][:version]}-war.zip"
 default[:crowd][:app][:name] = "crowd"
 default[:crowd][:app][:password] = "crowd"
-default[:crowd][:app][:server_url] = "http\://localhost:8081"
+default[:crowd][:app][:server_url] = "http\://#{node[:jtalks][:hostname]}:#{node[:tomcat][:instances][:crowd][:port]}"
 default[:crowd][:app][:cookie_domain] = "#{node[:jtalks][:hostname]}"
 default[:crowd][:app][:license_text] = "fail"
-default[:tomcat][:instances][:crowd][:port] = 8081
-default[:tomcat][:instances][:crowd][:shutdown_port] = 8011
 default[:db][:crowd][:user] = "crowd"
 default[:db][:crowd][:name] = "#{node[:db][:crowd][:user]}"
 default[:db][:crowd][:password] = "crowd"
@@ -50,19 +51,21 @@ default[:nginx][:site][:crowd][:host] = "crowd.#{node[:jtalks][:hostname]}"
 default[:nginx][:site][:crowd][:context_path] = "/"
 
 #Jenkins
-default[:jenkins][:user] = "jenkins"
+default[:jenkins][:user][:name] = "jenkins"
+default[:jenkins][:user][:known_hosts] = ["#{node[:jtalks][:hostname]}","github.com"]
 default[:jenkins][:version] = "1.566"
 default[:jenkins][:download_url] = "http://mirrors.jenkins-ci.org/war/#{node[:jenkins][:version]}/jenkins.war"
 default[:jenkins][:plugins_download_url] = "http://updates.jenkins-ci.org/download/plugins"
 default[:tomcat][:instances][:jenkins][:port] = 8080
 default[:tomcat][:instances][:jenkins][:shutdown_port] = 8010
+default[:tomcat][:instances][:jenkins][:jvm_opts] = "-Xmx256m -XX:MaxPermSize=384m"
 default[:jenkins][:crowd][:application] = "jenkins"
 default[:jenkins][:crowd][:password] = "jenkins"
 default[:jenkins][:crowd][:group] = "jira-users"
 default[:jenkins][:crowd][:cookie_domain] = "#{node[:jtalks][:hostname]}"
 default[:jenkins][:config][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jenkins"
 default[:jenkins][:maven][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jenkins/maven/settings.xml"
-default[:nginx][:site][:jenkins][:name] = "#{node[:jenkins][:user]}"
+default[:nginx][:site][:jenkins][:name] = "#{node[:jenkins][:user][:name]}"
 default[:nginx][:site][:jenkins][:host] = "ci.#{node[:jtalks][:hostname]}"
 default[:nginx][:site][:jenkins][:context_path] = "/"
 

@@ -37,6 +37,7 @@ suites:
        - recipe[jtalks-infra::nginx]
   - name: server
     run_list:
+       - recipe[vim]
        - recipe[ark]
        - recipe[git]
        - recipe[java]

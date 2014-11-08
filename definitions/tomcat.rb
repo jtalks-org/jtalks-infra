@@ -3,6 +3,7 @@ define :tomcat, :owner => 'root', :base => '/home', :owner_group => nil, :port =
   if params[:owner_group] == nil
     params[:owner_group] = params[:owner]
   end
+
   setenv_sh = "#{params[:base]}/#{params[:name]}/bin/setenv.sh"
   webapps = "#{params[:base]}/#{params[:name]}/webapps"
 
@@ -13,32 +14,31 @@ define :tomcat, :owner => 'root', :base => '/home', :owner_group => nil, :port =
     path params[:base]
     owner params[:owner]
     action :put
+    not_if { File.exists?("#{params[:base]}/#{result_folder_name}") }
   end
-  execute "chown -R #{params[:owner]}.#{params[:owner_group]} #{result_folder_name}" do
-    cwd params[:base]
-  end
-  execute "chmod -R 755 #{result_folder_name}" do
-    cwd params[:base]
-    user params[:owner]
-  end
-  execute "chmod u+x startup.sh catalina.sh shutdown.sh" do
+
+  execute "#{params[:name]}_tomcat_chmod" do
+    command "chmod u+x startup.sh catalina.sh shutdown.sh"
     cwd "#{params[:base]}/#{result_folder_name}/bin"
     user params[:owner]
   end
+
   link "#{params[:base]}/#{params[:name]}" do
     to "#{params[:base]}/#{result_folder_name}"
     owner params[:owner]
     group params[:owner_group]
   end
+
   template "#{params[:base]}/#{params[:name]}/conf/server.xml" do
     source 'tomcat.server.xml.erb'
-    mode '0644'
     owner params[:owner]
     group params[:owner_group]
     variables({
                   :port => params[:port],
                   :shutdown_port => params[:shutdown_port]})
+    notifies :restart, "service[#{params[:name]}]", :delayed
   end
+
   template "#{node[:jtalks][:path][:init_script]}/#{params[:name]}" do
     source 'tomcat.service.erb'
     mode '775'
@@ -48,6 +48,7 @@ define :tomcat, :owner => 'root', :base => '/home', :owner_group => nil, :port =
                   :owner => params[:owner],
                   :owner_group => params[:owner_group],
                   :jvm_opts => params[:jvm_opts]})
+    notifies :restart, "service[#{params[:name]}]", :delayed
   end
 
   # create service
@@ -56,11 +57,11 @@ define :tomcat, :owner => 'root', :base => '/home', :owner_group => nil, :port =
     action :enable
   end
 
-  execute "tomcat should use faster random generator" do
+  execute "#{params[:name]} tomcat should use faster random generator" do
     command "echo 'CATALINA_OPTS=\"-Djava.security.egd=file:/dev/./urandom $CATALINA_OPTS\"' >> #{setenv_sh}"
     not_if { File.exist?(setenv_sh) }
   end
-  %w[examples docs ROOT host-manager manager].each do |folder|
+  %w[examples docs host-manager manager].each do |folder|
     directory "#{webapps}/#{folder}" do
       recursive true
       action :delete

@@ -15,14 +15,17 @@ Chef Cookbook of JTalks's infrastructure
 - Run `kitchen converge` to startup a VM with the cookbooks and kitchen verify to run the integration tests.
 
 
-## Using on server
+## Usage on server
 
-- Install Chef  `apt-get install build-essential autoconf ruby ruby-bundler chef`
+- install Chef  `apt-get install build-essential autoconf ruby ruby-bundler chef`
 - create solo.rb (config file)
 	`log_level          :info
-	log_location       STDOUT
-	file_cache_path    "/var/chef/cookbooks"
-	cookbook_path      "/var/chef/cookbooks"`
+     	log_location	   "/var/chef/log"
+     	file_cache_path    "/var/chef/cache"
+        file_backup_path   "/var/chef/backup"
+     	cookbook_path      "/var/chef/cookbooks"
+     	checksum_path      "/var/chef/checksums"
+     	sandbox_path	   "var/chef/tmp"`
 - actualize directory of project <files> (from private git repository and from previosly server)
 - copy all files of project to target server
 - install dependencies (gems: Berkshelf, etc) `cd <directory of project files>; bundle install`
