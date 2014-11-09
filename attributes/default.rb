@@ -2,6 +2,15 @@
 default[:jtalks][:path][:init_script] = "/etc/init.d"
 default[:jtalks][:cookbook_path] = "#{Chef::Config[:cookbook_path][0]}/jtalks-infra/files/default"
 default[:jtalks][:hostname] = "localhost"
+# to generate password use command 'openssl passwd -1' and enter password
+default[:jtalks][:users][:masyan][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1
+default[:jtalks][:users][:qa][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1
+default[:jtalks][:users][:ctapobep][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:aidjek][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+# vagrant user to test only
+default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "vagrant"]
+default[:authorization][:sudo][:passwordless] = "true"
+default[:authorization][:sudo][:include_sudoers_d] = "true"
 
 #Database
 default[:mysql][:version] = '5.5'

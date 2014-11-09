@@ -13,11 +13,13 @@ define :ssh_settings, :user => 'root', :ssh_dir => '.ssh', :key_name => 'id_rsa'
     action :create
   end
 
+  log "!!!!!!!!!!!!!!! #{node[:jtalks][:cookbook_path]}/#{params[:source_key_dir]}/#{params[:key_name]}.pub"
   cookbook_file "#{params[:ssh_dir]}/#{params[:key_name]}" do
     owner params[:user]
     group params[:user]
     source "#{params[:source_key_dir]}/#{params[:key_name]}"
     mode private_perm
+    only_if { File.exists?("#{node[:jtalks][:cookbook_path]}/#{params[:source_key_dir]}/#{params[:key_name]}") }
   end
 
   cookbook_file "#{params[:ssh_dir]}/#{params[:key_name]}.pub" do
@@ -25,6 +27,7 @@ define :ssh_settings, :user => 'root', :ssh_dir => '.ssh', :key_name => 'id_rsa'
     group params[:user]
     source "#{params[:source_key_dir]}/#{params[:key_name]}.pub"
     mode public_perm
+    only_if { File.exists?("#{node[:jtalks][:cookbook_path]}/#{params[:source_key_dir]}/#{params[:key_name]}.pub") }
   end
 
   ["config", "known_hosts"].each do |file|
@@ -45,7 +48,9 @@ define :ssh_settings, :user => 'root', :ssh_dir => '.ssh', :key_name => 'id_rsa'
     end
   end
 
-  execute "chmod #{public_perm} #{params[:ssh_dir]}/config"
+  execute "chmod #{public_perm} #{params[:ssh_dir]}/config" do
+    only_if { params[:hostnames].length > 0 }
+  end
 
   # if user has same key, he has access to this server
   file "#{params[:ssh_dir]}/authorized_keys" do
@@ -56,5 +61,10 @@ define :ssh_settings, :user => 'root', :ssh_dir => '.ssh', :key_name => 'id_rsa'
   end
 
   execute "rm -Rf #{params[:ssh_dir]}/authorized_keys; cat #{params[:ssh_dir]}/#{params[:key_name]}.pub >>" +
-          "#{params[:ssh_dir]}/authorized_keys"
+          "#{params[:ssh_dir]}/authorized_keys" do
+    user params[:user]
+    group params[:user]
+    only_if { File.exists?("#{params[:ssh_dir]}/#{params[:key_name]}.pub") }
+  end
+
 end

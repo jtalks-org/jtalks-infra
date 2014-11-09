@@ -35,8 +35,14 @@ suites:
        - recipe[nginx]
        - recipe[jtalks-infra::crowd]
        - recipe[jtalks-infra::nginx]
+  - name: users
+    run_list:
+       - recipe[jtalks-infra::users]
+       - recipe[sudo]
   - name: server
     run_list:
+       - recipe[jtalks-infra::users]
+       - recipe[sudo]
        - recipe[vim]
        - recipe[ark]
        - recipe[git]
