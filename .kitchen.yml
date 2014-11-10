@@ -39,9 +39,15 @@ suites:
     run_list:
        - recipe[jtalks-infra::users]
        - recipe[sudo]
+  - name: cicd
+    run_list:
+       - recipe[build-essential]
+       - recipe[python]
+       - recipe[jtalks-infra::cicd]
   - name: server
     run_list:
-       - recipe[jtalks-infra::users]
+       - recipe[build-essential]
+       - recipe[python]
        - recipe[sudo]
        - recipe[vim]
        - recipe[ark]
@@ -51,6 +57,8 @@ suites:
        - recipe[mysql::client]
        - recipe[database::mysql]
        - recipe[nginx]
+       - recipe[jtalks-infra::cicd]
+       - recipe[jtalks-infra::users]
        - recipe[jtalks-infra::crowd]
        - recipe[jtalks-infra::jenkins]
        - recipe[jtalks-infra::nginx]
