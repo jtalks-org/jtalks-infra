@@ -13,7 +13,6 @@ define :ssh_settings, :user => 'root', :ssh_dir => '.ssh', :key_name => 'id_rsa'
     action :create
   end
 
-  log "!!!!!!!!!!!!!!! #{node[:jtalks][:cookbook_path]}/#{params[:source_key_dir]}/#{params[:key_name]}.pub"
   cookbook_file "#{params[:ssh_dir]}/#{params[:key_name]}" do
     owner params[:user]
     group params[:user]
