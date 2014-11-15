@@ -45,7 +45,7 @@ end
 def prepare
   owner = "#{current_resource.user}"
   dir = "/home/#{owner}"
-  hostnames = current_resource.known_hosts
+  known_hosts = current_resource.known_hosts
   maven_backup_path = current_resource.maven_backup_path
   maven_version = "3"
   # Add user
@@ -67,7 +67,7 @@ def prepare
     key_name "id_rsa"
     source_key_dir "keys/#{owner}"
     # *.hostname to all subdomains
-    hostnames hostnames
+    known_hosts known_hosts
   end
 
   # Install (if not installed) Maven and config
@@ -90,6 +90,7 @@ def configure
   crowd_group = "#{current_resource.crowd_group}"
   crowd_cookie_domain = "#{current_resource.crowd_cookie_domain}"
   maven_version = "3"
+  java_home = "/usr/lib/jvm/default-java"
 
   # restore config if new install jenkins
   execute "restore-jenkins-config-and-jobs" do
@@ -131,6 +132,85 @@ def configure
          <httpMaxConnections>20</httpMaxConnections>
       </securityRealm>"
     notifies :restart, "service[#{current_resource.service_name}]", :delayed
+    end
+
+  jtalks_infra_replacer "jenkins_env_variables" do
+    owner owner
+    group owner
+    file "#{dir}/.jenkins/config.xml"
+    replace "<envVars.*<\/envVars>"
+    with "<envVars serialization=\"custom\">
+        <unserializable-parents/>
+        <tree-map>
+          <default>
+            <comparator class=\"hudson.util.CaseInsensitiveComparator\"/>
+          </default>
+          <int>28</int>
+          <string>BACKUP_DB</string>
+          <string>/home/jenkins/backup/db</string>
+          <string>BACKUP_WAR</string>
+          <string>/home/jenkins/backup/war</string>
+          <string>DEV_BACKUP_DIR</string>
+          <string>/home/tomcat/app_backups</string>
+          <string>DEV_IP</string>
+          <string>176.9.66.108</string>
+          <string>DEV_JTALKS_GROUP</string>
+          <string>jtalks</string>
+          <string>DEV_JTALKS_USER</string>
+          <string>jtalks</string>
+          <string>DEV_MYSQL_USER</string>
+          <string>root</string>
+          <string>DEV_SSH</string>
+          <string>tomcat@176.9.66.108</string>
+          <string>DEV_SSH_JTALKS</string>
+          <string>jtalks@176.9.66.108</string>
+          <string>DEV_TOMCAT_DEPLOY</string>
+          <string>/home/tomcat/app/tomcat-deploy/webapps</string>
+          <string>DEV_TOMCAT_DIR</string>
+          <string>/home/tomcat/app</string>
+          <string>DEV_TOMCAT_GROUP</string>
+          <string>tomcat</string>
+          <string>DEV_TOMCAT_JAVATALKS</string>
+          <string>/home/tomcat/app/tomcat-javatalks/webapps</string>
+          <string>DEV_TOMCAT_UAT</string>
+          <string>/home/tomcat/app/tomcat-uat/webapps</string>
+          <string>DEV_TOMCAT_USER</string>
+          <string>tomcat</string>
+          <string>JAVA_HOME</string>
+          <string>#{java_home}</string>
+          <string>JDK_HOME</string>
+          <string>#{java_home}</string>
+          <string>M2_HOME</string>
+          <string>#{dir}/maven#{maven_version}</string>
+          <string>PATH</string>
+          <string>/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin:#{java_home}/bin:#{dir}/maven#{maven_version}/bin</string>
+          <string>PROD_BACKUP_DIR</string>
+          <string>/home/jtalks/apps_backup</string>
+          <string>PROD_GROUP</string>
+          <string>jtalks</string>
+          <string>PROD_IP</string>
+          <string>213.239.201.68</string>
+          <string>PROD_JCOMMUNE_DIR</string>
+          <string>/home/jtalks/apps/jcommune/tomcat-jcommune/webapps</string>
+          <string>PROD_MYSQL_USER</string>
+          <string>root</string>
+          <string>PROD_POULPE_DIR</string>
+          <string>/home/jtalks/apps/poulpe/tomcat-poulpe/webapps</string>
+          <string>PROD_SSH</string>
+          <string>jtalks@213.239.201.68</string>
+          <string>PROD_USER</string>
+          <string>jtalks</string>
+          <string>SSH_TO_POCHTA</string>
+          <string>pochta@176.9.66.108</string>
+          <string>SSH_TO_SITE</string>
+          <string>site@176.9.66.108</string>
+          <string>TEST_SERVER_ANTARCTICLE_SSH</string>
+          <string>antarcticle@5.9.40.180</string>
+          <string>TEST_SERVER_TOMCAT_SSH</string>
+          <string>tomcat@5.9.40.180</string>
+        </tree-map>
+      </envVars>"
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 
   jtalks_infra_replacer "jenkins_jdk_config" do
@@ -141,7 +221,7 @@ def configure
     with "<jdks>
          <jdk>
            <name>JDK</name>
-           <home>/usr/lib/jvm/default-java</home>
+           <home>#{java_home}</home>
            <properties/>
          </jdk>
        </jdks>"

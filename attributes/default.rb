@@ -33,8 +33,7 @@ default[:maven]['3'][:url] = "http://apache-mirror.rbc.ru/pub/apache/maven/maven
 default[:tomcat][:major_version] = "8"
 default[:tomcat][:minor_version] = "0.14"
 default[:tomcat][:version] = "#{node[:tomcat][:major_version]}.#{node[:tomcat][:minor_version]}"
-default[:tomcat][:download_url] = "http://apache-mirror.rbc.ru/pub/apache/tomcat/tomcat-#{node[:tomcat][:major_version]}/" +
-    "v#{node[:tomcat][:version]}/bin/apache-tomcat-#{node[:tomcat][:version]}.zip"
+default[:tomcat][:download_url] = "http://archive.apache.org/dist/tomcat/tomcat-#{node[:tomcat][:major_version]}/v#{node[:tomcat][:version]}/bin/apache-tomcat-#{node[:tomcat][:version]}.zip"
 
 #Atlassian
 default[:atlassian][:user][:name] = "atlassian"
@@ -50,7 +49,7 @@ default[:crowd][:app][:name] = "crowd"
 default[:crowd][:app][:password] = "crowd"
 default[:crowd][:app][:server_url] = "http\://#{node[:jtalks][:hostname]}:#{node[:tomcat][:instances][:crowd][:port]}"
 default[:crowd][:app][:cookie_domain] = "#{node[:jtalks][:hostname]}"
-default[:crowd][:app][:license_text] = "fail"
+default[:crowd][:app][:license_text] = "AAABLA0ODAoPeNpNkF1rwjAUhu/zKwq7jtTabkwITNsOBduI1V2MwTirRxetaclHp/9+qVbwIhdJn vfNk/OU1dLLQHlB6AX+OBqOg8CLk7XbDEOSoC6VaIyoJYtV/bf9Gnu8QekVtVUlkrI7G0BpRIvMK IskVggdnoBB1nVQf0SDiMS1NI7L4YRsUuEZL97UgfbYdyxEiVLj+tLgleHLNP8u+GYVp/dsmoGo2 B61RvV2gBYMVEc9UJakLVT2+izbQaWROFIalCBLTM+NUJe7TkT9sNPhag9S6FvmcCuq1Z4Uac7co oH/Onp+iUiBqkU1T9j0YxLS5WT2STdZwSlfvc9689yeflDx3cZpaUaHpP+KCy3myWNZf/FgZGUlT sLglizdPH9B48PcrqL/EVqJKDAtAhUAgQN0plC1AkpMZKHuEOrtquLbeVkCFGJPdhggtLlKzIT+r W95YMQfYec1X02f3"
 default[:db][:crowd][:user] = "crowd"
 default[:db][:crowd][:name] = "#{node[:db][:crowd][:user]}"
 default[:db][:crowd][:password] = "crowd"
@@ -61,7 +60,9 @@ default[:nginx][:site][:crowd][:context_path] = "/"
 
 #Jenkins
 default[:jenkins][:user][:name] = "jenkins"
-default[:jenkins][:user][:known_hosts] = ["#{node[:jtalks][:hostname]}","github.com"]
+default[:jenkins][:user][:known_hosts][:jenkins] = ["github.com"]
+default[:jenkins][:user][:known_hosts][:jtalks] = ["213.239.201.68"]
+default[:jenkins][:user][:known_hosts][:tomcat] = ["5.9.40.180","176.9.66.108"]
 default[:jenkins][:version] = "1.532.3"
 default[:jenkins][:download_url] = "http://mirrors.jenkins-ci.org/war-stable/#{node[:jenkins][:version]}/jenkins.war"
 default[:jenkins][:plugins_download_url] = "http://updates.jenkins-ci.org/download/plugins"

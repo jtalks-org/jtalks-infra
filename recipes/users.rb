@@ -2,7 +2,7 @@ node[:jtalks][:users].each do |user, password|
   user = user
   dir = "/home/#{user}"
   password = node[:jtalks][:users][user][:password]
-  log "#{user} !!!!!!! #{password}"
+
   # Add user
   user user do
     shell '/bin/bash'

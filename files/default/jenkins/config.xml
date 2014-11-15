@@ -413,6 +413,8 @@ SM (Server Management) - builds to redeploy servers, backup/restore databases.&#
           <string>/home/tomcat/app/tomcat-uat/webapps</string>
           <string>DEV_TOMCAT_USER</string>
           <string>tomcat</string>
+          <string>PATH</string>
+          <string>/usr/bin:/usr/sbin:/bin</string>
           <string>PROD_BACKUP_DIR</string>
           <string>/home/jtalks/apps_backup</string>
           <string>PROD_GROUP</string>
