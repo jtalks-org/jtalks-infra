@@ -139,13 +139,14 @@ def configure
     group owner
     file "#{dir}/.jenkins/config.xml"
     replace "<envVars.*<\/envVars>"
+    #IMPORTANT if add new parameter change count <int>31</int>
     with "<envVars serialization=\"custom\">
         <unserializable-parents/>
         <tree-map>
           <default>
             <comparator class=\"hudson.util.CaseInsensitiveComparator\"/>
           </default>
-          <int>28</int>
+          <int>31</int>
           <string>BACKUP_DB</string>
           <string>/home/jenkins/backup/db</string>
           <string>BACKUP_WAR</string>
