@@ -58,6 +58,11 @@ def prepare
     notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 
+  git_user owner do
+    full_name owner
+    email "#{owner}@jtalks.org"
+  end
+
   group owner do
     action :create
   end

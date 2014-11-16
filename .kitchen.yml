@@ -19,6 +19,7 @@ suites:
     run_list:
       - recipe[ark]
       - recipe[git]
+      - recipe[git_user]
       - recipe[java]
       - recipe[mysql::server]
       - recipe[mysql::client]
@@ -54,6 +55,7 @@ suites:
        - recipe[vim]
        - recipe[ark]
        - recipe[git]
+       - recipe[git_user]
        - recipe[java]
        - recipe[mysql::server]
        - recipe[mysql::client]

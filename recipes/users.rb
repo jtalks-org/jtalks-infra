@@ -22,7 +22,33 @@ node[:jtalks][:users].each do |user, password|
     key_name "id_rsa"
     source_key_dir "keys/#{user}"
   end
+end
 
+#create directories to QA command
+user = "qa"
+perm = "0755"
+directory "/home/#{user}/.jtalks" do
+  owner user
+  group user
+  mode perm
+end
+
+directory "/home/#{user}/.jtalks/plugins" do
+  owner user
+  group user
+  mode perm
+end
+
+directory "/home/#{user}/.jtalks/plugins/preprod" do
+  owner user
+  group user
+  mode perm
+end
+
+directory "/home/#{user}/.jtalks/plugins/performance" do
+  owner user
+  group user
+  mode perm
 end
 
 
