@@ -35,6 +35,7 @@ def load_current_resource
   @current_resource.crowd_app_password(@new_resource.crowd_app_password)
   @current_resource.crowd_group(@new_resource.crowd_group)
   @current_resource.crowd_cookie_domain(@new_resource.crowd_cookie_domain)
+  @current_resource.crowd_token(@new_resource.crowd_token)
   @current_resource.init_scripts_path(@new_resource.init_scripts_path)
 
   if Pathname.new("/home/#{@new_resource.user}/#{@current_resource.service_name}/webapps/ROOT").exist?
@@ -89,6 +90,7 @@ def configure
   crowd_app_password = "#{current_resource.crowd_app_password}"
   crowd_group = "#{current_resource.crowd_group}"
   crowd_cookie_domain = "#{current_resource.crowd_cookie_domain}"
+  crowd_token = "#{current_resource.crowd_token}"
   maven_version = "3"
   java_home = "/usr/lib/jvm/default-java"
 
@@ -121,7 +123,7 @@ def configure
          <useSSO>true</useSSO>
          <sessionValidationInterval>2</sessionValidationInterval>
          <cookieDomain>#{crowd_cookie_domain}</cookieDomain>
-         <cookieTokenkey>crowd.token_key</cookieTokenkey>
+         <cookieTokenkey>#{crowd_token}</cookieTokenkey>
          <useProxy>false</useProxy>
          <httpProxyHost></httpProxyHost>
          <httpProxyPort></httpProxyPort>
@@ -129,7 +131,7 @@ def configure
          <httpProxyPassword></httpProxyPassword>
          <socketTimeout>20000</socketTimeout>
          <httpTimeout>5000</httpTimeout>
-         <httpMaxConnections>20</httpMaxConnections>
+         <httpMaxConnections>200</httpMaxConnections>
       </securityRealm>"
     notifies :restart, "service[#{current_resource.service_name}]", :delayed
     end
