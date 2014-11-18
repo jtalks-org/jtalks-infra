@@ -7,6 +7,14 @@ default[:jtalks][:users][:masyan][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w
 default[:jtalks][:users][:qa][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1
 default[:jtalks][:users][:ctapobep][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:aidjek][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:antarcticle][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:jenkins][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:atlassian][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:antarcticle][:known_hosts][:antarcticle] = ["jtalks.org","github.com"]
+default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
+default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
+default[:jtalks][:users][:jenkins][:known_hosts][:tomcat] = ["5.9.40.180","176.9.66.108"]
+
 # vagrant user to test only
 default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "vagrant"]
 default[:authorization][:sudo][:passwordless] = "true"
@@ -61,9 +69,6 @@ default[:nginx][:site][:crowd][:context_path] = "/"
 
 #Jenkins
 default[:jenkins][:user][:name] = "jenkins"
-default[:jenkins][:user][:known_hosts][:jenkins] = ["github.com"]
-default[:jenkins][:user][:known_hosts][:jtalks] = ["213.239.201.68"]
-default[:jenkins][:user][:known_hosts][:tomcat] = ["5.9.40.180","176.9.66.108"]
 default[:jenkins][:version] = "1.532.3"
 default[:jenkins][:download_url] = "http://mirrors.jenkins-ci.org/war-stable/#{node[:jenkins][:version]}/jenkins.war"
 default[:jenkins][:plugins_download_url] = "http://updates.jenkins-ci.org/download/plugins"

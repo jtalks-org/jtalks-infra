@@ -21,7 +21,6 @@ def load_current_resource
   @current_resource.service_name(@new_resource.service_name)
   @current_resource.version(@new_resource.version)
   @current_resource.user(@new_resource.user)
-  @current_resource.known_hosts(@new_resource.known_hosts)
   @current_resource.maven_backup_path(@new_resource.maven_backup_path)
   @current_resource.tomcat_port(@new_resource.tomcat_port)
   @current_resource.tomcat_shutdown_port(@new_resource.tomcat_shutdown_port)
@@ -46,34 +45,12 @@ end
 def prepare
   owner = "#{current_resource.user}"
   dir = "/home/#{owner}"
-  known_hosts = current_resource.known_hosts
   maven_backup_path = current_resource.maven_backup_path
   maven_version = "3"
-  # Add user
-  user owner do
-    shell '/bin/bash'
-    action :create
-    home dir
-    supports :manage_home => true
-    notifies :restart, "service[#{current_resource.service_name}]", :delayed
-  end
 
   git_user owner do
     full_name owner
     email "#{owner}@jtalks.org"
-  end
-
-  group owner do
-    action :create
-  end
-
-  ssh_settings owner do
-    user owner
-    ssh_dir "#{dir}/.ssh"
-    key_name "id_rsa"
-    source_key_dir "keys/#{owner}"
-    # *.hostname to all subdomains
-    known_hosts known_hosts
   end
 
   # Install (if not installed) Maven and config

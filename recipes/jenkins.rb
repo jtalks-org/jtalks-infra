@@ -1,7 +1,6 @@
 jtalks_infra_jenkins "jenkins" do
   version node[:jenkins][:version]
   user node[:jenkins][:user][:name]
-  known_hosts node[:jenkins][:user][:known_hosts]
   maven_backup_path node[:jenkins][:maven][:backup_path]
   tomcat_port node[:tomcat][:instances][:jenkins][:port]
   tomcat_shutdown_port node[:tomcat][:instances][:jenkins][:shutdown_port]

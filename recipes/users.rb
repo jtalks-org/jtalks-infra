@@ -1,4 +1,4 @@
-node[:jtalks][:users].each do |user, password|
+node[:jtalks][:users].each do |user, data|
   user = user
   dir = "/home/#{user}"
   password = node[:jtalks][:users][user][:password]

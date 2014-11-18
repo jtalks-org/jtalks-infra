@@ -44,20 +44,7 @@ end
 
 def prepare
   owner = "#{current_resource.user}"
-  user_home = "/home/#{owner}"
   data_dir = "#{current_resource.data_dir}/#{current_resource.service_name}"
-  # Add user
-  user owner do
-    shell '/bin/bash'
-    action :create
-    home user_home
-    supports :manage_home => true
-    notifies :restart, "service[#{current_resource.service_name}]", :delayed
-  end
-
-  group owner do
-    action :create
-  end
 
   directory "#{current_resource.data_dir}" do
     owner owner

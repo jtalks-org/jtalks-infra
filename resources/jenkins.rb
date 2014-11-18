@@ -5,7 +5,6 @@ default_action :install_or_update
 attribute :service_name       , :name_attribute => true, :required => true,  :kind_of => String
 attribute :version       , :required => true,  :kind_of => String
 attribute :user       , :required => true,  :kind_of => String
-attribute :known_hosts       , :required => true,  :kind_of => Hash
 attribute :maven_backup_path       , :required => true,  :kind_of => String
 attribute :maven_backup_path       , :required => true,  :kind_of => String
 attribute :tomcat_port     , :required => true, :kind_of => Integer
