@@ -18,7 +18,7 @@ default[:jtalks][:users][:jenkins][:known_hosts][:tomcat] = ["5.9.40.180","176.9
 default[:jtalks][:users][:tomcat][:known_hosts][:tomcat] = ["jtalks.org","github.com"]
 
 # vagrant user to test only
-default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "vagrant"]
+default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "jenkins", "vagrant"]
 default[:authorization][:sudo][:passwordless] = "true"
 default[:authorization][:sudo][:include_sudoers_d] = "true"
 
