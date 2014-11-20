@@ -46,6 +46,12 @@ suites:
     run_list:
        - recipe[jtalks-infra::users]
        - recipe[sudo]
+  - name: db-users
+    run_list:
+       - recipe[mysql::server]
+       - recipe[mysql::client]
+       - recipe[database::mysql]
+       - recipe[jtalks-infra::dbs_and_dbusers]
   - name: cicd
     run_list:
        - recipe[build-essential]
@@ -65,6 +71,7 @@ suites:
        - recipe[mysql::client]
        - recipe[database::mysql]
        - recipe[nginx]
+       - recipe[jtalks-infra::dbs_and_dbusers]
        - recipe[jtalks-infra::users]
        - recipe[jtalks-infra::cicd]
        - recipe[jtalks-infra::crowd]

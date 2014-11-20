@@ -3,8 +3,10 @@ jtalks_infra_crowd "crowd" do
   user node[:atlassian][:user][:name]
   data_dir node[:atlassian][:user][:home_dir]
   download_url node[:crowd][:download_url]
-  db_config_name "crowd"
-  db_backup_path node[:db][:crowd][:backup_path]
+  db_name node[:crowd][:db][:name]
+  db_user node[:crowd][:db][:user]
+  db_password node[:crowd][:db][:password]
+  db_backup_path node[:crowd][:db][:backup_path]
   tomcat_port node[:tomcat][:instances][:crowd][:port]
   tomcat_shutdown_port node[:tomcat][:instances][:crowd][:shutdown_port]
   tomcat_jvm_opts node[:tomcat][:instances][:crowd][:jvm_opts]

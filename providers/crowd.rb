@@ -28,7 +28,9 @@ def load_current_resource
   @current_resource.tomcat_jvm_opts(@new_resource.tomcat_jvm_opts)
   @current_resource.mysql_connector_url(@new_resource.mysql_connector_url)
   @current_resource.ext_libs_url(@new_resource.ext_libs_url)
-  @current_resource.db_config_name(@new_resource.db_config_name)
+  @current_resource.db_name(@new_resource.db_name)
+  @current_resource.db_user(@new_resource.db_user)
+  @current_resource.db_password(@new_resource.db_password)
   @current_resource.app_conf_license_text(@new_resource.app_conf_license_text)
   @current_resource.app_conf_name(@new_resource.app_conf_name)
   @current_resource.app_conf_password(@new_resource.app_conf_password)
@@ -56,9 +58,6 @@ def prepare
     group owner
     notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
-
-  # Database
-  jtalks_database "#{current_resource.db_config_name}"
 end
 
 # Configure crowd
@@ -67,9 +66,9 @@ def configure
   user_home = "/home/#{owner}"
   app_dir = "#{user_home}/#{current_resource.service_name}"
   data_dir = "#{current_resource.data_dir}/#{current_resource.service_name}"
-  db_name = "#{node[:db][current_resource.db_config_name][:name]}"
-  db_user = "#{node[:db][current_resource.db_config_name][:user]}"
-  db_password = "#{node[:db][current_resource.db_config_name][:password]}"
+  db_name = "#{current_resource.db_name}"
+  db_user = "#{current_resource.db_user}"
+  db_password = "#{current_resource.db_password}"
   license_text = "#{current_resource.app_conf_license_text}"
   app_name = "#{current_resource.app_conf_name}"
   app_password = "#{current_resource.app_conf_password}"
@@ -123,7 +122,9 @@ def configure
   end
 
   mysql_execute "set cookie domain" do
-    app_name "#{db_name}"
+    user "#{db_user}"
+    password "#{db_password}"
+    db "#{db_name}"
     command "update cwd_property set property_value='#{app_cookie_domain}' where property_name='domain'"
   end
 end

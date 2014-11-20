@@ -1,8 +1,8 @@
-define :mysql_execute, :app_name => nil, :command => '' do
+define :mysql_execute, :user => nil, :password => nil, :db => nil, :command => '' do
 
-  command = "mysql -u #{node[:db][params[:app_name]][:user]} --password='#{node[:db][params[:app_name]][:password]}' -D #{node[:db][params[:app_name]][:name]} -e \"#{params[:command]}\""
+  command = "mysql -u #{params[:user]} --password='#{params[:password]}' -D #{params[:db]} -e \"#{params[:command]}\""
 
-  execute "execute_mysql_command_to_application_#{params[:app_name]}" do
+  execute "execute_mysql_command_to_db_#{params[:db]}" do
     command command
   end
 end
