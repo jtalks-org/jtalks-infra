@@ -10,10 +10,12 @@ default[:jtalks][:users][:aidjek][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w
 default[:jtalks][:users][:antarcticle][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:jenkins][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:atlassian][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:tomcat][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:antarcticle][:known_hosts][:antarcticle] = ["jtalks.org","github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
 default[:jtalks][:users][:jenkins][:known_hosts][:tomcat] = ["5.9.40.180","176.9.66.108"]
+default[:jtalks][:users][:tomcat][:known_hosts][:tomcat] = ["jtalks.org","github.com"]
 
 # vagrant user to test only
 default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "vagrant"]
