@@ -49,6 +49,12 @@ directory "/home/#{user}/.jtalks/plugins/performance" do
   owner user
   group user
   mode perm
+  end
+
+directory "/home/#{user}/.jtalks/plugins/beginintesting" do
+  owner user
+  group user
+  mode perm
 end
 
 
