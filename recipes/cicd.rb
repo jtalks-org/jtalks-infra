@@ -13,6 +13,7 @@ end
 
 python_pip "jtalks-cicd" do
   action :install
+  version "#{node[:jtalks][:packages][:cicd][:version]}"
 end
 
 python_pip "GitPython" do
