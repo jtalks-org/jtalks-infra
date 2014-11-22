@@ -130,7 +130,7 @@ def configure
           <default>
             <comparator class=\"hudson.util.CaseInsensitiveComparator\"/>
           </default>
-          <int>31</int>
+          <int>33</int>
           <string>BACKUP_DB</string>
           <string>/home/jenkins/backup/db</string>
           <string>BACKUP_WAR</string>
@@ -161,6 +161,14 @@ def configure
           <string>/home/tomcat/app/tomcat-uat/webapps</string>
           <string>DEV_TOMCAT_USER</string>
           <string>tomcat</string>
+          <string>INST_AUTOTESTS_SSH</string>
+          <string>i_autotests@144.76.64.105</string>
+          <string>INST_BEGININTESTING_SSH</string>
+          <string>i_beginintesting@144.76.64.105</string>
+          <string>INST_PERFORMANCE_SSH</string>
+          <string>i_performance@144.76.64.105</string>
+          <string>INST_PREPROD_SSH</string>
+          <string>i_preprod@144.76.64.105</string>
           <string>JAVA_HOME</string>
           <string>#{java_home}</string>
           <string>JDK_HOME</string>
@@ -189,10 +197,6 @@ def configure
           <string>pochta@176.9.66.108</string>
           <string>SSH_TO_SITE</string>
           <string>site@176.9.66.108</string>
-          <string>TEST_SERVER_ANTARCTICLE_SSH</string>
-          <string>antarcticle@5.9.40.180</string>
-          <string>TEST_SERVER_TOMCAT_SSH</string>
-          <string>tomcat@5.9.40.180</string>
         </tree-map>
       </envVars>"
     notifies :restart, "service[#{current_resource.service_name}]", :delayed
