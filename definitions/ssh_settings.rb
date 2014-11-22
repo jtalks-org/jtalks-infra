@@ -49,11 +49,6 @@ define :ssh_settings, :user => 'root', :ssh_dir => '.ssh', :key_name => 'id_rsa'
   if known_hosts != nil then
     known_hosts.each do |user, hostnames|
       hostnames.each do |hostname|
-        ssh_util_config "#{hostname}" do
-          options 'User' =>  "#{user}", 'IdentityFile' => "#{params[:ssh_dir]}/#{params[:key_name]}"
-          user "#{params[:user]}"
-        end
-
         ssh_util_known_hosts "#{hostname}" do
           hashed false
           user "#{params[:user]}"
