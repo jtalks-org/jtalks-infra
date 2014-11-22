@@ -12,11 +12,7 @@ python_pip "mysql-connector-python" do
 end
 
 python_pip "jtalks-cicd" do
-  action :remove
-end
-
-python_pip "jtalks-cicd" do
-  action :install
+  action :upgrade
 end
 
 python_pip "GitPython" do
