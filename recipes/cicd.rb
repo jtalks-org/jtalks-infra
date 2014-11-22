@@ -22,4 +22,9 @@ end
 python_pip "GitPython" do
   action :install
   version "0.3.2.RC1"
+  end
+
+python_pip "paramiko" do
+  action :install
+  version "1.7.5"
 end
