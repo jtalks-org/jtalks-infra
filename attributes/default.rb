@@ -17,6 +17,11 @@ default[:jtalks][:users][:i_preprod][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaF
 default[:jtalks][:users][:antarcticle][:known_hosts][:antarcticle] = ["jtalks.org","github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
+default[:jtalks][:users][:jenkins][:known_hosts][:i_autotests] = ["#{node[:jtalks][:hostname]}"]
+default[:jtalks][:users][:jenkins][:known_hosts][:i_performance] = ["#{node[:jtalks][:hostname]}"]
+default[:jtalks][:users][:jenkins][:known_hosts][:i_preprod] = ["#{node[:jtalks][:hostname]}"]
+default[:jtalks][:users][:jenkins][:known_hosts][:i_beginintesting] = ["#{node[:jtalks][:hostname]}"]
+default[:jtalks][:users][:jenkins][:known_hosts][:antarcticle] = ["#{node[:jtalks][:hostname]}"]
 
 default[:jtalks][:dbs] = ["crowd","autotests","beginintesting","performance","preprod","preprod_antarcticle"]
 default[:jtalks][:db_users][:crowd][:password] = "crowd"
