@@ -22,6 +22,7 @@ default[:jtalks][:users][:jenkins][:known_hosts][:i_performance] = ["jtalks.org"
 default[:jtalks][:users][:jenkins][:known_hosts][:i_preprod] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
 default[:jtalks][:users][:jenkins][:known_hosts][:i_beginintesting] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
 default[:jtalks][:users][:jenkins][:known_hosts][:antarcticle] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
+default[:jtalks][:users][:i_preprod][:known_hosts][:u98642] = ["u98642.your-backup.de"]
 
 default[:jtalks][:dbs] = ["crowd","autotests","beginintesting","performance","preprod","preprod_antarcticle"]
 default[:jtalks][:db_users][:crowd][:password] = "crowd"
