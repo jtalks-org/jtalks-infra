@@ -45,8 +45,6 @@ default[:jtalks][:db_users][:preprod_reader][:password] = "preprod_reader"
 default[:jtalks][:db_users][:preprod_reader][:dbs][:preprod][:privileges] = [:select]
 default[:jtalks][:db_users][:preprod_reader][:dbs][:preprod_antarcticle][:privileges] = [:select]
 
-default[:jtalks][:packages][:cicd][:version] = "1.2.14"
-
 # vagrant user to test only
 default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "jenkins", "vagrant"]
 default[:authorization][:sudo][:passwordless] = "true"
