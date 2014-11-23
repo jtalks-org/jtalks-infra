@@ -1,6 +1,11 @@
 node[:jtalks][:users].each do |user, data|
   user = user
-  dir = "/home/#{user}"
+  if user == "root" then
+    dir = "/root"
+  else
+    dir = "/home/#{user}"
+  end
+
   password = node[:jtalks][:users][user][:password]
 
   # Add user
