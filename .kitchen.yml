@@ -57,11 +57,16 @@ suites:
        - recipe[build-essential]
        - recipe[python]
        - recipe[jtalks-infra::cicd]
+  - name: backup
+    run_list:
+       - recipe[cron]
+       - recipe[jtalks-infra::backup]
   - name: server
     run_list:
        - recipe[build-essential]
        - recipe[python]
        - recipe[sudo]
+       - recipe[cron]
        - recipe[vim]
        - recipe[ark]
        - recipe[git]
@@ -71,6 +76,7 @@ suites:
        - recipe[mysql::client]
        - recipe[database::mysql]
        - recipe[nginx]
+       - recipe[jtalks-infra::backup]
        - recipe[jtalks-infra::dbs_and_dbusers]
        - recipe[jtalks-infra::users]
        - recipe[jtalks-infra::cicd]
