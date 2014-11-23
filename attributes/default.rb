@@ -3,6 +3,7 @@ default[:jtalks][:path][:init_script] = "/etc/init.d"
 default[:jtalks][:cookbook_path] = "#{Chef::Config[:cookbook_path][0]}/jtalks-infra/files/default"
 default[:jtalks][:hostname] = "localhost"
 # to generate password use command 'openssl passwd -1' and enter password
+default[:jtalks][:users][:root][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1
 default[:jtalks][:users][:masyan][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1
 default[:jtalks][:users][:qa][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1
 default[:jtalks][:users][:ctapobep][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
@@ -23,6 +24,7 @@ default[:jtalks][:users][:jenkins][:known_hosts][:i_beginintesting] = ["jtalks.o
 default[:jtalks][:users][:jenkins][:known_hosts][:antarcticle] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
 default[:jtalks][:users][:i_preprod][:known_hosts][:u98642] = ["u98642.your-backup.de"]
 default[:jtalks][:users][:i_javatalks][:known_hosts][:antarcticle] = ["jtalks.org","github.com"]
+default[:jtalks][:users][:root][:known_hosts][:u99356] = ["u99356.your-backup.de"]
 
 default[:jtalks][:dbs] = ["crowd","autotests","beginintesting","performance","preprod","preprod_antarcticle"]
 default[:jtalks][:db_users][:crowd][:password] = "crowd"
