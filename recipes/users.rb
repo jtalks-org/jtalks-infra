@@ -44,22 +44,12 @@ directory "/home/#{user}/.jtalks/plugins" do
   mode perm
 end
 
-directory "/home/#{user}/.jtalks/plugins/preprod" do
-  owner user
-  group user
-  mode perm
-end
+instances = ["preprod", "performance", "beginintesting", "dev"]
 
-directory "/home/#{user}/.jtalks/plugins/performance" do
-  owner user
-  group user
-  mode perm
+instances.each do | instance |
+  directory "/home/#{user}/.jtalks/plugins/#{instance}" do
+    owner user
+    group user
+    mode perm
   end
-
-directory "/home/#{user}/.jtalks/plugins/beginintesting" do
-  owner user
-  group user
-  mode perm
 end
-
-
