@@ -156,8 +156,8 @@ echo "Backup for $SERVER_NAME complete at $(date), for more info check $LOG_FILE
 
 # send email with results
 
-SUBJECT="$SERVER_NAME Backup Script DONE on $HOSTNAME for $(date)"
-$MAIL_BIN -s "$SUBJECT" $EMAIL < $LOG_FILE
+#SUBJECT="$SERVER_NAME Backup Script DONE on $HOSTNAME for $(date)"
+#$MAIL_BIN -s "$SUBJECT" $EMAIL < $LOG_FILE
 
 # removing lock
 rm -rf $LOCK
