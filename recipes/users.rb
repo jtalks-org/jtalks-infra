@@ -1,5 +1,6 @@
 node[:jtalks][:users].each do |user, data|
   user = user
+  perm = "0770"
   if user == "root" then
     dir = "/root"
   else
@@ -17,6 +18,12 @@ node[:jtalks][:users].each do |user, data|
     supports :manage_home => true
   end
 
+  directory dir do
+    owner user
+    group user
+    mode perm
+  end
+
   group user do
     action :create
   end
@@ -32,6 +39,14 @@ end
 #create directories to QA command
 user = "qa"
 perm = "0755"
+
+directory "/home/#{user}" do
+  owner user
+  group user
+  recursive true
+  mode perm
+end
+
 directory "/home/#{user}/.jtalks" do
   owner user
   group user
