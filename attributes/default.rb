@@ -19,6 +19,7 @@ default[:jtalks][:users][:i_autotests][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWof
 default[:jtalks][:users][:i_performance][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:i_preprod][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:i_dev][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:i_qa][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
 default[:jtalks][:users][:jenkins][:known_hosts][:i_dev] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
@@ -26,7 +27,8 @@ default[:jtalks][:users][:i_preprod][:known_hosts][:u98642] = ["u98642.your-back
 default[:jtalks][:users][:i_javatalks][:known_hosts][:antarcticle] = ["jtalks.org","github.com"]
 default[:jtalks][:users][:root][:known_hosts][:u99356] = ["u99356.your-backup.de"]
 
-default[:jtalks][:dbs] = ["crowd","autotests","beginintesting","performance","preprod","preprod_antarcticle","dev_jcommune","dev_poulpe","dev_antarcticle"]
+default[:jtalks][:dbs] = ["crowd","autotests","beginintesting","performance","preprod","preprod_antarcticle","dev_jcommune",
+                          "dev_poulpe","dev_antarcticle","qa","qa_antarcticle"]
 default[:jtalks][:db_users][:crowd][:password] = "crowd"
 default[:jtalks][:db_users][:crowd][:dbs][:crowd][:privileges] = [:all]
 default[:jtalks][:db_users][:autotests_admin][:password] = "autotests_admin"
@@ -55,6 +57,12 @@ default[:jtalks][:db_users][:dev_reader][:password] = "dev_reader"
 default[:jtalks][:db_users][:dev_reader][:dbs][:dev_jcommune][:privileges] = [:select]
 default[:jtalks][:db_users][:dev_reader][:dbs][:dev_poulpe][:privileges] = [:select]
 default[:jtalks][:db_users][:dev_reader][:dbs][:dev_antarcticle][:privileges] = [:select]
+default[:jtalks][:db_users][:qa_admin][:password] = "qa_admin"
+default[:jtalks][:db_users][:qa_admin][:dbs][:qa][:privileges] = [:all]
+default[:jtalks][:db_users][:qa_admin][:dbs][:qa_antarcticle][:privileges] = [:all]
+default[:jtalks][:db_users][:qa_reader][:password] = "qa_reader"
+default[:jtalks][:db_users][:qa_reader][:dbs][:qa][:privileges] = [:select]
+default[:jtalks][:db_users][:qa_reader][:dbs][:qa_antarcticle][:privileges] = [:select]
 
 # vagrant user to test only
 default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "jenkins", "vagrant"]
