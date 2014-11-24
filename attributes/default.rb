@@ -18,18 +18,15 @@ default[:jtalks][:users][:i_beginintesting][:password] = "$1$TJ90WtPC$fKIvRHNzA2
 default[:jtalks][:users][:i_autotests][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:i_performance][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:i_preprod][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:i_dev][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
-default[:jtalks][:users][:jenkins][:known_hosts][:i_autotests] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
-default[:jtalks][:users][:jenkins][:known_hosts][:i_performance] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
-default[:jtalks][:users][:jenkins][:known_hosts][:i_preprod] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
-default[:jtalks][:users][:jenkins][:known_hosts][:i_beginintesting] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
-default[:jtalks][:users][:jenkins][:known_hosts][:antarcticle] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
+default[:jtalks][:users][:jenkins][:known_hosts][:i_dev] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
 default[:jtalks][:users][:i_preprod][:known_hosts][:u98642] = ["u98642.your-backup.de"]
 default[:jtalks][:users][:i_javatalks][:known_hosts][:antarcticle] = ["jtalks.org","github.com"]
 default[:jtalks][:users][:root][:known_hosts][:u99356] = ["u99356.your-backup.de"]
 
-default[:jtalks][:dbs] = ["crowd","autotests","beginintesting","performance","preprod","preprod_antarcticle"]
+default[:jtalks][:dbs] = ["crowd","autotests","beginintesting","performance","preprod","preprod_antarcticle","dev_jcommune","dev_poulpe","dev_antarcticle"]
 default[:jtalks][:db_users][:crowd][:password] = "crowd"
 default[:jtalks][:db_users][:crowd][:dbs][:crowd][:privileges] = [:all]
 default[:jtalks][:db_users][:autotests_admin][:password] = "autotests_admin"
@@ -50,6 +47,14 @@ default[:jtalks][:db_users][:preprod_admin][:dbs][:preprod_antarcticle][:privile
 default[:jtalks][:db_users][:preprod_reader][:password] = "preprod_reader"
 default[:jtalks][:db_users][:preprod_reader][:dbs][:preprod][:privileges] = [:select]
 default[:jtalks][:db_users][:preprod_reader][:dbs][:preprod_antarcticle][:privileges] = [:select]
+default[:jtalks][:db_users][:dev_admin][:password] = "dev_admin"
+default[:jtalks][:db_users][:dev_admin][:dbs][:dev_jcommune][:privileges] = [:all]
+default[:jtalks][:db_users][:dev_admin][:dbs][:dev_poulpe][:privileges] = [:all]
+default[:jtalks][:db_users][:dev_admin][:dbs][:dev_antarcticle][:privileges] = [:all]
+default[:jtalks][:db_users][:dev_reader][:password] = "dev_reader"
+default[:jtalks][:db_users][:dev_reader][:dbs][:dev_jcommune][:privileges] = [:select]
+default[:jtalks][:db_users][:dev_reader][:dbs][:dev_poulpe][:privileges] = [:select]
+default[:jtalks][:db_users][:dev_reader][:dbs][:dev_antarcticle][:privileges] = [:select]
 
 # vagrant user to test only
 default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "jenkins", "vagrant"]
