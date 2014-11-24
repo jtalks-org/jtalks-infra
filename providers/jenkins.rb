@@ -130,7 +130,7 @@ def configure
           <default>
             <comparator class=\"hudson.util.CaseInsensitiveComparator\"/>
           </default>
-          <int>33</int>
+          <int>35</int>
           <string>BACKUP_DB</string>
           <string>/home/jenkins/backup/db</string>
           <string>BACKUP_WAR</string>
@@ -165,6 +165,10 @@ def configure
           <string>i_autotests@144.76.64.105</string>
           <string>INST_BEGININTESTING_SSH</string>
           <string>i_beginintesting@144.76.64.105</string>
+          <string>INST_DEV_SSH</string>
+          <string>i_dev@144.76.64.105</string>
+          <string>INST_QA_SSH</string>
+          <string>i_qa@144.76.64.105</string>
           <string>INST_PERFORMANCE_SSH</string>
           <string>i_performance@144.76.64.105</string>
           <string>INST_PREPROD_SSH</string>
