@@ -42,6 +42,7 @@ node[:jtalks][:nginx][:custom_configs].each do |site|
 
   nginx_site site do
     enabled = true
+    only_if { File.exists?("#{node[:nginx][:dir]}/sites-available/#{site}") }
   end
 end
 
