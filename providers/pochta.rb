@@ -91,7 +91,7 @@ def install_or_update_pochta
     variables({
                   :bin_path => bin_path,
                   :service_name => service_name})
-    notifies :restart, "service[#{service_name}]", :delayed
+    notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 
   service "#{service_name}" do
