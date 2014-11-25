@@ -12,8 +12,8 @@ directory "/logs/public" do
 end
 
 instances.each do |instance|
-  link "/home/i_#{instance}/instance/logs" do
-    to "/logs/public/#{instance}"
+  link "/logs/public/#{instance}" do
+    to "/home/i_#{instance}/instance/logs"
     only_if { File.exists?("/home/i_#{instance}/instance/logs") }
   end
 end
