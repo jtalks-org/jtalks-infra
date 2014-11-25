@@ -21,6 +21,5 @@ attribute :app_conf_name     , :required => true, :kind_of => String
 attribute :app_conf_password     , :required => true, :kind_of => String
 attribute :app_conf_url     , :required => true, :kind_of => String
 attribute :app_conf_cookie_domain     , :required => true, :kind_of => String
-attribute :init_scripts_path       , :required => true,  :kind_of => String
 
 attr_accessor :exists

@@ -20,6 +20,5 @@ attribute :crowd_app_password       , :required => true,  :kind_of => String
 attribute :crowd_group       , :required => true,  :kind_of => String
 attribute :crowd_cookie_domain       , :required => true,  :kind_of => String
 attribute :crowd_token       , :required => true,  :kind_of => String
-attribute :init_scripts_path       , :required => true,  :kind_of => String
 
 attr_accessor :exists

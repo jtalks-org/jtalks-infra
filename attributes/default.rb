@@ -127,6 +127,15 @@ default[:nginx][:site][:crowd][:name] = "crowd"
 default[:nginx][:site][:crowd][:host] = "crowd.#{node[:jtalks][:hostname]}"
 default[:nginx][:site][:crowd][:context_path] = "/"
 
+# Pochta
+default[:pochta][:http][:port] = 9088
+default[:pochta][:smtp][:port] = 9025
+default[:pochta][:http][:threads_count] = 5
+default[:pochta][:smtp][:threads_count] = 5
+default[:pochta][:user] = "pochta"
+default[:pochta][:version] = "1.1"
+default[:pochta][:source_url] = "http://repo.jtalks.org/service/local/artifact/maven/redirect?r=releases&g=org.jtalks&a=jtalks-pochta&v=#{node[:pochta][:version]}&e=jar"
+
 #Jenkins
 default[:jenkins][:user][:name] = "jenkins"
 default[:jenkins][:version] = "1.532.3"

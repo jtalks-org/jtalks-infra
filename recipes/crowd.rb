@@ -17,5 +17,4 @@ jtalks_infra_crowd "crowd" do
   app_conf_password node[:crowd][:app][:password]
   app_conf_url node[:crowd][:app][:server_url]
   app_conf_cookie_domain node[:crowd][:app][:cookie_domain]
-  init_scripts_path node[:jtalks][:path][:init_script]
 end

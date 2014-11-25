@@ -15,5 +15,4 @@ jtalks_infra_jenkins "jenkins" do
   crowd_group node[:jenkins][:crowd][:group]
   crowd_cookie_domain node[:crowd][:app][:cookie_domain]
   crowd_token node[:crowd][:app][:token]
-  init_scripts_path node[:jtalks][:path][:init_script]
 end

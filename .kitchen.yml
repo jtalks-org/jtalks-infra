@@ -61,6 +61,11 @@ suites:
     run_list:
        - recipe[cron]
        - recipe[jtalks-infra::backup]
+  - name: pochta
+    run_list:
+       - recipe[jtalks-infra::users]
+       - recipe[sudo]
+       - recipe[jtalks-infra::pochta]
   - name: server
     run_list:
        - recipe[build-essential]
@@ -80,6 +85,7 @@ suites:
        - recipe[jtalks-infra::logs]
        - recipe[jtalks-infra::dbs_and_dbusers]
        - recipe[jtalks-infra::users]
+       - recipe[jtalks-infra::pochta]
        - recipe[jtalks-infra::cicd]
        - recipe[jtalks-infra::crowd]
        - recipe[jtalks-infra::jenkins]

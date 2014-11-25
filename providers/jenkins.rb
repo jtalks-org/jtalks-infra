@@ -35,7 +35,6 @@ def load_current_resource
   @current_resource.crowd_group(@new_resource.crowd_group)
   @current_resource.crowd_cookie_domain(@new_resource.crowd_cookie_domain)
   @current_resource.crowd_token(@new_resource.crowd_token)
-  @current_resource.init_scripts_path(@new_resource.init_scripts_path)
 
   if Pathname.new("/home/#{@new_resource.user}/#{@current_resource.service_name}/webapps/ROOT").exist?
     @current_resource.exists = true
