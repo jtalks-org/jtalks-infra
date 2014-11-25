@@ -1,0 +1,8 @@
+server {
+   listen 144.76.64.105:80;
+   server_name dev.jtalks.org/site;
+   location / {
+     alias /home/i_dev/www/jtalks-site-master/src/;
+     index index.html;
+   }
+}

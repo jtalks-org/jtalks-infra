@@ -6,6 +6,8 @@ directory node[:nginx][:default_root] do
   action :create
 end
 
+perm = "0644"
+
 node[:nginx][:site].each do |site_attribute_node|
   site = site_attribute_node[0] #hash with values of attribute
 
@@ -13,7 +15,7 @@ node[:nginx][:site].each do |site_attribute_node|
     source 'site.conf.erb'
     owner node[:nginx][:user]
     group node[:nginx][:group]
-    mode '0644'
+    mode perm
     variables({
                   :destination_port => node[:tomcat][:instances][site][:port],
                   :name => node[:nginx][:site][site][:name],
@@ -26,6 +28,21 @@ node[:nginx][:site].each do |site_attribute_node|
     enabled = true
   end
 
+end
+
+node[:jtalks][:nginx][:custom_configs].each do |site|
+
+  cookbook_file "#{node[:nginx][:dir]}/sites-available/#{site}" do
+    owner node[:nginx][:user]
+    group node[:nginx][:user]
+    source "nginx/#{site}"
+    mode perm
+    only_if { File.exists?("#{node[:jtalks][:cookbook_path]}/nginx/#{site}") }
+  end
+
+  nginx_site site do
+    enabled = true
+  end
 end
 
 service 'nginx' do

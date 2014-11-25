@@ -73,6 +73,7 @@ default[:jtalks][:db_users][:qa_reader][:dbs][:qa][:privileges] = [:select]
 default[:jtalks][:db_users][:qa_reader][:dbs][:qa_antarcticle][:privileges] = [:select]
 
 # nginx
+default[:jtalks][:nginx][:custom_configs] = ["site", "dev_site"]
 default[:nginx][:user] = "root"
 
 # vagrant user to test only
