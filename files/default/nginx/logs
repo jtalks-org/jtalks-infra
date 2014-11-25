@@ -3,6 +3,6 @@ server {
   server_name logs.jtalks.org;
   location / {
     autoindex on;
-    root /logs/jtalks-public/;
+    root /logs/public/;
   }
 }
