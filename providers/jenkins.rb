@@ -199,8 +199,8 @@ def configure
           <string>jtalks</string>
           <string>SSH_TO_POCHTA</string>
           <string>pochta@176.9.66.108</string>
-          <string>SSH_TO_SITE</string>
-          <string>site@176.9.66.108</string>
+          <string>SITE_SSH</string>
+          <string>site@144.76.64.105</string>
         </tree-map>
       </envVars>"
     notifies :restart, "service[#{current_resource.service_name}]", :delayed
