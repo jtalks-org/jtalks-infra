@@ -77,6 +77,7 @@ suites:
        - recipe[database::mysql]
        - recipe[nginx]
        - recipe[jtalks-infra::backup]
+       - recipe[jtalks-infra::logs]
        - recipe[jtalks-infra::dbs_and_dbusers]
        - recipe[jtalks-infra::users]
        - recipe[jtalks-infra::cicd]

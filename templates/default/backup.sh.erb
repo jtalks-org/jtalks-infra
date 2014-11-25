@@ -13,7 +13,8 @@ LOCK=/tmp/backup.lock
 REMOTE_FTP=<%= @ftp %>
 EMAIL="aidjek@jtalks.org jmasyan@gmail.com stanislav.bashkirtsev@gmail.com"
 SERVER_NAME=<%= @server_name %>
-MYSQL_ROOT_PASSWORD=<%= @mysql_root_password %>
+MYSQL_ROOT_PASSWORD='<%= @mysql_root_password %>'
+MAIL_BIN=$(which mail)
 
 # checking for lock file
 
@@ -21,8 +22,8 @@ if [ -f $LOCK ];
 then
         echo "backup process for $(date) already running, check $LOCK" > $LOG_FILE
         SUBJECT="$SERVER_NAME Backup Script ERROR on $HOSTNAME for $(date)"
-# Email text/message send an email using /bin/mail
-        /bin/mail -s "$SUBJECT" $EMAIL < $LOG_FILE
+# Email text/message send an email using $MAIL_BIN
+        $MAIL_BIN -s "$SUBJECT" $EMAIL < $LOG_FILE
         exit 1;
 fi
 
@@ -155,8 +156,8 @@ echo "Backup for $SERVER_NAME complete at $(date), for more info check $LOG_FILE
 
 # send email with results
 
-SUBJECT="$SERVER_NAME Backup Script DONE on $HOSTNAME for $(date)"
-/bin/mail -s "$SUBJECT" $EMAIL < $LOG_FILE
+#SUBJECT="$SERVER_NAME Backup Script DONE on $HOSTNAME for $(date)"
+#$MAIL_BIN -s "$SUBJECT" $EMAIL < $LOG_FILE
 
 # removing lock
 rm -rf $LOCK

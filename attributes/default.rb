@@ -2,6 +2,7 @@
 default[:jtalks][:path][:init_script] = "/etc/init.d"
 default[:jtalks][:cookbook_path] = "#{Chef::Config[:cookbook_path][0]}/jtalks-infra/files/default"
 default[:jtalks][:hostname] = "localhost"
+default[:jtalks][:logs_instances_web] = ["qa","dev","preprod","beginintesting","performance","autotests"]
 # backup
 default[:jtalks][:backup][:ftp] = "u99356@u99356.your-backup.de"
 default[:jtalks][:backup][:exclude_dirs] = "/home/aidjek /home/masyan /home/ctapobep"
@@ -18,19 +19,24 @@ default[:jtalks][:users][:i_beginintesting][:password] = "$1$TJ90WtPC$fKIvRHNzA2
 default[:jtalks][:users][:i_autotests][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:i_performance][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:i_preprod][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:i_dev][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:i_qa][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:site][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:pochta][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
+default[:jtalks][:users][:jenkins][:known_hosts][:antarcticle] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
 default[:jtalks][:users][:i_beginintesting][:known_hosts][:i_beginintesting] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
 default[:jtalks][:users][:i_autotests][:known_hosts][:i_autotests] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
 default[:jtalks][:users][:i_performance][:known_hosts][:i_performance] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
 default[:jtalks][:users][:pochta][:known_hosts][:pochta] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
-default[:jtalks][:users][:jenkins][:known_hosts][:antarcticle] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
+default[:jtalks][:users][:site][:known_hosts][:site] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
 default[:jtalks][:users][:i_preprod][:known_hosts][:u98642] = ["u98642.your-backup.de"]
 default[:jtalks][:users][:i_javatalks][:known_hosts][:antarcticle] = ["jtalks.org","github.com"]
 default[:jtalks][:users][:root][:known_hosts][:u99356] = ["u99356.your-backup.de"]
 
-default[:jtalks][:dbs] = ["crowd","autotests","beginintesting","performance","preprod","preprod_antarcticle"]
+default[:jtalks][:dbs] = ["crowd","autotests","beginintesting","performance","preprod","preprod_antarcticle","dev_jcommune",
+                          "dev_poulpe","dev_antarcticle","qa","qa_antarcticle"]
 default[:jtalks][:db_users][:crowd][:password] = "crowd"
 default[:jtalks][:db_users][:crowd][:dbs][:crowd][:privileges] = [:all]
 default[:jtalks][:db_users][:autotests_admin][:password] = "autotests_admin"
@@ -51,6 +57,24 @@ default[:jtalks][:db_users][:preprod_admin][:dbs][:preprod_antarcticle][:privile
 default[:jtalks][:db_users][:preprod_reader][:password] = "preprod_reader"
 default[:jtalks][:db_users][:preprod_reader][:dbs][:preprod][:privileges] = [:select]
 default[:jtalks][:db_users][:preprod_reader][:dbs][:preprod_antarcticle][:privileges] = [:select]
+default[:jtalks][:db_users][:dev_admin][:password] = "dev_admin"
+default[:jtalks][:db_users][:dev_admin][:dbs][:dev_jcommune][:privileges] = [:all]
+default[:jtalks][:db_users][:dev_admin][:dbs][:dev_poulpe][:privileges] = [:all]
+default[:jtalks][:db_users][:dev_admin][:dbs][:dev_antarcticle][:privileges] = [:all]
+default[:jtalks][:db_users][:dev_reader][:password] = "dev_reader"
+default[:jtalks][:db_users][:dev_reader][:dbs][:dev_jcommune][:privileges] = [:select]
+default[:jtalks][:db_users][:dev_reader][:dbs][:dev_poulpe][:privileges] = [:select]
+default[:jtalks][:db_users][:dev_reader][:dbs][:dev_antarcticle][:privileges] = [:select]
+default[:jtalks][:db_users][:qa_admin][:password] = "qa_admin"
+default[:jtalks][:db_users][:qa_admin][:dbs][:qa][:privileges] = [:all]
+default[:jtalks][:db_users][:qa_admin][:dbs][:qa_antarcticle][:privileges] = [:all]
+default[:jtalks][:db_users][:qa_reader][:password] = "qa_reader"
+default[:jtalks][:db_users][:qa_reader][:dbs][:qa][:privileges] = [:select]
+default[:jtalks][:db_users][:qa_reader][:dbs][:qa_antarcticle][:privileges] = [:select]
+
+# nginx
+default[:jtalks][:nginx][:custom_configs] = ["site", "dev_site", "logs"]
+default[:nginx][:user] = "root"
 
 # vagrant user to test only
 default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "jenkins", "vagrant"]
@@ -72,7 +96,6 @@ default[:java][:oracle][:accept_oracle_download_terms] = true
 # Maven
 default[:maven]['3'][:version] = "3.2.3"
 default[:maven]['3'][:url] = "http://apache-mirror.rbc.ru/pub/apache/maven/maven-3/#{node[:maven]['3'][:version]}/binaries/apache-maven-#{node[:maven]['3'][:version]}-bin.tar.gz"
-
 
 #Tomcat variables
 default[:tomcat][:major_version] = "8"
