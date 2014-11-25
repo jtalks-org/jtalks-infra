@@ -20,6 +20,7 @@ default[:jtalks][:users][:i_performance][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLW
 default[:jtalks][:users][:i_preprod][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:i_dev][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:i_qa][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:site][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
 default[:jtalks][:users][:jenkins][:known_hosts][:i_dev] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
@@ -63,6 +64,9 @@ default[:jtalks][:db_users][:qa_admin][:dbs][:qa_antarcticle][:privileges] = [:a
 default[:jtalks][:db_users][:qa_reader][:password] = "qa_reader"
 default[:jtalks][:db_users][:qa_reader][:dbs][:qa][:privileges] = [:select]
 default[:jtalks][:db_users][:qa_reader][:dbs][:qa_antarcticle][:privileges] = [:select]
+
+# nginx
+default[:nginx][:user] = "root"
 
 # vagrant user to test only
 default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "jenkins", "vagrant"]
