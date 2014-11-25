@@ -75,6 +75,7 @@ def install_or_update_pochta
   user = "#{current_resource.user}"
   dir = "/home/#{user}"
   service_name = "#{current_resource.service_name}"
+  bin_path = "#{dir}/#{service_name}/pochta.jar"
 
   directory "#{dir}/#{current_resource.service_name}" do
     owner user
@@ -88,6 +89,7 @@ def install_or_update_pochta
     owner user
     group user
     variables({
+                  :bin_path => bin_path,
                   :service_name => service_name})
     notifies :restart, "service[#{service_name}]", :delayed
   end
@@ -97,7 +99,7 @@ def install_or_update_pochta
     action :enable
   end
 
-  remote_file "#{dir}/#{service_name}/pochta.jar" do
+  remote_file "#{bin_path}" do
     source "#{current_resource.url_source}"
     owner user
     group user

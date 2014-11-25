@@ -23,7 +23,7 @@ set -u
 
 start() {
     # don't forget to put your specific path to pochta.jar here
-    BIN_PATH=/usr/bin/pochta.jar
+    BIN_PATH=<%= @bin_path %>
     PID_FILE=/var/run/<%= @service_name %>/pid
     PID_DIR=/var/run/<%= @service_name %>
 
