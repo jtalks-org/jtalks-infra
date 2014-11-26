@@ -204,4 +204,4 @@ default[:jenkins][:plugins]["token-macro"] = "1.6"
 default[:jenkins][:plugins]["translation"] = "1.10"
 
 # NewRelic
-default["newrelic-sysmond"][:license_key] = "fake"
+default[:new_relic][:license_key] = "fake"
