@@ -106,9 +106,8 @@ def install_or_update_pochta
     notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 
-  execute "#{service_name}_restart" do
-    command "sudo su - #{user} -c 'service #{service_name} restart'"
-    action :nothing
+  restart_service service_name do
+    user user
   end
 
 end
