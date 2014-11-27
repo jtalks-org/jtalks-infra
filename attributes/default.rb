@@ -134,7 +134,7 @@ default[:pochta][:http][:threads_count] = 5
 default[:pochta][:smtp][:threads_count] = 5
 default[:pochta][:user] = "pochta"
 default[:pochta][:version] = "1.0"
-default[:pochta][:source_url] = "http://repo.jtalks.org/service/local/artifact/maven/redirect?r=releases&g=org.jtalks&a=jtalks-pochta&v=#{node[:pochta][:version]}&e=jar"
+default[:pochta][:source_url] = "http://repo.jtalks.org/content/repositories/releases/org/jtalks/jtalks-pochta/#{node[:pochta][:version]}/jtalks-pochta-#{node[:pochta][:version]}.jar"
 
 #Jenkins
 default[:jenkins][:user][:name] = "jenkins"
