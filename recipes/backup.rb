@@ -9,8 +9,6 @@ mysql_root_password = "#{node[:mysql][:server_root_password]}"
 
 package "mailutils"
 
-package "sendmail"
-
 directory "#{backup_dir}" do
   owner user
   group user
