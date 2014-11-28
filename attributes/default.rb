@@ -79,7 +79,7 @@ default[:jtalks][:nginx][:custom_configs] = ["site", "dev_site", "logs"]
 default[:nginx][:user] = "root"
 
 # vagrant user to test only
-default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "jenkins", "yadisk", "vagrant"]
+default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "jenkins", "vagrant"]
 default[:authorization][:sudo][:passwordless] = "true"
 default[:authorization][:sudo][:include_sudoers_d] = "true"
 
@@ -120,7 +120,7 @@ default[:crowd][:app][:password] = "crowd"
 default[:crowd][:app][:server_url] = "http\://#{node[:jtalks][:hostname]}:#{node[:tomcat][:instances][:crowd][:port]}"
 default[:crowd][:app][:cookie_domain] = "#{node[:jtalks][:hostname]}"
 default[:crowd][:app][:token] = "token"
-default[:crowd][:app][:license_text] = "fail"
+default[:crowd][:app][:license_text] = "fake"
 default[:crowd][:db][:name] = "crowd"
 default[:crowd][:db][:user] = "crowd"
 default[:crowd][:db][:password] = "#{node[:jtalks][:db_users][:crowd][:password]}"
@@ -216,8 +216,8 @@ default[:new_relic][:license_key] = "fake"
 # Yandex Disk
 default[:yandex_idsk][:user] = "yadisk"
 default[:yandex_idsk][:dir] = "/home/#{node[:yandex_idsk][:user]}/disk"
-default[:yandex_idsk][:login] = "jtalks.org@yandex.ru"
-default[:yandex_idsk][:password] = "fail"
+default[:yandex_idsk][:login] = "jtalks.org"
+default[:yandex_idsk][:password] = "fake"
 default[:yandex_idsk][:repo][:url] = "http://repo.yandex.ru/yandex-disk/deb"
 default[:yandex_idsk][:repo][:components] = ["stable", "main"]
 default[:yandex_idsk][:repo][:key] = "http://repo.yandex.ru/yandex-disk/YANDEX-DISK-KEY.GPG"

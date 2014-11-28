@@ -4,12 +4,12 @@
 
 case "$1" in
     start)
-        sudo yandex-disk start -c <%= @config %>
+        yandex-disk start -c <%= @config %>
         echo started.
         exit 0
     ;;
     stop)
-        sudo yandex-disk stop -c <%= @config %>
+        yandex-disk stop -c <%= @config %>
         echo stopped.
         exit 0
     ;;

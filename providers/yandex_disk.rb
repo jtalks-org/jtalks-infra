@@ -47,11 +47,13 @@ def prepare
   directory "#{current_resource.disk_dir}" do
     owner user
     group user
+    recursive true
   end
 
   directory "#{dir}/.config" do
     owner user
     group user
+    recursive true
   end
 
 end
@@ -65,7 +67,7 @@ def configure
   disk_dir = "#{current_resource.disk_dir}"
 
   if !(@current_resource.exists)
-    execute "yandex-disk token --password=#{current_resource.disk_password} #{current_resource.disk_login} #{auth_file}"
+    execute "yandex-disk token --password='#{current_resource.disk_password}' '#{current_resource.disk_login}' #{auth_file}"
     execute "chown #{user}.#{user} #{auth_file}"
   end
 
