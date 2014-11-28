@@ -24,6 +24,7 @@ default[:jtalks][:users][:i_qa][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00
 default[:jtalks][:users][:site][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:pochta][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:selenium][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:yadisk][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
 default[:jtalks][:users][:jenkins][:known_hosts][:antarcticle] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
@@ -78,7 +79,7 @@ default[:jtalks][:nginx][:custom_configs] = ["site", "dev_site", "logs"]
 default[:nginx][:user] = "root"
 
 # vagrant user to test only
-default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "jenkins", "vagrant"]
+default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "jenkins", "yadisk", "vagrant"]
 default[:authorization][:sudo][:passwordless] = "true"
 default[:authorization][:sudo][:include_sudoers_d] = "true"
 
@@ -211,3 +212,12 @@ default[:jenkins][:plugins]["translation"] = "1.10"
 
 # NewRelic
 default[:new_relic][:license_key] = "fake"
+
+# Yandex Disk
+default[:yandex_idsk][:user] = "yadisk"
+default[:yandex_idsk][:dir] = "/home/#{node[:yandex_idsk][:user]}/disk"
+default[:yandex_idsk][:login] = "jtalks.org@yandex.ru"
+default[:yandex_idsk][:password] = "fail"
+default[:yandex_idsk][:repo][:url] = "http://repo.yandex.ru/yandex-disk/deb"
+default[:yandex_idsk][:repo][:components] = ["stable", "main"]
+default[:yandex_idsk][:repo][:key] = "http://repo.yandex.ru/yandex-disk/YANDEX-DISK-KEY.GPG"
