@@ -1,0 +1,30 @@
+#!/bin/bash
+# Start and stop Selenium server
+# chkconfig: 345 91 10
+# description: Start and stop Jira
+SELENIUM_LOGS=<%= @dir %>/selenium.log
+
+
+case "$1" in
+    start)
+        java -jar <%= @bin_path %> -port 4444 > $SELENIUM_LOGS &
+        echo started.
+        exit 0
+    ;;
+    stop)
+        echo stopped.
+        exit 0
+    ;;
+    restart)
+        $0 stop
+        sleep 5
+        $0 start
+        exit 0
+    ;;
+*)
+
+echo "Usage: $0 {start|stop|restart}"
+exit 1
+;;
+
+esac

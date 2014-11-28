@@ -66,6 +66,11 @@ suites:
        - recipe[jtalks-infra::users]
        - recipe[sudo]
        - recipe[jtalks-infra::pochta]
+  - name: selenium
+    run_list:
+       - recipe[jtalks-infra::users]
+       - recipe[sudo]
+       - recipe[jtalks-infra::selenium]
   - name: server
     run_list:
        - recipe[build-essential]
@@ -84,6 +89,7 @@ suites:
        - recipe[newrelic-sysmond]
        - recipe[jtalks-infra::backup]
        - recipe[jtalks-infra::logs]
+       - recipe[jtalks-infra::selenium]
        - recipe[jtalks-infra::dbs_and_dbusers]
        - recipe[jtalks-infra::users]
        - recipe[jtalks-infra::pochta]

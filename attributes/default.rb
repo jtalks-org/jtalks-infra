@@ -23,6 +23,7 @@ default[:jtalks][:users][:i_dev][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w0
 default[:jtalks][:users][:i_qa][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:site][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:pochta][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:selenium][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
 default[:jtalks][:users][:jenkins][:known_hosts][:antarcticle] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
@@ -135,6 +136,11 @@ default[:pochta][:smtp][:threads_count] = 5
 default[:pochta][:user] = "pochta"
 default[:pochta][:version] = "1.0"
 default[:pochta][:source_url] = "http://repo.jtalks.org/content/repositories/releases/org/jtalks/jtalks-pochta/#{node[:pochta][:version]}/jtalks-pochta-#{node[:pochta][:version]}.jar"
+
+# Selenium
+default[:selenium][:version] = "2.30.0"
+default[:selenium][:source_url] = "http://selenium.googlecode.com/files/selenium-server-standalone-#{node[:selenium][:version]}.jar"
+default[:selenium][:user] = "selenium"
 
 #Jenkins
 default[:jenkins][:user][:name] = "jenkins"
