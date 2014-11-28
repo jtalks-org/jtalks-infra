@@ -71,11 +71,6 @@ suites:
        - recipe[jtalks-infra::users]
        - recipe[sudo]
        - recipe[jtalks-infra::selenium]
-  - name: yadisk
-    run_list:
-       - recipe[jtalks-infra::users]
-       - recipe[sudo]
-       - recipe[jtalks-infra::yandex_disk]
   - name: server
     run_list:
        - recipe[build-essential]
@@ -97,7 +92,6 @@ suites:
        - recipe[jtalks-infra::users]
        - recipe[jtalks-infra::selenium]
        - recipe[jtalks-infra::pochta]
-       - recipe[jtalks-infra::yandex_disk]
        - recipe[jtalks-infra::backup]
        - recipe[jtalks-infra::cicd]
        - recipe[jtalks-infra::crowd]

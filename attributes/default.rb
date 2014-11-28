@@ -24,7 +24,6 @@ default[:jtalks][:users][:i_qa][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00
 default[:jtalks][:users][:site][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:pochta][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:selenium][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
-default[:jtalks][:users][:yadisk][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
 default[:jtalks][:users][:jenkins][:known_hosts][:antarcticle] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
@@ -212,12 +211,3 @@ default[:jenkins][:plugins]["translation"] = "1.10"
 
 # NewRelic
 default[:new_relic][:license_key] = "fake"
-
-# Yandex Disk
-default[:yandex_disk][:user] = "yadisk"
-default[:yandex_disk][:dir] = "/home/#{node[:yandex_disk][:user]}/disk"
-default[:yandex_disk][:login] = "jtalks.org"
-default[:yandex_disk][:password] = "fake"
-default[:yandex_disk][:repo][:url] = "http://repo.yandex.ru/yandex-disk/deb"
-default[:yandex_disk][:repo][:components] = ["stable", "main"]
-default[:yandex_disk][:repo][:key] = "http://repo.yandex.ru/yandex-disk/YANDEX-DISK-KEY.GPG"
