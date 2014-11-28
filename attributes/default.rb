@@ -214,10 +214,10 @@ default[:jenkins][:plugins]["translation"] = "1.10"
 default[:new_relic][:license_key] = "fake"
 
 # Yandex Disk
-default[:yandex_idsk][:user] = "yadisk"
-default[:yandex_idsk][:dir] = "/home/#{node[:yandex_idsk][:user]}/disk"
-default[:yandex_idsk][:login] = "jtalks.org"
-default[:yandex_idsk][:password] = "fake"
-default[:yandex_idsk][:repo][:url] = "http://repo.yandex.ru/yandex-disk/deb"
-default[:yandex_idsk][:repo][:components] = ["stable", "main"]
-default[:yandex_idsk][:repo][:key] = "http://repo.yandex.ru/yandex-disk/YANDEX-DISK-KEY.GPG"
+default[:yandex_disk][:user] = "yadisk"
+default[:yandex_disk][:dir] = "/home/#{node[:yandex_idsk][:user]}/disk"
+default[:yandex_disk][:login] = "jtalks.org"
+default[:yandex_disk][:password] = "fake"
+default[:yandex_disk][:repo][:url] = "http://repo.yandex.ru/yandex-disk/deb"
+default[:yandex_disk][:repo][:components] = ["stable", "main"]
+default[:yandex_disk][:repo][:key] = "http://repo.yandex.ru/yandex-disk/YANDEX-DISK-KEY.GPG"
