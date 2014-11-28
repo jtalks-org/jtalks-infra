@@ -215,7 +215,7 @@ default[:new_relic][:license_key] = "fake"
 
 # Yandex Disk
 default[:yandex_disk][:user] = "yadisk"
-default[:yandex_disk][:dir] = "/home/#{node[:yandex_idsk][:user]}/disk"
+default[:yandex_disk][:dir] = "/home/#{node[:yandex_disk][:user]}/disk"
 default[:yandex_disk][:login] = "jtalks.org"
 default[:yandex_disk][:password] = "fake"
 default[:yandex_disk][:repo][:url] = "http://repo.yandex.ru/yandex-disk/deb"
