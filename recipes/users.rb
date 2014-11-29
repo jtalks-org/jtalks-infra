@@ -21,12 +21,12 @@ node[:jtalks][:users].each do |user, data|
   directory dir do
     owner user
     group user
-    mode user
+    mode perm
   end
 
   directory "#{dir}/backup" do
-    owner owner
-    group owner
+    owner user
+    group user
   end
 
   group user do
