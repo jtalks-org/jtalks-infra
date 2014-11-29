@@ -52,11 +52,6 @@ def prepare
     email "#{owner}@jtalks.org"
   end
 
-  directory "#{dir}/backup" do
-    owner owner
-    group owner
-  end
-
   # Install (if not installed) Maven and config
 
   maven "maven" do
@@ -134,9 +129,7 @@ def configure
           <default>
             <comparator class=\"hudson.util.CaseInsensitiveComparator\"/>
           </default>
-          <int>21</int>
-          <string>BACKUP_DIR</string>
-          <string>#{dir}/backup</string>
+          <int>20</int>
           <string>INST_AUTOTESTS_SSH</string>
           <string>i_autotests@144.76.64.105</string>
           <string>INST_BEGININTESTING_SSH</string>
@@ -144,11 +137,11 @@ def configure
           <string>INST_DEV_SSH</string>
           <string>i_dev@144.76.64.105</string>
           <string>INST_DEV_DB</string>
-          <string>-u dev_admin --password=\"#{node[:jtalks][:db_users][:dev_admin][:password]}\"</string>
+          <string>-u dev_admin --password=#{node[:jtalks][:db_users][:dev_admin][:password]}</string>
           <string>INST_QA_SSH</string>
           <string>i_qa@144.76.64.105</string>
           <string>INST_QA_DB</string>
-          <string>-u qa_admin --password=\"#{node[:jtalks][:db_users][:qa_admin][:password]}\"</string>
+          <string>-u qa_admin --password=#{node[:jtalks][:db_users][:qa_admin][:password]}</string>
           <string>INST_PERFORMANCE_SSH</string>
           <string>i_performance@144.76.64.105</string>
           <string>INST_PREPROD_SSH</string>
