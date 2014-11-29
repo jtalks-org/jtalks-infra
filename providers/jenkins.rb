@@ -144,11 +144,11 @@ def configure
           <string>INST_DEV_SSH</string>
           <string>i_dev@144.76.64.105</string>
           <string>INST_DEV_DB</string>
-          <string>-u dev_admin --password='#{node[:jtalks][:db_users][:dev_admin][:password]}'</string>
+          <string>-u dev_admin --password=\"#{node[:jtalks][:db_users][:dev_admin][:password]}\"</string>
           <string>INST_QA_SSH</string>
           <string>i_qa@144.76.64.105</string>
           <string>INST_QA_DB</string>
-          <string>-u qa_admin --password='#{node[:jtalks][:db_users][:qa_admin][:password]}'</string>
+          <string>-u qa_admin --password=\"#{node[:jtalks][:db_users][:qa_admin][:password]}\"</string>
           <string>INST_PERFORMANCE_SSH</string>
           <string>i_performance@144.76.64.105</string>
           <string>INST_PREPROD_SSH</string>
