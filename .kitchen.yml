@@ -73,6 +73,7 @@ suites:
        - recipe[jtalks-infra::selenium]
   - name: server
     run_list:
+       - recipe[sysctl2]
        - recipe[build-essential]
        - recipe[python]
        - recipe[sudo]

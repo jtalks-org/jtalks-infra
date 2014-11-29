@@ -3,6 +3,8 @@ default[:jtalks][:path][:init_script] = "/etc/init.d"
 default[:jtalks][:cookbook_path] = "#{Chef::Config[:cookbook_path][0]}/jtalks-infra/files/default"
 default[:jtalks][:hostname] = "localhost"
 default[:jtalks][:logs_instances_web] = ["qa","dev","preprod","beginintesting","performance","autotests"]
+# sysctl
+default[:sysctl][:params]["net.core.rmem_max"] = 500
 # backup
 default[:jtalks][:backup][:ftp] = "u99356@u99356.your-backup.de"
 default[:jtalks][:backup][:exclude_dirs] = "/home/aidjek /home/masyan /home/ctapobep"
