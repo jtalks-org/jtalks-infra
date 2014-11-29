@@ -52,6 +52,11 @@ def prepare
     email "#{owner}@jtalks.org"
   end
 
+  directory "#{dir}/backup" do
+    owner owner
+    group owner
+  end
+
   # Install (if not installed) Maven and config
 
   maven "maven" do
@@ -129,45 +134,21 @@ def configure
           <default>
             <comparator class=\"hudson.util.CaseInsensitiveComparator\"/>
           </default>
-          <int>35</int>
-          <string>BACKUP_DB</string>
-          <string>/home/jenkins/backup/db</string>
-          <string>BACKUP_WAR</string>
-          <string>/home/jenkins/backup/war</string>
-          <string>DEV_BACKUP_DIR</string>
-          <string>/home/tomcat/app_backups</string>
-          <string>DEV_IP</string>
-          <string>176.9.66.108</string>
-          <string>DEV_JTALKS_GROUP</string>
-          <string>jtalks</string>
-          <string>DEV_JTALKS_USER</string>
-          <string>jtalks</string>
-          <string>DEV_MYSQL_USER</string>
-          <string>root</string>
-          <string>DEV_SSH</string>
-          <string>tomcat@176.9.66.108</string>
-          <string>DEV_SSH_JTALKS</string>
-          <string>jtalks@176.9.66.108</string>
-          <string>DEV_TOMCAT_DEPLOY</string>
-          <string>/home/tomcat/app/tomcat-deploy/webapps</string>
-          <string>DEV_TOMCAT_DIR</string>
-          <string>/home/tomcat/app</string>
-          <string>DEV_TOMCAT_GROUP</string>
-          <string>tomcat</string>
-          <string>DEV_TOMCAT_JAVATALKS</string>
-          <string>/home/tomcat/app/tomcat-javatalks/webapps</string>
-          <string>DEV_TOMCAT_UAT</string>
-          <string>/home/tomcat/app/tomcat-uat/webapps</string>
-          <string>DEV_TOMCAT_USER</string>
-          <string>tomcat</string>
+          <int>21</int>
+          <string>BACKUP_DIR</string>
+          <string>#{dir}/backup</string>
           <string>INST_AUTOTESTS_SSH</string>
           <string>i_autotests@144.76.64.105</string>
           <string>INST_BEGININTESTING_SSH</string>
           <string>i_beginintesting@144.76.64.105</string>
           <string>INST_DEV_SSH</string>
           <string>i_dev@144.76.64.105</string>
+          <string>INST_DEV_DB</string>
+          <string>-u dev_admin --password='#{node[:jtalks][:db_users][:dev_admin][:password]}'</string>
           <string>INST_QA_SSH</string>
           <string>i_qa@144.76.64.105</string>
+          <string>INST_QA_DB</string>
+          <string>-u qa_admin --password='#{node[:jtalks][:db_users][:qa_admin][:password]}'</string>
           <string>INST_PERFORMANCE_SSH</string>
           <string>i_performance@144.76.64.105</string>
           <string>INST_PREPROD_SSH</string>
@@ -196,10 +177,6 @@ def configure
           <string>jtalks@213.239.201.68</string>
           <string>PROD_USER</string>
           <string>jtalks</string>
-          <string>SSH_TO_POCHTA</string>
-          <string>pochta@176.9.66.108</string>
-          <string>SITE_SSH</string>
-          <string>site@144.76.64.105</string>
         </tree-map>
       </envVars>"
     notifies :restart, "service[#{current_resource.service_name}]", :delayed
