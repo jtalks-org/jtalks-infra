@@ -19,7 +19,15 @@ node[:jtalks][:db_users].each do |user, data|
        password data[:password]
        database_name db_name
        privileges db_data[:privileges]
-       host '%'
+       host "%"
+       action [:create, :grant]
+     end
+     mysql_database_user user do
+       connection root_connection_info
+       password data[:password]
+       database_name db_name
+       privileges db_data[:privileges]
+       host "localhost"
        action [:create, :grant]
      end
    end
