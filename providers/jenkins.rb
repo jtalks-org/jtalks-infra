@@ -21,7 +21,6 @@ def load_current_resource
   @current_resource.service_name(@new_resource.service_name)
   @current_resource.version(@new_resource.version)
   @current_resource.user(@new_resource.user)
-  @current_resource.maven_backup_path(@new_resource.maven_backup_path)
   @current_resource.tomcat_port(@new_resource.tomcat_port)
   @current_resource.tomcat_shutdown_port(@new_resource.tomcat_shutdown_port)
   @current_resource.tomcat_jvm_opts(@new_resource.tomcat_jvm_opts)
@@ -35,6 +34,13 @@ def load_current_resource
   @current_resource.crowd_group(@new_resource.crowd_group)
   @current_resource.crowd_cookie_domain(@new_resource.crowd_cookie_domain)
   @current_resource.crowd_token(@new_resource.crowd_token)
+  @current_resource.deployment_password(@new_resource.deployment_password)
+  @current_resource.ctapobep_password(@new_resource.ctapobep_password)
+  @current_resource.antarcticle_password(@new_resource.antarcticle_password)
+  @current_resource.sonar_db(@new_resource.sonar_db)
+  @current_resource.sonar_db_user(@new_resource.sonar_db_user)
+  @current_resource.sonar_db_password(@new_resource.sonar_db_password)
+  @current_resource.sonar_port(@new_resource.sonar_port)
 
   if Pathname.new("/home/#{@new_resource.user}/#{@current_resource.service_name}/webapps/ROOT").exist?
     @current_resource.exists = true
@@ -44,8 +50,14 @@ end
 def prepare
   owner = "#{current_resource.user}"
   dir = "/home/#{owner}"
-  maven_backup_path = current_resource.maven_backup_path
   maven_version = "3"
+  deployment_password = "#{current_resource.deployment_password}"
+  ctapobep_password = "#{current_resource.ctapobep_password}"
+  antarcticle_password = "#{current_resource.antarcticle_password}"
+  sonar_db = "#{current_resource.sonar_db}"
+  sonar_db_user = "#{current_resource.sonar_db_user}"
+  sonar_db_password = "#{current_resource.sonar_db_password}"
+  sonar_port = "#{current_resource.sonar_port}"
 
   git_user owner do
     full_name owner
@@ -58,7 +70,23 @@ def prepare
     owner owner
     base dir
     version maven_version
-    settings_path "#{maven_backup_path}"
+  end
+
+  template "#{dir}/maven#{maven_version}/conf/settings.xml" do
+    source 'jenkins.maven.settings.xml.erb'
+    mode "775"
+    owner user
+    group user
+    variables({
+                  :local_repository_path => "#{dir}/maven#{maven_version}-repo",
+                  :deployment_password => deployment_password,
+                  :ctapobep_password => ctapobep_password,
+                  :antarcticle_password => antarcticle_password,
+                  :sonar_db => sonar_db,
+                  :sonar_db_user => sonar_db_user,
+                  :sonar_db_password => sonar_db_password,
+                  :sonar_port => sonar_port
+              })
   end
 end
 

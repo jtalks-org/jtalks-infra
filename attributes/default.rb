@@ -160,10 +160,12 @@ default[:jenkins][:crowd][:application] = "jenkins"
 default[:jenkins][:crowd][:password] = "jenkins"
 default[:jenkins][:crowd][:group] = "jira-users"
 default[:jenkins][:config][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jenkins"
-default[:jenkins][:maven][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jenkins/maven/settings.xml"
 default[:nginx][:site][:jenkins][:name] = "#{node[:jenkins][:user][:name]}"
 default[:nginx][:site][:jenkins][:host] = "ci.#{node[:jtalks][:hostname]}"
 default[:nginx][:site][:jenkins][:context_path] = "/"
+default[:jenkins][:maven][:pass][:deployment] = "fake"
+default[:jenkins][:maven][:pass][:ctapobep] = "fake"
+default[:jenkins][:maven][:pass][:antarcticle] = "fake"
 
 ## plugins
 default[:jenkins][:plugins]["ansicolor"] = "0.3.1"

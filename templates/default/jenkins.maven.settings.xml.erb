@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <localRepository><%= @local_repository_path %></localRepository>
+
+    <pluginGroups>
+
+    </pluginGroups>
+
+    <proxies>
+
+    </proxies>
+
+    <servers>
+        <server>
+            <id>jtalks-nexus</id>
+            <username>deployment</username>
+            <password><%= @deployment_password %></password>
+        </server>
+
+        <server>
+            <id>deployment-pipeline</id>
+            <username>deployment</username>
+            <password><%= @deployment_password %></password>
+        </server>
+        <server>
+            <id>sonatype-snapshot</id>
+            <username>ctapobep</username>
+            <password><%= @ctapobep_password %></password>
+        </server>
+        <server>
+            <id>sonatype</id>
+            <username>ctapobep</username>
+            <password><%= @ctapobep_password %></password>
+        </server>
+
+    </servers>
+    <mirrors>
+        <mirror>
+            <id>nexus</id>
+            <mirrorOf>*</mirrorOf>
+            <url>http://repo.jtalks.org/content/groups/public</url>
+        </mirror>
+    </mirrors>
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sonar.jdbc.url>
+                    jdbc:mysql://144.76.64.105:3306/<%= @sonar_db %>?characterEncoding=utf8
+                </sonar.jdbc.url>
+                <sonar.jdbc.driverClassName>com.mysql.jdbc.Driver</sonar.jdbc.driverClassName>
+                <sonar.jdbc.username><%= @sonar_db_user %></sonar.jdbc.username>
+                <sonar.jdbc.password><%= @sonar_db_password %></sonar.jdbc.password>
+                <sonar.host.url>http://sonar.jtalks.org:<%= @sonar_port %></sonar.host.url>
+            </properties>
+        </profile>
+        <profile>
+            <properties>
+               <antarcticle.username>jtalks</antarcticle.username>
+               <antarcticle.password><%= @antarcticle_password %></antarcticle.password>
+            </properties>
+
+            <id>nexus</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <url>http://repo.jtalks.org/content/groups/public</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>central</id>
+                    <url>http://repo.jtalks.org/content/groups/public</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+</settings>

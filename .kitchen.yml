@@ -19,18 +19,17 @@ suites:
   - name: jenkins
     run_list:
       - recipe[ark]
-      - recipe[git]
-      - recipe[git_user]
+#      - recipe[git]
+#      - recipe[git_user]
       - recipe[jtalks-infra::users]
       - recipe[sudo]
-      - recipe[java]
-      - recipe[mysql::server]
-      - recipe[mysql::client]
-      - recipe[database::mysql]
-      - recipe[nginx]
-      - recipe[jtalks-infra::crowd]
+#      - recipe[java]
+#      - recipe[mysql::server]
+#      - recipe[mysql::client]
+#      - recipe[database::mysql]
+#      - recipe[nginx]
+#      - recipe[jtalks-infra::crowd]
       - recipe[jtalks-infra::jenkins]
-      - recipe[jtalks-infra::nginx]
   - name: crowd
     run_list:
        - recipe[ark]
@@ -42,7 +41,6 @@ suites:
        - recipe[database::mysql]
        - recipe[nginx]
        - recipe[jtalks-infra::crowd]
-       - recipe[jtalks-infra::nginx]
   - name: users
     run_list:
        - recipe[jtalks-infra::users]

@@ -5,8 +5,6 @@ default_action :install_or_update
 attribute :service_name       , :name_attribute => true, :required => true,  :kind_of => String
 attribute :version       , :required => true,  :kind_of => String
 attribute :user       , :required => true,  :kind_of => String
-attribute :maven_backup_path       , :required => true,  :kind_of => String
-attribute :maven_backup_path       , :required => true,  :kind_of => String
 attribute :tomcat_port     , :required => true, :kind_of => Integer
 attribute :tomcat_shutdown_port     , :required => true, :kind_of => Integer
 attribute :tomcat_jvm_opts          , :required => false, :kind_of => String
@@ -20,5 +18,12 @@ attribute :crowd_app_password       , :required => true,  :kind_of => String
 attribute :crowd_group       , :required => true,  :kind_of => String
 attribute :crowd_cookie_domain       , :required => true,  :kind_of => String
 attribute :crowd_token       , :required => true,  :kind_of => String
+attribute :deployment_password , :required => true,  :kind_of => String
+attribute :ctapobep_password , :required => true,  :kind_of => String
+attribute :antarcticle_password , :required => true,  :kind_of => String
+attribute :sonar_db , :required => true,  :kind_of => String
+attribute :sonar_db_user , :required => true,  :kind_of => String
+attribute :sonar_db_password , :required => true,  :kind_of => String
+attribute :sonar_port , :required => true,  :kind_of => Integer
 
 attr_accessor :exists

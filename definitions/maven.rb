@@ -1,4 +1,4 @@
-define :maven, :owner => 'root', :base => '/home', :owner_group => nil, :version => '3', :settings_path => nil do
+define :maven, :owner => 'root', :base => '/home', :owner_group => nil, :version => '3' do
   if params[:owner_group] == nil
     params[:owner_group] = params[:owner]
   end
@@ -30,23 +30,5 @@ define :maven, :owner => 'root', :base => '/home', :owner_group => nil, :version
     owner params[:owner]
     group params[:owner_group]
     not_if { File.exists?("#{base_dir}/maven#{version}") }
-  end
-
-  # Restore configs
-  execute "restore #{base_dir}/maven#{version} settings.xml" do
-    command "cp #{params[:settings_path]} #{result_folder_name}/conf/"
-    cwd base_dir
-    user params[:owner]
-    group params[:owner]
-    only_if { File.exist?(params[:settings_path]) }
-  end
-
-  # Replace configs
-  jtalks_infra_replacer "maven_settings_xml" do
-    owner params[:owner]
-    group params[:owner]
-    file "#{base_dir}/#{result_folder_name}/conf/settings.xml"
-    replace "<localRepository>.*</localRepository>"
-    with "<localRepository>#{base_dir}/maven#{version}-repo</localRepository>"
   end
 end

@@ -1,7 +1,6 @@
 jtalks_infra_jenkins "jenkins" do
   version node[:jenkins][:version]
   user node[:jenkins][:user][:name]
-  maven_backup_path node[:jenkins][:maven][:backup_path]
   tomcat_port node[:tomcat][:instances][:jenkins][:port]
   tomcat_shutdown_port node[:tomcat][:instances][:jenkins][:shutdown_port]
   tomcat_jvm_opts node[:tomcat][:instances][:jenkins][:jvm_opts]
@@ -15,4 +14,11 @@ jtalks_infra_jenkins "jenkins" do
   crowd_group node[:jenkins][:crowd][:group]
   crowd_cookie_domain node[:crowd][:app][:cookie_domain]
   crowd_token node[:crowd][:app][:token]
+  deployment_password node[:jenkins][:maven][:pass][:deployment]
+  ctapobep_password node[:jenkins][:maven][:pass][:ctapobep]
+  antarcticle_password node[:jenkins][:maven][:pass][:antarcticle]
+  sonar_db node[:sonar][:db][:name]
+  sonar_db_user node[:sonar][:db][:user]
+  sonar_db_password node[:sonar][:db][:password]
+  sonar_port node[:sonar][:port]
 end
