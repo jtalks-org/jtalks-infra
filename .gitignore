@@ -1,7 +1,6 @@
 .kitchen/
 .kitchen.local.yml
 .idea/
-*.lock
 *.iml
 *.ipr
 *.iws

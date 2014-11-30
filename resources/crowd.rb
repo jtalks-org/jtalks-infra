@@ -14,7 +14,6 @@ attribute :db_backup_path     , :required => true, :kind_of => String
 attribute :tomcat_port     , :required => true, :kind_of => Integer
 attribute :tomcat_shutdown_port     , :required => true, :kind_of => Integer
 attribute :tomcat_jvm_opts          , :required => false, :kind_of => String
-attribute :mysql_connector_url     , :required => true, :kind_of => String
 attribute :app_conf_license_text     , :required => true, :kind_of => String
 attribute :ext_libs_url     , :required => true, :kind_of => String
 attribute :app_conf_name     , :required => true, :kind_of => String

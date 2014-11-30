@@ -10,7 +10,6 @@ jtalks_infra_crowd "crowd" do
   tomcat_port node[:tomcat][:instances][:crowd][:port]
   tomcat_shutdown_port node[:tomcat][:instances][:crowd][:shutdown_port]
   tomcat_jvm_opts node[:tomcat][:instances][:crowd][:jvm_opts]
-  mysql_connector_url node[:mysql][:connector][:download_url]
   app_conf_license_text node[:crowd][:app][:license_text]
   ext_libs_url node[:crowd][:download_external_libs]
   app_conf_name node[:crowd][:app][:name]

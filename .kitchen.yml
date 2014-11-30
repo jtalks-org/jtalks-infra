@@ -6,6 +6,7 @@ driver:
   network:
      - ["forwarded_port", {guest: 8080, host: 8080}]
      - ["forwarded_port", {guest: 8081, host: 8081}]
+     - ["forwarded_port", {guest: 9000, host: 9000}]
 
 provisioner:
   name: chef_solo
@@ -71,6 +72,18 @@ suites:
        - recipe[jtalks-infra::users]
        - recipe[sudo]
        - recipe[jtalks-infra::selenium]
+  - name: sonar
+    run_list:
+       - recipe[ark]
+       - recipe[java]
+       - recipe[jtalks-infra::users]
+       - recipe[sudo]
+       - recipe[mysql::server]
+       - recipe[mysql::client]
+       - recipe[database::mysql]
+       - recipe[jtalks-infra::dbs_and_dbusers]
+       - recipe[jtalks-infra::crowd]
+       - recipe[jtalks-infra::sonar]
   - name: server
     run_list:
        - recipe[sysctl2]

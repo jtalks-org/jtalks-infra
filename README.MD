@@ -32,3 +32,6 @@ Chef Cookbook of JTalks's infrastructure
 - install cookbook (from directory of project files) `rm -Rf /var/chef/cookbooks; berks vendor /var/chef/cookbooks`
 - check attributes and recipes in server.json
 - run chef   `chef-solo -j /var/chef/cookbooks/jtalks-infra/files/default/attributes/server.json`
+- additional actions
+  check pernissions to git, github
+  if sonar have new version, need upgrade DB => <host>:<port>/setup

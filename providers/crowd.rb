@@ -26,7 +26,6 @@ def load_current_resource
   @current_resource.tomcat_port(@new_resource.tomcat_port)
   @current_resource.tomcat_shutdown_port(@new_resource.tomcat_shutdown_port)
   @current_resource.tomcat_jvm_opts(@new_resource.tomcat_jvm_opts)
-  @current_resource.mysql_connector_url(@new_resource.mysql_connector_url)
   @current_resource.ext_libs_url(@new_resource.ext_libs_url)
   @current_resource.db_name(@new_resource.db_name)
   @current_resource.db_user(@new_resource.db_user)
@@ -144,22 +143,11 @@ def install_or_update_tomcat
     shutdown_port tomcat_shutdown_port
     jvm_opts tomcat_jvm_opts
   end
-  #libraries copying always but notify restart server only if have change (need to update tomcat)
-  ark "mysql_connector" do
-    url "#{current_resource.mysql_connector_url}"
-    path "/tmp"
-    owner owner
-    group owner
-    action :put
-    not_if {Pathname.new("/tmp/mysql_connector").exist?}
-    notifies :restart, "service[#{current_resource.service_name}]", :delayed
-  end
 
-  execute "add_connector_to_tomcat" do
-    command "cp mysql-connector*.jar #{app_dir}/lib;"
-    cwd "/tmp/mysql_connector"
+  #libraries copying always but notify restart server only if have change (need to update tomcat)
+  mysql_connector "copy_mysql_connector_for_crowd" do
     user owner
-    group owner
+    path "#{app_dir}/lib"
   end
 
   ark "external_crowd_libs" do

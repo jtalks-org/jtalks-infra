@@ -26,6 +26,7 @@ default[:jtalks][:users][:i_qa][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00
 default[:jtalks][:users][:site][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:pochta][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:selenium][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:sonar][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
 default[:jtalks][:users][:jenkins][:known_hosts][:antarcticle] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
@@ -39,7 +40,7 @@ default[:jtalks][:users][:i_javatalks][:known_hosts][:antarcticle] = ["jtalks.or
 default[:jtalks][:users][:root][:known_hosts][:u99356] = ["u99356.your-backup.de"]
 
 default[:jtalks][:dbs] = ["crowd","autotests","beginintesting","performance","preprod","preprod_antarcticle","dev_jcommune",
-                          "dev_poulpe","dev_antarcticle","qa","qa_antarcticle"]
+                          "dev_poulpe","dev_antarcticle","qa","qa_antarcticle","sonar"]
 default[:jtalks][:db_users][:crowd][:password] = "crowd"
 default[:jtalks][:db_users][:crowd][:dbs][:crowd][:privileges] = [:all]
 default[:jtalks][:db_users][:autotests_admin][:password] = "autotests_admin"
@@ -74,6 +75,8 @@ default[:jtalks][:db_users][:qa_admin][:dbs][:qa_antarcticle][:privileges] = [:a
 default[:jtalks][:db_users][:qa_reader][:password] = "qa_reader"
 default[:jtalks][:db_users][:qa_reader][:dbs][:qa][:privileges] = [:select]
 default[:jtalks][:db_users][:qa_reader][:dbs][:qa_antarcticle][:privileges] = [:select]
+default[:jtalks][:db_users][:sonar][:password] = "sonar"
+default[:jtalks][:db_users][:sonar][:dbs][:sonar][:privileges] = [:all]
 
 # nginx
 default[:jtalks][:nginx][:custom_configs] = ["site", "dev_site", "logs"]
@@ -95,6 +98,7 @@ default[:mysql][:connector][:download_url] = "http://dev.mysql.com/get/Downloads
 default[:java][:install_flavor] = "oracle"
 default[:java][:jdk_version] = 7
 default[:java][:oracle][:accept_oracle_download_terms] = true
+default[:java][:jdk]["7"]["x86_64"][:url] = 'http://download.oracle.com/otn-pub/java/jdk/7u67-b01/jdk-7u67-linux-x64.tar.gz'
 
 # Maven
 default[:maven]['3'][:version] = "3.2.3"
@@ -213,3 +217,38 @@ default[:jenkins][:plugins]["translation"] = "1.10"
 
 # NewRelic
 default[:new_relic][:license_key] = "fake"
+
+# Sonar
+default[:sonar][:user] = "sonar"
+default[:sonar][:version] = "4.5.1"
+default[:sonar][:source_url] = "http://dist.sonar.codehaus.org/sonarqube-#{node[:sonar][:version]}.zip"
+default[:sonar][:port] = 9000
+default[:sonar][:jvm_opts] = "-Xmx768m -XX:MaxPermSize=384m"
+default[:sonar][:db][:name] = "sonar"
+default[:sonar][:db][:user] = "sonar"
+default[:sonar][:db][:password] = "#{node[:jtalks][:db_users][:sonar][:password]}"
+default[:sonar][:db][:backup_path] = "#{node[:jtalks][:cookbook_path]}/sonar/sonar.sql" # for test backup user "admin" with password "1111"
+default[:sonar][:crowd][:application] = "jenkins"
+default[:sonar][:crowd][:password] = "jenkins"
+
+default[:sonar][:repo] = "http://repository.codehaus.org/org/codehaus/sonar-plugins"
+default[:sonar][:plugins][:java][:version] = "1.3"
+default[:sonar][:plugins][:java][:url] = "#{node[:sonar][:repo]}/java/sonar-java-plugin/#{node[:sonar][:plugins][:java][:version]}/sonar-java-plugin-#{node[:sonar][:plugins][:java][:version]}.jar"
+default[:sonar][:plugins][:jacoco][:version] = "1.3"
+default[:sonar][:plugins][:jacoco][:url] = "#{node[:sonar][:repo]}/java/sonar-jacoco-plugin/#{node[:sonar][:plugins][:jacoco][:version]}/sonar-jacoco-plugin-#{node[:sonar][:plugins][:jacoco][:version]}.jar"
+default[:sonar][:plugins][:squid][:version] = "1.3"
+default[:sonar][:plugins][:squid][:url] = "#{node[:sonar][:repo]}/java/sonar-squid-java-plugin/#{node[:sonar][:plugins][:squid][:version]}/sonar-squid-java-plugin-#{node[:sonar][:plugins][:squid][:version]}.jar"
+default[:sonar][:plugins][:cobertura][:version] = "1.3"
+default[:sonar][:plugins][:cobertura][:url] = "#{node[:sonar][:repo]}/java/sonar-cobertura-plugin/#{node[:sonar][:plugins][:cobertura][:version]}/sonar-cobertura-plugin-#{node[:sonar][:plugins][:cobertura][:version]}.jar"
+default[:sonar][:plugins][:checkstyle][:version] = "1.3"
+default[:sonar][:plugins][:checkstyle][:url] = "#{node[:sonar][:repo]}/java/sonar-checkstyle-plugin/#{node[:sonar][:plugins][:checkstyle][:version]}/sonar-checkstyle-plugin-#{node[:sonar][:plugins][:checkstyle][:version]}.jar"
+default[:sonar][:plugins][:findbugs][:version] = "1.3"
+default[:sonar][:plugins][:findbugs][:url] = "#{node[:sonar][:repo]}/java/sonar-findbugs-plugin/#{node[:sonar][:plugins][:findbugs][:version]}/sonar-findbugs-plugin-#{node[:sonar][:plugins][:findbugs][:version]}.jar"
+default[:sonar][:plugins][:pmd][:version] = "1.3"
+default[:sonar][:plugins][:pmd][:url] = "#{node[:sonar][:repo]}/java/sonar-pmd-plugin/#{node[:sonar][:plugins][:pmd][:version]}/sonar-pmd-plugin-#{node[:sonar][:plugins][:pmd][:version]}.jar"
+default[:sonar][:plugins][:surefire][:version] = "1.3"
+default[:sonar][:plugins][:surefire][:url] = "#{node[:sonar][:repo]}/java/sonar-surefire-plugin/#{node[:sonar][:plugins][:surefire][:version]}/sonar-surefire-plugin-#{node[:sonar][:plugins][:surefire][:version]}.jar"
+default[:sonar][:plugins][:pitest][:version] = "0.4"
+default[:sonar][:plugins][:pitest][:url] = "#{node[:sonar][:repo]}/sonar-pitest-plugin/#{node[:sonar][:plugins][:pitest][:version]}/sonar-pitest-plugin-#{node[:sonar][:plugins][:pitest][:version]}.jar"
+default[:sonar][:plugins][:crowd][:version] = "1.0"
+default[:sonar][:plugins][:crowd][:url] = "#{node[:sonar][:repo]}/sonar-crowd-plugin/#{node[:sonar][:plugins][:crowd][:version]}/sonar-crowd-plugin-#{node[:sonar][:plugins][:crowd][:version]}.jar"

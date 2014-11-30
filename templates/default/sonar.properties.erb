@@ -1,0 +1,23 @@
+sonar.jdbc.username=<%= @db_user %>
+sonar.jdbc.password=<%= @db_password %>
+
+sonar.jdbc.url=jdbc:mysql://localhost/<%= @db_name %>?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useConfigs=maxPerformance
+
+sonar.jdbc.maxActive=20
+sonar.jdbc.maxIdle=5
+sonar.jdbc.minIdle=2
+sonar.jdbc.maxWait=5000
+sonar.jdbc.minEvictableIdleTimeMillis=600000
+sonar.jdbc.timeBetweenEvictionRunsMillis=30000
+
+sonar.web.javaOpts=<%= @jvm_opts %> -XX:+HeapDumpOnOutOfMemoryError
+
+sonar.web.port=<%= @port %>
+
+sonar.web.http.maxThreads=50
+sonar.web.https.maxThreads=50
+
+sonar.authenticator.class=org.sonar.plugins.crowd.CrowdAuthenticator
+crowd.url=<%= @crowd_url %>
+crowd.application=<%= @crowd_app %>
+crowd.password=<%= @crowd_password %>
