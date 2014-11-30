@@ -110,4 +110,5 @@ suites:
        - recipe[jtalks-infra::cicd]
        - recipe[jtalks-infra::crowd]
        - recipe[jtalks-infra::jenkins]
+       - recipe[jtalks-infra::sonar]
        - recipe[jtalks-infra::nginx]
