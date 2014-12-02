@@ -6,6 +6,7 @@ driver:
   network:
      - ["forwarded_port", {guest: 8080, host: 8080}]
      - ["forwarded_port", {guest: 8081, host: 8081}]
+     - ["forwarded_port", {guest: 8082, host: 8082}]
      - ["forwarded_port", {guest: 9000, host: 9000}]
 
 provisioner:
@@ -82,6 +83,13 @@ suites:
        - recipe[jtalks-infra::dbs_and_dbusers]
        - recipe[jtalks-infra::crowd]
        - recipe[jtalks-infra::sonar]
+  - name: nexus
+    run_list:
+       - recipe[ark]
+       - recipe[java]
+       - recipe[jtalks-infra::users]
+       - recipe[sudo]
+       - recipe[jtalks-infra::nexus]
   - name: server
     run_list:
        - recipe[sysctl2]
@@ -104,6 +112,7 @@ suites:
        - recipe[jtalks-infra::users]
        - recipe[jtalks-infra::selenium]
        - recipe[jtalks-infra::pochta]
+       - recipe[jtalks-infra::nexus]
        - recipe[jtalks-infra::backup]
        - recipe[jtalks-infra::cicd]
        - recipe[jtalks-infra::crowd]

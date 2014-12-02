@@ -12,6 +12,7 @@ case "$1" in
         exit 0
     ;;
     stop)
+        pkill -9 -f selenium
         echo stopped.
         exit 0
     ;;

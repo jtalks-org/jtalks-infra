@@ -27,6 +27,7 @@ default[:jtalks][:users][:site][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00
 default[:jtalks][:users][:pochta][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:selenium][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:sonar][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:nexus][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
 default[:jtalks][:users][:jenkins][:known_hosts][:antarcticle] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
@@ -254,3 +255,11 @@ default[:sonar][:plugins][:crowd][:version] = "1.0"
 default[:sonar][:plugins][:crowd][:url] = "#{node[:sonar][:repo]}/sonar-crowd-plugin/#{node[:sonar][:plugins][:crowd][:version]}/sonar-crowd-plugin-#{node[:sonar][:plugins][:crowd][:version]}.jar"
 default[:sonar][:plugins][:cobertura][:version] = "1.6.3"
 default[:sonar][:plugins][:cobertura][:url] = "#{node[:sonar][:repo]}/sonar-cobertura-plugin/#{node[:sonar][:plugins][:cobertura][:version]}/sonar-cobertura-plugin-#{node[:sonar][:plugins][:cobertura][:version]}.jar"
+
+# Nexus
+default[:nexus][:user] = "nexus"
+default[:tomcat][:instances][:nexus][:port] = 8082
+default[:tomcat][:instances][:nexus][:shutdown_port] = 8083
+default[:tomcat][:instances][:nexus][:jvm_opts] = "-Xmx256m -XX:MaxPermSize=384m"
+default[:nexus][:version] = "2.11.0"
+default[:nexus][:source_url] = "http://download.sonatype.com/nexus/oss/nexus-#{node[:nexus][:version]}.war"
