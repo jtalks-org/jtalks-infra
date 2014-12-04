@@ -8,7 +8,7 @@ default[:sysctl][:params]["net.core.rmem_max"] = 512000
 # backup
 default[:jtalks][:backup][:ftp] = "u99356@u99356.your-backup.de"
 default[:jtalks][:backup][:exclude_dirs] = "/home/aidjek /home/masyan /home/ctapobep"
-# to generate password use command 'openssl passwd -1' and enter password
+#to generate password use command 'openssl passwd -1' and enter password
 default[:jtalks][:users][:root][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1
 default[:jtalks][:users][:masyan][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1
 default[:jtalks][:users][:qa][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1
@@ -263,3 +263,7 @@ default[:tomcat][:instances][:nexus][:shutdown_port] = 8083
 default[:tomcat][:instances][:nexus][:jvm_opts] = "-Xmx256m -XX:MaxPermSize=384m"
 default[:nexus][:version] = "2.11.0"
 default[:nexus][:source_url] = "http://download.sonatype.com/nexus/oss/nexus-#{node[:nexus][:version]}.war"
+default[:nexus][:crowd][:application] = "jenkins"
+default[:nexus][:crowd][:password] = "jenkins"
+default[:nexus][:crowd][:plugin][:version] = "2.9.0"
+default[:nexus][:crowd][:plugin][:source_url] = "http://github.com/PatrickRoumanoff/nexus-crowd-plugin/wiki/nexus-crowd-plugin-#{node[:nexus][:crowd][:plugin][:version]}-bundle.zip"

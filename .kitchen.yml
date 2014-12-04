@@ -89,6 +89,11 @@ suites:
        - recipe[java]
        - recipe[jtalks-infra::users]
        - recipe[sudo]
+       - recipe[mysql::server]
+       - recipe[mysql::client]
+       - recipe[database::mysql]
+       - recipe[jtalks-infra::dbs_and_dbusers]
+       - recipe[jtalks-infra::crowd]
        - recipe[jtalks-infra::nexus]
   - name: server
     run_list:
