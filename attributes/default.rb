@@ -261,7 +261,7 @@ default[:nexus][:user] = "nexus"
 default[:tomcat][:instances][:nexus][:port] = 8082
 default[:tomcat][:instances][:nexus][:shutdown_port] = 8083
 default[:tomcat][:instances][:nexus][:jvm_opts] = "-Xmx256m -XX:MaxPermSize=384m"
-default[:nexus][:version] = "2.11.0"
+default[:nexus][:version] = "2.9.0"
 default[:nexus][:source_url] = "http://download.sonatype.com/nexus/oss/nexus-#{node[:nexus][:version]}.war"
 default[:nexus][:crowd][:application] = "jenkins"
 default[:nexus][:crowd][:password] = "jenkins"

@@ -96,7 +96,7 @@ def install_or_update_nexus
     user user
     group user
     cwd "#{dir}/sonatype-work/nexus/plugin-repository"
-    command "rm -Rf *crowd-plugin*; unzip crowd-plugin.zip; rm -Rf crowd-plugin.zip"
+    command "rm -Rf nexus-crowd-plugin*; unzip crowd-plugin.zip; rm -Rf crowd-plugin.zip"
     action :nothing
   end
 
