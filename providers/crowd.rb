@@ -37,14 +37,19 @@ def load_current_resource
   @current_resource.app_conf_cookie_domain(@new_resource.app_conf_cookie_domain)
   @current_resource.db_backup_path(@new_resource.db_backup_path)
 
-  if Pathname.new("/home/#{@new_resource.user}/#{@current_resource.service_name}/webapps/ROOT").exist?
+  # if Pathname.new("/home/#{@new_resource.user}/#{@current_resource.service_name}/#{current_resource.service_name}/webapps/ROOT").exist?
     @current_resource.exists = true
-  end
+  # end
 end
 
 def prepare
   owner = "#{current_resource.user}"
   data_dir = "#{current_resource.data_dir}/#{current_resource.service_name}"
+
+  directory "/home/#{owner}/#{current_resource.service_name}/#{current_resource.service_name}" do
+    owner owner
+    group owner
+  end
 
   directory "#{current_resource.data_dir}" do
     owner owner
@@ -62,7 +67,7 @@ end
 def configure
   owner = "#{current_resource.user}"
   user_home = "/home/#{owner}"
-  app_dir = "#{user_home}/#{current_resource.service_name}"
+  app_dir = "#{user_home}/#{current_resource.service_name}/#{current_resource.service_name}"
   data_dir = "#{current_resource.data_dir}/#{current_resource.service_name}"
   db_name = "#{current_resource.db_name}"
   db_user = "#{current_resource.db_user}"
@@ -131,14 +136,15 @@ end
 def install_or_update_tomcat
   owner = "#{current_resource.user}"
   user_home = "/home/#{owner}"
-  app_dir = "#{user_home}/#{current_resource.service_name}"
+  service_name = "#{current_resource.service_name}"
+  app_dir = "#{user_home}/#{service_name}/#{service_name}"
   tomcat_port = current_resource.tomcat_port
   tomcat_shutdown_port = current_resource.tomcat_shutdown_port
   tomcat_jvm_opts = "#{current_resource.tomcat_jvm_opts}"
 
   tomcat "#{current_resource.service_name}" do
     owner owner
-    base user_home
+    base "#{user_home}/#{service_name}"
     port tomcat_port
     shutdown_port tomcat_shutdown_port
     jvm_opts tomcat_jvm_opts
@@ -156,7 +162,7 @@ def install_or_update_tomcat
     owner owner
     action :put
     not_if {Pathname.new("/tmp/external_crowd_libs").exist?}
-    notifies :restart, "service[#{current_resource.service_name}]", :delayed
+    notifies :restart, "service[#{service_name}]", :delayed
   end
 
   execute "add_external_libs_to_tomcat" do
@@ -169,7 +175,7 @@ end
 
 def install_or_update_crowd
   owner = "#{current_resource.user}"
-  app_dir = "/home/#{owner}/#{current_resource.service_name}"
+  app_dir = "/home/#{owner}/#{current_resource.service_name}/#{current_resource.service_name}"
   version = "#{current_resource.version}"
 
   remote_file "#{app_dir}/webapps/crowd-#{version}.zip" do

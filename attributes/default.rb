@@ -99,7 +99,7 @@ default[:mysql][:connector][:download_url] = "http://dev.mysql.com/get/Downloads
 default[:java][:install_flavor] = "oracle"
 default[:java][:jdk_version] = 7
 default[:java][:oracle][:accept_oracle_download_terms] = true
-default[:java][:jdk]["7"]["x86_64"][:url] = 'http://download.oracle.com/otn-pub/java/jdk/7u67-b01/jdk-7u67-linux-x64.tar.gz'
+default[:java][:jdk]["7"]["x86_64"][:url] = "http://download.oracle.com/otn-pub/java/jdk/7u67-b01/jdk-7u67-linux-x64.tar.gz"
 
 # Maven
 default[:maven]['3'][:version] = "3.2.3"
@@ -118,7 +118,7 @@ default[:atlassian][:user][:home_dir] = "/home/#{node[:atlassian][:user][:name]}
 default[:tomcat][:instances][:crowd][:port] = 8081
 default[:tomcat][:instances][:crowd][:shutdown_port] = 8011
 default[:tomcat][:instances][:crowd][:jvm_opts] = "-Xmx256m -XX:MaxPermSize=384m"
-default[:crowd][:version] = "2.3.1"
+default[:crowd][:version] = "2.8.0"
 default[:crowd][:download_external_libs] = "http://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-#{node[:crowd][:version]}.tar.gz"
 default[:crowd][:download_url] = "http://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-#{node[:crowd][:version]}-war.zip"
 default[:crowd][:app][:name] = "crowd"
@@ -261,7 +261,7 @@ default[:nexus][:user] = "nexus"
 default[:tomcat][:instances][:nexus][:port] = 8082
 default[:tomcat][:instances][:nexus][:shutdown_port] = 8083
 default[:tomcat][:instances][:nexus][:jvm_opts] = "-Xmx256m -XX:MaxPermSize=384m"
-default[:nexus][:version] = "2.9.0"
+default[:nexus][:version] = "2.11.0"
 default[:nexus][:source_url] = "http://download.sonatype.com/nexus/oss/nexus-#{node[:nexus][:version]}.war"
 default[:nexus][:crowd][:application] = "jenkins"
 default[:nexus][:crowd][:password] = "jenkins"
