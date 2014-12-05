@@ -51,11 +51,6 @@ def prepare
     group owner
   end
 
-  directory "/home/#{owner}/#{current_resource.service_name}/#{current_resource.service_name}" do
-    owner owner
-    group owner
-  end
-
   directory "#{current_resource.data_dir}" do
     owner owner
     group owner
