@@ -113,7 +113,7 @@ def configure
   user = "#{current_resource.user}"
   dir = "/home/#{user}"
   service_name = "#{current_resource.service_name}"
-  crowd_url = "#{current_resource.crowd_url}/"
+  crowd_url = "#{current_resource.crowd_url}/".gsub(/\\/, "")
   crowd_app_name = "#{current_resource.crowd_app_name}"
   crowd_app_password = "#{current_resource.crowd_app_password}"
   crowd_group = "#{current_resource.crowd_group}"
