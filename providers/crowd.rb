@@ -37,7 +37,7 @@ def load_current_resource
   @current_resource.app_conf_cookie_domain(@new_resource.app_conf_cookie_domain)
   @current_resource.db_backup_path(@new_resource.db_backup_path)
 
-  if Pathname.new("/home/#{@new_resource.user}/#{@current_resource.service_name}/#{current_resource.service_name}/webapps/ROOT").exist?
+  if Pathname.new("/home/#{@new_resource.user}/#{@current_resource.service_name}/webapps/ROOT").exist?
     @current_resource.exists = true
   end
 end
