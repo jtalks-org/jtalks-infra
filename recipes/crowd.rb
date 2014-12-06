@@ -1,7 +1,7 @@
 jtalks_infra_crowd "crowd" do
   version node[:crowd][:version]
-  user node[:atlassian][:user][:name]
-  data_dir node[:atlassian][:user][:home_dir]
+  user node[:crowd][:user]
+  data_dir node[:crowd][:home_dir]
   download_url node[:crowd][:download_url]
   db_name node[:crowd][:db][:name]
   db_user node[:crowd][:db][:user]

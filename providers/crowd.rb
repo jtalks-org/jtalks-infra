@@ -44,14 +44,9 @@ end
 
 def prepare
   owner = "#{current_resource.user}"
-  data_dir = "#{current_resource.data_dir}/#{current_resource.service_name}"
+  data_dir = "#{current_resource.data_dir}"
 
   directory "/home/#{owner}/#{current_resource.service_name}" do
-    owner owner
-    group owner
-  end
-
-  directory "#{current_resource.data_dir}" do
     owner owner
     group owner
   end
@@ -67,8 +62,8 @@ end
 def configure
   owner = "#{current_resource.user}"
   user_home = "/home/#{owner}"
-  app_dir = "#{user_home}/#{current_resource.service_name}/#{current_resource.service_name}"
-  data_dir = "#{current_resource.data_dir}/#{current_resource.service_name}"
+  app_dir = "#{user_home}/#{current_resource.service_name}"
+  data_dir = "#{current_resource.data_dir}"
   db_name = "#{current_resource.db_name}"
   db_user = "#{current_resource.db_user}"
   db_password = "#{current_resource.db_password}"
@@ -115,13 +110,13 @@ def configure
   #if new installation than restore database
   if !(@current_resource.exists)
     # Restore database from backup
-    execute "restore database" do
-      command "
-    mysql -u #{db_user} --password='#{db_password}' -b #{db_name} < #{current_resource.db_backup_path};
-    "
-      user owner
-      group owner
-    end
+    # execute "restore database" do
+    #   command "
+    # mysql -u #{db_user} --password='#{db_password}' -b #{db_name} < #{current_resource.db_backup_path};
+    # "
+    #   user owner
+    #   group owner
+    # end
   end
 
   mysql_execute "set cookie domain" do
@@ -136,14 +131,14 @@ def install_or_update_tomcat
   owner = "#{current_resource.user}"
   user_home = "/home/#{owner}"
   service_name = "#{current_resource.service_name}"
-  app_dir = "#{user_home}/#{service_name}/#{service_name}"
+  app_dir = "#{user_home}/#{service_name}"
   tomcat_port = current_resource.tomcat_port
   tomcat_shutdown_port = current_resource.tomcat_shutdown_port
   tomcat_jvm_opts = "#{current_resource.tomcat_jvm_opts}"
 
-  tomcat "#{current_resource.service_name}" do
+  tomcat "#{service_name}" do
     owner owner
-    base "#{user_home}/#{service_name}"
+    base "#{user_home}"
     port tomcat_port
     shutdown_port tomcat_shutdown_port
     jvm_opts tomcat_jvm_opts
@@ -174,7 +169,7 @@ end
 
 def install_or_update_crowd
   owner = "#{current_resource.user}"
-  app_dir = "/home/#{owner}/#{current_resource.service_name}/#{current_resource.service_name}"
+  app_dir = "/home/#{owner}/#{current_resource.service_name}"
   version = "#{current_resource.version}"
 
   remote_file "#{app_dir}/webapps/crowd-#{version}.zip" do

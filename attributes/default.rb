@@ -111,10 +111,9 @@ default[:tomcat][:minor_version] = "0.14"
 default[:tomcat][:version] = "#{node[:tomcat][:major_version]}.#{node[:tomcat][:minor_version]}"
 default[:tomcat][:download_url] = "http://archive.apache.org/dist/tomcat/tomcat-#{node[:tomcat][:major_version]}/v#{node[:tomcat][:version]}/bin/apache-tomcat-#{node[:tomcat][:version]}.zip"
 
-#Atlassian
-default[:atlassian][:user][:name] = "atlassian"
-default[:atlassian][:user][:home_dir] = "/home/#{node[:atlassian][:user][:name]}/var"
 ##crowd
+default[:crowd][:user] = "crowd"
+default[:crowd][:home_dir] = "/home/#{node[:crowd][:user]}/var"
 default[:tomcat][:instances][:crowd][:port] = 8081
 default[:tomcat][:instances][:crowd][:shutdown_port] = 8011
 default[:tomcat][:instances][:crowd][:jvm_opts] = "-Xmx256m -XX:MaxPermSize=384m"
