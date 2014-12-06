@@ -654,20 +654,7 @@ def configure
     notifies :restart, "service[#{service_name}]", :delayed
   end
 
-  jtalks_infra_replacer "jenkins_realm_config" do
-    owner user
-    group user
-    file "#{conf_dir}/security-configuration.xml"
-    replace "<realms.*</realms>"
-    with "<realms>
-            <realm>XmlAuthenticatingRealm</realm>
-            <realm>XmlAuthorizingRealm</realm>
-            <realm>NexusCrowdAuthenticationRealm</realm>
-          </realms>"
-    notifies :restart, "service[#{service_name}]", :delayed
-  end
-
-  jtalks_infra_replacer "jenkins_realm_config" do
+  jtalks_infra_replacer "nexus_realm_config" do
     owner user
     group user
     file "#{conf_dir}/security-configuration.xml"
