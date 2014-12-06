@@ -46,11 +46,6 @@ def prepare
   owner = "#{current_resource.user}"
   data_dir = "#{current_resource.data_dir}"
 
-  directory "/home/#{owner}/#{current_resource.service_name}" do
-    owner owner
-    group owner
-  end
-
   directory "#{data_dir}" do
     owner owner
     group owner
