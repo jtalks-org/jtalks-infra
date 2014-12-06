@@ -133,7 +133,7 @@ def configure
          <group>#{crowd_group}</group>
          <nestedGroups>false</nestedGroups>
          <useSSO>true</useSSO>
-         <sessionValidationInterval>2</sessionValidationInterval>
+         <sessionValidationInterval>10</sessionValidationInterval>
          <cookieDomain>#{crowd_cookie_domain}</cookieDomain>
          <cookieTokenkey>#{crowd_token}</cookieTokenkey>
          <useProxy>false</useProxy>
