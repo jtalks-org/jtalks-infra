@@ -12,5 +12,7 @@ attribute :crowd_url      , :required => true,  :kind_of => String
 attribute :crowd_app_name  , :required => true,  :kind_of => String
 attribute :crowd_app_password , :required => true,  :kind_of => String
 attribute :crowd_plugin_source_url , :required => true,  :kind_of => String
+attribute :crowd_group , :required => true,  :kind_of => String
+attribute :admin_password , :required => true,  :kind_of => String
 
 attr_accessor :exists

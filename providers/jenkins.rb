@@ -35,8 +35,9 @@ def load_current_resource
   @current_resource.crowd_cookie_domain(@new_resource.crowd_cookie_domain)
   @current_resource.crowd_token(@new_resource.crowd_token)
   @current_resource.deployment_password(@new_resource.deployment_password)
-  @current_resource.ctapobep_password(@new_resource.ctapobep_password)
+  @current_resource.deployment_username(@new_resource.deployment_username)
   @current_resource.antarcticle_password(@new_resource.antarcticle_password)
+  @current_resource.antarcticle_username(@new_resource.antarcticle_username)
   @current_resource.sonar_db(@new_resource.sonar_db)
   @current_resource.sonar_db_user(@new_resource.sonar_db_user)
   @current_resource.sonar_db_password(@new_resource.sonar_db_password)
@@ -52,8 +53,9 @@ def prepare
   dir = "/home/#{owner}"
   maven_version = "3"
   deployment_password = "#{current_resource.deployment_password}"
-  ctapobep_password = "#{current_resource.ctapobep_password}"
+  deployment_username = "#{current_resource.deployment_username}"
   antarcticle_password = "#{current_resource.antarcticle_password}"
+  antarcticle_username = "#{current_resource.antarcticle_username}"
   sonar_db = "#{current_resource.sonar_db}"
   sonar_db_user = "#{current_resource.sonar_db_user}"
   sonar_db_password = "#{current_resource.sonar_db_password}"
@@ -80,8 +82,9 @@ def prepare
     variables({
                   :local_repository_path => "#{dir}/maven#{maven_version}-repo",
                   :deployment_password => deployment_password,
-                  :ctapobep_password => ctapobep_password,
+                  :deployment_username => deployment_username,
                   :antarcticle_password => antarcticle_password,
+                  :antarcticle_username => antarcticle_username,
                   :sonar_db => sonar_db,
                   :sonar_db_user => sonar_db_user,
                   :sonar_db_password => sonar_db_password,

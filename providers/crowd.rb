@@ -132,7 +132,6 @@ def configure
   end
 end
 
-
 def install_or_update_tomcat
   owner = "#{current_resource.user}"
   user_home = "/home/#{owner}"

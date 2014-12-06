@@ -19,8 +19,9 @@ attribute :crowd_group       , :required => true,  :kind_of => String
 attribute :crowd_cookie_domain       , :required => true,  :kind_of => String
 attribute :crowd_token       , :required => true,  :kind_of => String
 attribute :deployment_password , :required => true,  :kind_of => String
-attribute :ctapobep_password , :required => true,  :kind_of => String
+attribute :deployment_username , :required => true,  :kind_of => String
 attribute :antarcticle_password , :required => true,  :kind_of => String
+attribute :antarcticle_username , :required => true,  :kind_of => String
 attribute :sonar_db , :required => true,  :kind_of => String
 attribute :sonar_db_user , :required => true,  :kind_of => String
 attribute :sonar_db_password , :required => true,  :kind_of => String

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security>
+  <version>2.0.5</version>
+  <users>
+    <user>
+      <id>anonymous</id>
+      <firstName>Nexus</firstName>
+      <lastName>Anonymous User</lastName>
+      <password>$shiro1$SHA-512$1024$oFLefRIkZ8u3Zpi5exyiiw==$PmsA4b3d0vF0tqbwtcd7StkKa6oVUjt6+yNMA1fR1qs/BVsF9cI3ExYLce4r8qTeL1Hn3FC8elvHOcv0gK0Hkg==</password>
+      <status>active</status>
+      <email>changeme2@yourcompany.com</email>
+    </user>
+    <user>
+      <id>admin</id>
+      <firstName>Administrator</firstName>
+      <lastName>User</lastName>
+      <password><%= @admin_password %></password>
+      <status>active</status>
+      <email>changeme@yourcompany.com</email>
+    </user>
+  </users>
+  <roles>
+    <role>
+      <id><%= @crowd_group %></id>
+      <name><%= @crowd_group %></name>
+      <description>External mapping for <%= @crowd_group %> (Crowd)</description>
+      <roles>
+        <role>nx-deployment</role>
+        <role>nx-admin</role>
+        <role>repo-all-full</role>
+      </roles>
+    </role>
+  </roles>
+  <userRoleMappings>
+    <userRoleMapping>
+      <userId>anonymous</userId>
+      <source>default</source>
+      <roles>
+        <role>anonymous</role>
+        <role>repository-any-read</role>
+      </roles>
+    </userRoleMapping>
+    <userRoleMapping>
+      <userId>admin</userId>
+      <source>default</source>
+      <roles>
+        <role>nx-admin</role>
+      </roles>
+    </userRoleMapping>
+  </userRoleMappings>
+</security>

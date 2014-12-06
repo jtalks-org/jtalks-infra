@@ -164,9 +164,10 @@ default[:jenkins][:config][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jen
 default[:nginx][:site][:jenkins][:name] = "#{node[:jenkins][:user][:name]}"
 default[:nginx][:site][:jenkins][:host] = "ci.#{node[:jtalks][:hostname]}"
 default[:nginx][:site][:jenkins][:context_path] = "/"
-default[:jenkins][:maven][:pass][:deployment] = "fake"
-default[:jenkins][:maven][:pass][:ctapobep] = "fake"
-default[:jenkins][:maven][:pass][:antarcticle] = "fake"
+default[:jenkins][:maven][:users][:deployment][:name] = "nexus-deployment"
+default[:jenkins][:maven][:users][:deployment][:password] = "fake"
+default[:jenkins][:maven][:users][:antarcticle][:name] = "jtalks"
+default[:jenkins][:maven][:users][:antarcticle][:password] = "fake"
 
 ## plugins
 default[:jenkins][:plugins]["ansicolor"] = "0.3.1"
@@ -263,7 +264,9 @@ default[:tomcat][:instances][:nexus][:shutdown_port] = 8083
 default[:tomcat][:instances][:nexus][:jvm_opts] = "-Xmx256m -XX:MaxPermSize=384m"
 default[:nexus][:version] = "2.11.0"
 default[:nexus][:source_url] = "http://download.sonatype.com/nexus/oss/nexus-#{node[:nexus][:version]}.war"
+default[:nexus][:admin_password] = "$shiro1$SHA-512$1024$HFmQ+Qwygzm0Yy1jJjKTUw==$6Wim7rxO++llnf6DG5b5JtdYQSH9FzgWv4FJKu/pJCiPsZADP3al9fBmLaBYvLyySURYcqGSVk66J8ts22Rb8g==" # for test backup user "admin" with password "1"
 default[:nexus][:crowd][:application] = "jenkins"
 default[:nexus][:crowd][:password] = "jenkins"
+default[:nexus][:crowd][:group] = "crowd-administrators"
 default[:nexus][:crowd][:plugin][:version] = "2.9.0"
 default[:nexus][:crowd][:plugin][:source_url] = "http://github.com/PatrickRoumanoff/nexus-crowd-plugin/wiki/nexus-crowd-plugin-#{node[:nexus][:crowd][:plugin][:version]}-bundle.zip"
