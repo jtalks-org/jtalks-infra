@@ -28,6 +28,7 @@ default[:jtalks][:users][:pochta][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w
 default[:jtalks][:users][:selenium][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:sonar][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:nexus][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:fisheye][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
 default[:jtalks][:users][:jenkins][:known_hosts][:antarcticle] = ["jtalks.org","#{node[:jtalks][:hostname]}"]
@@ -41,9 +42,11 @@ default[:jtalks][:users][:i_javatalks][:known_hosts][:antarcticle] = ["jtalks.or
 default[:jtalks][:users][:root][:known_hosts][:u99356] = ["u99356.your-backup.de"]
 
 default[:jtalks][:dbs] = ["crowd","autotests","beginintesting","performance","preprod","preprod_antarcticle","dev_jcommune",
-                          "dev_poulpe","dev_antarcticle","qa","qa_antarcticle","sonar"]
+                          "dev_poulpe","dev_antarcticle","qa","qa_antarcticle","sonar","fisheye"]
 default[:jtalks][:db_users][:crowd][:password] = "crowd"
 default[:jtalks][:db_users][:crowd][:dbs][:crowd][:privileges] = [:all]
+default[:jtalks][:db_users][:fisheye][:password] = "fisheye"
+default[:jtalks][:db_users][:fisheye][:dbs][:fisheye][:privileges] = [:all]
 default[:jtalks][:db_users][:autotests_admin][:password] = "autotests_admin"
 default[:jtalks][:db_users][:autotests_admin][:dbs][:autotests][:privileges] = [:all]
 default[:jtalks][:db_users][:autotests_reader][:password] = "autotests_reader"
@@ -269,3 +272,17 @@ default[:nexus][:crowd][:password] = "jenkins"
 default[:nexus][:crowd][:group] = "crowd-administrators"
 default[:nexus][:crowd][:plugin][:version] = "2.9.0"
 default[:nexus][:crowd][:plugin][:source_url] = "http://github.com/PatrickRoumanoff/nexus-crowd-plugin/wiki/nexus-crowd-plugin-#{node[:nexus][:crowd][:plugin][:version]}-bundle.zip"
+
+# Fisheye
+default[:fisheye][:user] = "fisheye"
+default[:fisheye][:home_dir] = "/home/#{node[:fisheye][:user]}/var"
+default[:fisheye][:port] = 8085
+default[:fisheye][:version] = "3.6.1"
+default[:fisheye][:source_url] = "http://www.atlassian.com/software/crucible/downloads/binary/crucible-#{node[:fisheye][:version]}.zip"
+default[:fisheye][:crowd][:application] = "fisheye"
+default[:fisheye][:crowd][:password] = "fisheye"
+default[:fisheye][:db][:password] = "fisheye"
+default[:fisheye][:db][:name] = "fisheye"
+default[:fisheye][:db][:user] = "fisheye"
+default[:fisheye][:db][:password] = "#{node[:jtalks][:db_users][:fisheye][:password]}"
+default[:fisheye][:db][:backup_path] = "#{node[:jtalks][:cookbook_path]}/fisheye/fisheye.sql"

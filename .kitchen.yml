@@ -7,6 +7,7 @@ driver:
      - ["forwarded_port", {guest: 8080, host: 8080}]
      - ["forwarded_port", {guest: 8081, host: 8081}]
      - ["forwarded_port", {guest: 8082, host: 8082}]
+     - ["forwarded_port", {guest: 8085, host: 8085}]
      - ["forwarded_port", {guest: 9000, host: 9000}]
 
 provisioner:
@@ -95,6 +96,18 @@ suites:
        - recipe[jtalks-infra::dbs_and_dbusers]
        - recipe[jtalks-infra::crowd]
        - recipe[jtalks-infra::nexus]
+  - name: fisheye
+    run_list:
+       - recipe[ark]
+       - recipe[java]
+       - recipe[jtalks-infra::users]
+       - recipe[sudo]
+       - recipe[mysql::server]
+       - recipe[mysql::client]
+       - recipe[database::mysql]
+       - recipe[jtalks-infra::dbs_and_dbusers]
+       - recipe[jtalks-infra::crowd]
+       - recipe[jtalks-infra::fisheye]
   - name: server
     run_list:
        - recipe[sysctl2]
@@ -120,6 +133,7 @@ suites:
        - recipe[jtalks-infra::backup]
        - recipe[jtalks-infra::cicd]
        - recipe[jtalks-infra::crowd]
+       - recipe[jtalks-infra::fisheye]
        - recipe[jtalks-infra::nexus]
        - recipe[jtalks-infra::jenkins]
        - recipe[jtalks-infra::sonar]

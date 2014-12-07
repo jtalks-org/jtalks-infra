@@ -1,0 +1,33 @@
+#!/bin/bash
+# Start and stop Fisheye server
+
+FISHEYE_DIRECTORY=<%= @dir %>
+
+case "$1" in
+    start)
+        $FISHEYE_DIRECTORY/bin/fisheyectl.sh start
+        echo started.
+        exit 0
+    ;;
+
+    stop)
+        $FISHEYE_DIRECTORY/bin/fisheyectl.sh stop
+        echo stopped.
+        exit 0
+    ;;
+
+    restart)
+        $0 stop
+        sleep 5
+        $0 start
+        exit 0
+    ;;
+*)
+
+echo "Usage: $0 {start|stop|restart}"
+exit 1
+;;
+
+esac
+
+

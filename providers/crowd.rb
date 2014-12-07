@@ -45,11 +45,33 @@ end
 def prepare
   owner = "#{current_resource.user}"
   data_dir = "#{current_resource.data_dir}"
+  db_name = "#{current_resource.db_name}"
+  db_user = "#{current_resource.db_user}"
+  db_password = "#{current_resource.db_password}"
 
   directory "#{data_dir}" do
     owner owner
     group owner
     notifies :restart, "service[#{current_resource.service_name}]", :delayed
+  end
+
+  #if new installation than restore database
+  if !(@current_resource.exists)
+    # Restore database from backup
+    execute "restore database" do
+      command "
+    mysql -u #{db_user} --password='#{db_password}' -b #{db_name} < #{current_resource.db_backup_path};
+    "
+      user owner
+      group owner
+    end
+  end
+
+  mysql_execute "set cookie domain" do
+    user "#{db_user}"
+    password "#{db_password}"
+    db "#{db_name}"
+    command "update cwd_property set property_value='#{app_cookie_domain}' where property_name='domain'"
   end
 end
 
@@ -100,25 +122,6 @@ def configure
                   :cookie_domain => app_cookie_domain
               })
     notifies :restart, "service[#{current_resource.service_name}]", :delayed
-  end
-
-  #if new installation than restore database
-  if !(@current_resource.exists)
-    # Restore database from backup
-    execute "restore database" do
-      command "
-    mysql -u #{db_user} --password='#{db_password}' -b #{db_name} < #{current_resource.db_backup_path};
-    "
-      user owner
-      group owner
-    end
-  end
-
-  mysql_execute "set cookie domain" do
-    user "#{db_user}"
-    password "#{db_password}"
-    db "#{db_name}"
-    command "update cwd_property set property_value='#{app_cookie_domain}' where property_name='domain'"
   end
 end
 
