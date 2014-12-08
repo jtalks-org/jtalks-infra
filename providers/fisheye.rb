@@ -44,12 +44,23 @@ def prepare
     group user
     notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
   end
+
 end
 
 def configure
   user = "#{current_resource.user}"
   dir = "/home/#{user}"
   app_dir = "#{dir}/#{current_resource.service_name}"
+  data_dir = "#{current_resource.data_dir}"
+
+  jtalks_infra_replacer "add_fisheye_home_variable" do
+    owner user
+    group user
+    file "#{app_dir}/bin/fisheyectl.sh"
+    replace "FISHEYE_INST=$FISHEYE_HOME"
+    with "FISHEYE_INST=\"#{data_dir}\""
+    notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
+  end
 
   #if new installation than restore database
   if !(@current_resource.exists)

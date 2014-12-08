@@ -4,7 +4,6 @@ require 'chef/mixin/shell_out'
 include Chef::Mixin::Checksum
 include Chef::Mixin::ShellOut
 
-
 def whyrun_supported?
   true
 end
