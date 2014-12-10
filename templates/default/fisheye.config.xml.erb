@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config control-bind="127.0.0.1:<%= @control_port %>" version="1.0" admin-hash="2AAE2D0A7E13DAF68D625A9FF2EF6FF1">
+
+  <license SID="B6K2-LNJQ-AWY8-17ZW">
+    <fisheye><%= @fisheye_license %></fisheye>
+    <crucible><%= @crusible_license %></crucible>
+  </license>
+  <git-config git-executable="<%= @git_bin_path %>"/>
+  <web-server site-url="<%= @url %>">
+    <http bind=":<%= @http_port %>" proxy-port="80"/>
+  </web-server>
+
+  <smtp username="<%= @smtp_user %>" sendEmailsAsActioner="true" starttls="false" from="<%= @smtp_user %>"
+        host="<%= @smtp_host %>" password="<%= @smtp_password %>" port="<%= @smtp_port %>" debug="false"/>
+  <security allow-anon="true" allow-cru-anon="true" enable-login-captcha="true" max-login-failures="3">
+    <built-in>
+      <signup enabled="true"/>
+    </built-in>
+    <crowd auto-add="true" resync="true" refreshExistingUsers="false" resyncPeriod="1 hour" sso-enabled="true"
+           jiraInstance="false">
+      <crowd-properties>
+        application.password=<%= @crowd_app_password %>
+        application.name=<%= @crowd_app_name %>
+        crowd.server.url=<%= @crowd_url %>
+      </crowd-properties>
+      <resyncGroupsList>
+        <% @crowd_groups.each do |group| -%>
+            <group name="<%= group %>"/>
+        <% end -%>
+      </resyncGroupsList>
+    </crowd>
+    <admins>
+      <system-admins>
+          <group><%= @crowd_admin_group %></group>
+      </system-admins>
+    </admins>
+    <avatar>
+      <disabled/>
+    </avatar>
+    <emailVisibility/>
+  </security>
+  <repository-defaults>
+    <linker/>
+    <allow/>
+    <tarball enabled="false" maxFileCount="0"/>
+    <security allow-anon="true" allow-logged-in="false" allow-anon-write="false" allow-logged-in-write="true">
+      <required-groups/>
+      <required-write-groups/>
+    </security>
+    <text-indexer enabled="true"/>
+    <watches enabled="true"/>
+    <commit-message-syntax syntax="plain"/>
+    <changeset-discussions enabled="true"/>
+    <show-checkout-url>true</show-checkout-url>
+  </repository-defaults>
+
+   <% @repositories.each do |name, data| -%>
+      <repository name="<%= name %>" description="" store-diff="true" enabled="true">
+          <git location="<%= data[:location] %>" renames="none" path="">
+            <ssh-auth key-name="<%= data[:key_name] %>"/>
+          </git>
+          <linker/>
+          <security use-defaults="true" allow-anon="false" allow-logged-in="false">
+            <required-groups/>
+          </security>
+      </repository>
+  <% end -%>
+  <backup>
+    <schedule enabled="false">
+      <prefix>fisheyeandcrucible_backup_</prefix>
+      <date-pattern>yyyy_MM_dd</date-pattern>
+      <frequency>WEEKLY</frequency>
+      <time>01:00</time>
+      <items>
+        <item name="sql"/>
+        <item name="templates"/>
+        <item name="plugins"/>
+        <item name="uploads"/>
+      </items>
+    </schedule>
+  </backup>
+  <check-for-updates enabled="true"/>
+  <database type="mysql">
+    <connection dialect="org.hibernate.dialect.MySQL5InnoDBDialect" driver="com.mysql.jdbc.Driver"
+                jdbcurl="jdbc:mysql://localhost/<%= @db_name %>" password="<%= @db_password %>" username="<%= @db_user %>" maxPoolSize="20"
+                minPoolSize="5" driverSource="bundled"/>
+    <parameters>useUnicode=true
+      characterEncoding=UTF8
+      connectionCollation=UTF8_bin
+    </parameters>
+  </database>
+  <snippet/>
+</config>
