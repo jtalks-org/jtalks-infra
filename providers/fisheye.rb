@@ -76,6 +76,19 @@ def prepare
     group user
     recursive true
     notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
+    end
+
+  directory "#{data_dir}/lib" do
+    owner user
+    group user
+    recursive true
+    notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
+  end
+
+  #libraries copying always but notify restart server only if have change (need to update tomcat)
+  mysql_connector "copy_mysql_connector_for_fisheye" do
+    user user
+    path "#{data_dir}/lib"
   end
 
   template "#{data_dir}/config.xml" do

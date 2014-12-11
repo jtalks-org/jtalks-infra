@@ -99,6 +99,8 @@ suites:
   - name: fisheye
     run_list:
        - recipe[ark]
+       - recipe[git]
+       - recipe[git_user]
        - recipe[java]
        - recipe[jtalks-infra::users]
        - recipe[sudo]
