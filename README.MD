@@ -35,3 +35,4 @@ Chef Cookbook of JTalks's infrastructure
 - additional actions
   check pernissions to git, github
   if sonar have new version, need upgrade DB => <host>:<port>/setup
+  update Application Links to application (Atlassian)
