@@ -91,6 +91,30 @@ def prepare
     path "#{data_dir}/lib"
   end
 
+  directory "#{data_dir}/data" do
+    owner user
+    group user
+    recursive true
+    notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
+  end
+
+  directory "#{data_dir}/data/auth" do
+    owner user
+    group user
+    mode "700"
+    recursive true
+    notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
+  end
+
+  cookbook_file "#{data_dir}/data/auth/id_rsa" do
+    owner user
+    group user
+    source "keys/#{user}/id_rsa"
+    mode "600"
+    only_if { Pathname.new("#{node[:jtalks][:cookbook_path]}/keys/#{user}/id_rsa").exist? }
+    notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
+  end
+
   template "#{data_dir}/config.xml" do
     source 'fisheye.config.xml.erb'
     mode '775'
