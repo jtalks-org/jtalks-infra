@@ -1,7 +1,7 @@
 jtalks_infra_fisheye "fisheye" do
   user node[:fisheye][:user]
   data_dir node[:fisheye][:home_dir]
-  host "http://#{node[:nginx][:site][:fisheye][:host]}"
+  host node[:fisheye][:url]
   port node[:fisheye][:port]
   control_port node[:fisheye][:control_port]
   source_url node[:fisheye][:source_url]
