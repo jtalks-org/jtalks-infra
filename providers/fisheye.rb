@@ -151,6 +151,9 @@ def configure
   dir = "/home/#{user}"
   app_dir = "#{dir}/#{current_resource.service_name}"
   data_dir = "#{current_resource.data_dir}"
+  db_name = "#{current_resource.db_name}"
+  db_password = "#{current_resource.db_password}"
+  db_user = "#{current_resource.db_user}"
 
   jtalks_infra_replacer "add_fisheye_home_variable" do
     owner user
@@ -163,7 +166,14 @@ def configure
 
   #if new installation than restore database
   if !(@current_resource.exists)
-
+    # Restore database from backup
+    execute "restore database" do
+      command "
+        mysql -u #{db_user} --password='#{db_password}' -b #{db_name} < #{current_resource.db_backup_path};
+      "
+      user user
+      group user
+    end
   end
 end
 
