@@ -306,5 +306,6 @@ default[:fisheye][:repositories][:jtalks_common][:key_name] = "id_rsa"
 default[:fisheye][:repositories][:poulpe][:location] = "git@github.com:jtalks-org/poulpe.git"
 default[:fisheye][:repositories][:poulpe][:key_name] = "id_rsa"
 default[:nginx][:site][:fisheye][:name] = "fisheye"
-default[:nginx][:site][:fisheye][:host] = "fisheye.#{node[:jtalks][:hostname]}"
+#TODO исправить на спольщование хоста
+default[:nginx][:site][:fisheye][:host] = "fisheye.jtalks.org"
 default[:nginx][:site][:fisheye][:context_path] = "/"
