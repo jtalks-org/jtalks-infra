@@ -167,7 +167,7 @@ def configure
   #if new installation than restore database
   if !(@current_resource.exists)
     # Restore database from backup
-    execute "restore database" do
+    execute "restore_database_to_fisheye" do
       command "
         mysql -u #{db_user} --password='#{db_password}' -b #{db_name} < #{current_resource.db_backup_path};
       "
