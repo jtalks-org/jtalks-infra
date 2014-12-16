@@ -82,7 +82,6 @@ def install_or_update_nexus
       user user
       group user
     end
-
   end
 
   remote_file "#{dir}/sonatype-work/nexus/plugin-repository/crowd-plugin.zip" do

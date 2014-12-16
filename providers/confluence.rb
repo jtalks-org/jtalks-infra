@@ -46,6 +46,11 @@ def prepare
   db_name = "#{current_resource.db_name}"
   db_user = "#{current_resource.db_user}"
   db_password = "#{current_resource.db_password}"
+  license_text = "#{current_resource.db_password}"
+  crowd_url = "#{current_resource.crowd_url}"
+  crowd_app_name = "#{current_resource.crowd_app_name}"
+  crowd_app_password = "#{current_resource.crowd_app_password}"
+  db_backup_path = "#{current_resource.db_backup_path}"
 
   directory "#{data_dir}" do
     owner user
@@ -53,22 +58,93 @@ def prepare
     notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 
+  template "#{data_dir}/confluence.cfg.xml" do
+    source 'confluence.cfg.xml.erb'
+    mode '775'
+    owner user
+    group user
+    variables({
+                  :license_text=> license_text,
+                  :db_name => db_name,
+                  :db_user => db_user,
+                  :db_password => db_password
+              })
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
+  end
+
   #if new installation than restore database
   if !(@current_resource.exists)
     # Restore database from backup
-    execute "restore_database_confluence" do
-      command "
-        mysql -u #{db_user} --password='#{db_password}' -b #{db_name} < #{current_resource.db_backup_path};
+    if  Pathname.new("#{current_resource.db_backup_path}").exist?
+      execute "restore_database_confluence" do
+        command "
+        mysql -u #{db_user} --password='#{db_password}' -b #{db_name} < #{db_backup_path};
         "
-      user user
-      group user
-      only_if { Pathname.new("#{current_resource.db_backup_path}").exist? }
+        user user
+        group user
+      end
+
+      mysql_execute "set_crowd_application_name_to_confluence" do
+        user "#{db_user}"
+        password "#{db_password}"
+        db "#{db_name}"
+        command "update cwd_directory_attribute set attribute_value='#{crowd_app_name}' where attribute_name='application.name'"
+      end
+
+      mysql_execute "set_crowd_url_to_confluence" do
+        user "#{db_user}"
+        password "#{db_password}"
+        db "#{db_name}"
+        command "update cwd_directory_attribute set attribute_value='#{crowd_url}' where attribute_name='crowd.server.url'"
+      end
+
+      mysql_execute "set_crowd_application_password_to_confluence" do
+        user "#{db_user}"
+        password "#{db_password}"
+        db "#{db_name}"
+        command "update cwd_directory_attribute set attribute_value='#{crowd_app_password}' where attribute_name='application.password'"
+      end
     end
   end
 end
 
 def configure
+  user = "#{current_resource.user}"
+  user_home = "/home/#{user}"
+  service_name = "#{current_resource.service_name}"
+  app_dir = "#{user_home}/#{service_name}"
+  data_dir = "#{current_resource.data_dir}"
+  crowd_url = "#{current_resource.crowd_url}"
+  crowd_app_name = "#{current_resource.crowd_app_name}"
+  crowd_app_password = "#{current_resource.crowd_app_password}"
 
+  # Restore configs
+  file "#{app_dir}/webapps/ROOT/WEB-INF/classes/confluence-init.properties" do
+    owner user
+    group user
+    content "confluence.home=#{data_dir}"
+    notifies :restart, "service[#{service_name}]", :delayed
+    end
+
+   file "#{app_dir}/conf/Catalina/localhost/ROOT.xml" do
+    owner user
+    group user
+    content "<Context path=\"\" docBase=\"#{app_dir}/webapps/ROOT\" debug=\"0\" reloadable=\"true\"></Context>"
+    notifies :restart, "service[#{service_name}]", :delayed
+  end
+
+  template "#{app_dir}/webapps/ROOT/WEB-INF/classes/crowd.properties" do
+    source 'confluence.properties.erb'
+    mode '775'
+    owner user
+    group user
+    variables({
+                  :crowd_url => crowd_url,
+                  :crowd_app_name => crowd_app_name,
+                  :crowd_app_password => crowd_app_password
+              })
+    notifies :restart, "service[#{service_name}]", :delayed
+  end
 end
 
 def install_or_update_tomcat
@@ -96,6 +172,29 @@ def install_or_update_tomcat
 end
 
 def install_or_update_confluence
+  user = "#{current_resource.user}"
+  dir = "/home/#{user}"
+  service_name = "#{current_resource.service_name}"
+  app_dir = "#{dir}/#{service_name}"
+  version = "#{current_resource.version}"
+
+  remote_file "#{app_dir}/webapps/confluence-#{version}.tar.gz" do
+    source "#{current_resource.source_url}"
+    owner user
+    group user
+    notifies :run, "execute[unpack_and_remove_confluence]", :immediately
+    notifies :restart, "service[#{service_name}]", :delayed
+    not_if { Pathname.new("#{app_dir}/webapps/confluence-#{version}.tar.gz}").exist? }
+  end
+
+  execute "unpack_and_remove_confluence" do
+    user user
+    group user
+    cwd "#{app_dir}/webapps"
+    command "rm -Rf #{app_dir}/webapps/ROOT; tar xvfz confluence-#{version}.tar.gz;
+                     mv confluence-#{version}/confluence ROOT; rm -Rf confluence-#{version}"
+    action :nothing
+  end
 
 end
 

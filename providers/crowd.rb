@@ -174,20 +174,12 @@ def install_or_update_crowd
     source "#{current_resource.download_url}"
     owner owner
     group owner
-    notifies :run, "execute[remove_previous_version]", :immediately
+    notifies :run, "execute[unpack_and_remove_crowd]", :immediately
     notifies :restart, "service[#{current_resource.service_name}]", :delayed
     not_if { Pathname.new("#{app_dir}/webapps/crowd-#{version}.zip}").exist? }
   end
 
-  execute "remove_previous_version" do
-    user owner
-    group owner
-    command "rm -Rf #{app_dir}/webapps/ROOT"
-    action :nothing
-    notifies :run, "execute[unpack_and_remove_archive]", :immediately
-  end
-
-  execute "unpack_and_remove_archive" do
+  execute "unpack_and_remove_crowd" do
     user owner
     group owner
     cwd "#{app_dir}/webapps"
