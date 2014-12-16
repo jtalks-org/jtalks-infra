@@ -1,0 +1,17 @@
+jtalks_infra_confluence "confluence" do
+  version node[:confluence][:version]
+  user node[:confluence][:user]
+  data_dir node[:confluence][:home_dir]
+  source_url node[:confluence][:source_url]
+  db_name node[:confluence][:db][:name]
+  db_user node[:confluence][:db][:user]
+  db_password node[:confluence][:db][:password]
+  db_backup_path node[:confluence][:db][:backup_path]
+  tomcat_port node[:tomcat][:instances][:confluence][:port]
+  tomcat_shutdown_port node[:tomcat][:instances][:confluence][:shutdown_port]
+  tomcat_jvm_opts node[:tomcat][:instances][:confluence][:jvm_opts]
+  license_text node[:confluence][:license_text]
+  crowd_url node[:crowd][:app][:server_url]
+  crowd_app_name node[:confluence][:crowd][:application]
+  crowd_app_password node[:confluence][:crowd][:password]
+end

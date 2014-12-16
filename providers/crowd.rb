@@ -57,13 +57,13 @@ def prepare
 
   #if new installation than restore database
   if !(@current_resource.exists)
-    # Restore database from backup
     execute "restore database" do
       command "
     mysql -u #{db_user} --password='#{db_password}' -b #{db_name} < #{current_resource.db_backup_path};
     "
       user owner
       group owner
+      only_if { Pathname.new("#{current_resource.db_backup_path}").exist? }
     end
   end
 

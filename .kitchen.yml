@@ -4,6 +4,7 @@ driver:
     memory: 4096
   name: vagrant
   network:
+     - ["forwarded_port", {guest: 8050, host: 8050}]
      - ["forwarded_port", {guest: 8059, host: 8059}]
      - ["forwarded_port", {guest: 8080, host: 8080}]
      - ["forwarded_port", {guest: 8081, host: 8081}]
@@ -111,6 +112,20 @@ suites:
        - recipe[jtalks-infra::dbs_and_dbusers]
        - recipe[jtalks-infra::crowd]
        - recipe[jtalks-infra::fisheye]
+  - name: confluence
+    run_list:
+       - recipe[ark]
+       - recipe[git]
+       - recipe[git_user]
+       - recipe[java]
+       - recipe[jtalks-infra::users]
+       - recipe[sudo]
+       - recipe[mysql::server]
+       - recipe[mysql::client]
+       - recipe[database::mysql]
+       - recipe[jtalks-infra::dbs_and_dbusers]
+       - recipe[jtalks-infra::crowd]
+       - recipe[jtalks-infra::confluence]
   - name: server
     run_list:
        - recipe[sysctl2]
@@ -140,4 +155,5 @@ suites:
        - recipe[jtalks-infra::nexus]
        - recipe[jtalks-infra::jenkins]
        - recipe[jtalks-infra::sonar]
+       - recipe[jtalks-infra::confluence]
        - recipe[jtalks-infra::nginx]

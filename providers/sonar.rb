@@ -68,13 +68,13 @@ def configure
 
   #if new installation than restore database
   if !(@current_resource.exists)
-    # Restore database from backup
     execute "restore database_sonar" do
       command "
     mysql -u #{db_user} --password='#{db_password}' -b #{db_name} < #{current_resource.db_backup_path};
     "
       user user
       group user
+      only_if { Pathname.new("#{current_resource.db_backup_path}").exist? }
     end
 
     directory "#{app_dir}/data/es" do
