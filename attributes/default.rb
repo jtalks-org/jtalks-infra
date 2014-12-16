@@ -98,7 +98,7 @@ default[:authorization][:sudo][:passwordless] = "true"
 default[:authorization][:sudo][:include_sudoers_d] = "true"
 
 #Database
-default[:mysql][:version] = '5.5'
+default[:mysql][:version] = "5.5"
 default[:mysql][:client][:version] = "#{node[:mysql][:version]}"
 default[:mysql][:server_root_password] = 'root'
 default[:mysql][:server_debian_password] = nil
@@ -157,7 +157,7 @@ default[:confluence][:license_text] = "fake"
 default[:confluence][:db][:name] = "confluence"
 default[:confluence][:db][:user] = "confluence"
 default[:confluence][:db][:password] = "#{node[:jtalks][:db_users][:confluence][:password]}"
-default[:confluence][:db][:backup_path] = "#{node[:jtalks][:cookbook_path]}/confluence/confluence.sql"
+default[:confluence][:db][:backup_path] = "#{node[:jtalks][:cookbook_path]}/confluence/confluence.sql"  # in dev version change password and url to crowd
 
 # Pochta
 default[:pochta][:http][:port] = 9088
