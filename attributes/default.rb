@@ -148,12 +148,16 @@ default[:confluence][:user] = "confluence"
 default[:confluence][:home_dir] = "/home/#{node[:confluence][:user]}/var"
 default[:tomcat][:instances][:confluence][:port] = 8050
 default[:tomcat][:instances][:confluence][:shutdown_port] = 8051
-default[:tomcat][:instances][:confluence][:jvm_opts] = "-Xmx256m -XX:MaxPermSize=384m"
+default[:tomcat][:instances][:confluence][:jvm_opts] = "-Xmx512m -XX:MaxPermSize=384m"
 default[:confluence][:version] = "5.6.5"
+# page with build numbers https://developer.atlassian.com/display/CONFDEV/Confluence+Build+Information
+# it version need to check database version
+default[:confluence][:build_number] = "5510"
 default[:confluence][:source_url] = "http://downloads.atlassian.com/software/confluence/downloads/atlassian-confluence-#{node[:confluence][:version]}-war.tar.gz"
 default[:confluence][:crowd][:application] = "confluence"
 default[:confluence][:crowd][:password] = "1"
 default[:confluence][:license_text] = "fake"
+default[:confluence][:license_hash] = "fake"
 default[:confluence][:db][:name] = "confluence"
 default[:confluence][:db][:user] = "confluence"
 default[:confluence][:db][:password] = "#{node[:jtalks][:db_users][:confluence][:password]}"

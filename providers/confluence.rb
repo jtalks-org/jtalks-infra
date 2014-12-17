@@ -20,6 +20,7 @@ def load_current_resource
   @current_resource = Chef::Resource::JtalksInfraConfluence.new(@new_resource.name)
   @current_resource.service_name(@new_resource.service_name)
   @current_resource.version(@new_resource.version)
+  @current_resource.build_number(@new_resource.build_number)
   @current_resource.source_url(@new_resource.source_url)
   @current_resource.user(@new_resource.user)
   @current_resource.data_dir(@new_resource.data_dir)
@@ -33,6 +34,7 @@ def load_current_resource
   @current_resource.db_user(@new_resource.db_user)
   @current_resource.db_password(@new_resource.db_password)
   @current_resource.license_text(@new_resource.license_text)
+  @current_resource.license_hash(@new_resource.license_hash)
   @current_resource.db_backup_path(@new_resource.db_backup_path)
 
   if Pathname.new("/home/#{@new_resource.user}/#{@current_resource.service_name}/webapps/ROOT").exist?
@@ -46,7 +48,6 @@ def prepare
   db_name = "#{current_resource.db_name}"
   db_user = "#{current_resource.db_user}"
   db_password = "#{current_resource.db_password}"
-  license_text = "#{current_resource.db_password}"
   crowd_url = "#{current_resource.crowd_url}"
   crowd_app_name = "#{current_resource.crowd_app_name}"
   crowd_app_password = "#{current_resource.crowd_app_password}"
@@ -63,42 +64,17 @@ def prepare
     group user
     mode "775"
     recursive true
-    notifies :restart, "service[#{current_resource.service_name}]", :delayed
-  end
-
-  template "#{data_dir}/confluence.cfg.xml" do
-    source 'confluence.cfg.xml.erb'
-    mode '775'
-    owner user
-    group user
-    variables({
-                  :license_text=> license_text,
-                  :db_name => db_name,
-                  :db_user => db_user,
-                  :db_password => db_password
-              })
-    notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 
   #if new installation than restore database
   if !(@current_resource.exists)
     # Restore attachments
-
-    cookbook_file "#{data_dir}/attachments/attachments.tar.gz" do
-      owner user
-      group user
-      source "#{user}/attachments.tar.gz"
-      only_if { Pathname.new("#{node[:jtalks][:cookbook_path]}/#{user}/attachments.tar.gz").exist? }
-      notifies :restart, "service[#{current_resource.service_name}]", :delayed
-      notifies :run, "execute[unpack_and_remove_confluence_attachments]", :immediately
-    end
-
-    execute "unpack_and_remove_confluence_attachments" do
-      user user
-      group user
-      cwd "#{data_dir}/attachments"
-      command "tar xvfz attachments.tar.gz; rm -Rf attachments.tar.gz"
-      action :nothing
+     execute "unpack_confluence_attachments" do
+        user user
+        group user
+        cwd "#{node[:jtalks][:cookbook_path]}/#{user}"
+        command "tar xvfz attachments.tar.gz -C #{data_dir}/attachments"
+        only_if {  Pathname.new("#{node[:jtalks][:cookbook_path]}/#{user}/attachments.tar.gz").exist? }
     end
 
     # Restore database from backup
@@ -144,6 +120,28 @@ def configure
   crowd_url = "#{current_resource.crowd_url}"
   crowd_app_name = "#{current_resource.crowd_app_name}"
   crowd_app_password = "#{current_resource.crowd_app_password}"
+  db_name = "#{current_resource.db_name}"
+  db_user = "#{current_resource.db_user}"
+  db_password = "#{current_resource.db_password}"
+  build_number = "#{current_resource.build_number}"
+  license_text = "#{current_resource.license_text}"
+  license_hash= "#{current_resource.license_hash}"
+
+  template "#{data_dir}/confluence.cfg.xml" do
+    source 'confluence.cfg.xml.erb'
+    mode '775'
+    owner user
+    group user
+    variables({
+                  :build_number=> build_number,
+                  :license_hash=> license_hash,
+                  :license_text=> license_text,
+                  :db_name => db_name,
+                  :db_user => db_user,
+                  :db_password => db_password
+              })
+    notifies :restart, "service[#{service_name}]", :delayed
+  end
 
   # Restore configs
   file "#{app_dir}/webapps/ROOT/WEB-INF/classes/confluence-init.properties" do
@@ -151,6 +149,22 @@ def configure
     group user
     content "confluence.home=#{data_dir}"
     notifies :restart, "service[#{service_name}]", :delayed
+  end
+
+  directory "#{app_dir}/conf/Catalina" do
+    owner user
+    group user
+    mode "775"
+    recursive true
+    not_if {  Pathname.new("#{app_dir}/conf/Catalina").exist? }
+  end
+
+  directory "#{app_dir}/conf/Catalina/localhost" do
+    owner user
+    group user
+    mode "775"
+    recursive true
+    not_if {  Pathname.new("#{app_dir}/conf/Catalina/localhost").exist? }
   end
 
    file "#{app_dir}/conf/Catalina/localhost/ROOT.xml" do
@@ -161,7 +175,7 @@ def configure
   end
 
   template "#{app_dir}/webapps/ROOT/WEB-INF/classes/crowd.properties" do
-    source 'confluence.properties.erb'
+    source 'confluence.crowd.properties.erb'
     mode '775'
     owner user
     group user

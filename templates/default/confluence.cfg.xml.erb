@@ -2,15 +2,15 @@
 
 <confluence-configuration>
   <setupStep>complete</setupStep>
-  <setupType>install.new</setupType>
-  <buildNumber>0</buildNumber>
+  <setupType>custom</setupType>
+  <buildNumber><%= @build_number %></buildNumber>
   <properties>
     <property name="admin.ui.allow.daily.backup.custom.location">false</property>
     <property name="admin.ui.allow.manual.backup.download">false</property>
     <property name="admin.ui.allow.site.support.email">false</property>
     <property name="attachments.dir">${confluenceHome}/attachments</property>
-    <property name="confluence.license.hash"></property>
-    <property name="confluence.license.message"><%= @license_text%></property>
+    <property name="confluence.license.hash"><%= @license_hash %></property>
+    <property name="confluence.license.message"><%= @license_text %></property>
     <property name="confluence.setup.server.id">BHZ4-XUOG-GBCU-Z8FT</property>
     <property name="confluence.webapp.context.path"></property>
     <property name="hibernate.c3p0.acquire_increment">1</property>
@@ -20,12 +20,13 @@
     <property name="hibernate.c3p0.min_size">0</property>
     <property name="hibernate.c3p0.timeout">30</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.password"><%= @db_password%></property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost/<%= @db_name%>?autoReconnect=true&amp;characterEncoding=utf8&amp;sessionVariables=storage_engine%3DInnoDB</property>
-    <property name="hibernate.connection.username"><%= @db_user%></property>
+    <property name="hibernate.connection.password"><%= @db_password %></property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost/<%= @db_name %>?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf8&amp;sessionVariables=storage_engine%3DInnoDB</property>
+    <property name="hibernate.connection.username"><%= @db_user %></property>
     <property name="hibernate.database.lower_non_ascii_supported">true</property>
     <property name="hibernate.dialect">com.atlassian.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.setup">true</property>
+    <property name="hibernate.connection.isolation">2</property>
     <property name="lucene.index.dir">${localHome}/index</property>
     <property name="webwork.multipart.saveDir">${localHome}/temp</property>
   </properties>

@@ -1,5 +1,6 @@
 jtalks_infra_confluence "confluence" do
   version node[:confluence][:version]
+  build_number node[:confluence][:build_number]
   user node[:confluence][:user]
   data_dir node[:confluence][:home_dir]
   source_url node[:confluence][:source_url]
@@ -11,6 +12,7 @@ jtalks_infra_confluence "confluence" do
   tomcat_shutdown_port node[:tomcat][:instances][:confluence][:shutdown_port]
   tomcat_jvm_opts node[:tomcat][:instances][:confluence][:jvm_opts]
   license_text node[:confluence][:license_text]
+  license_hash node[:confluence][:license_hash]
   crowd_url node[:crowd][:app][:server_url]
   crowd_app_name node[:confluence][:crowd][:application]
   crowd_app_password node[:confluence][:crowd][:password]

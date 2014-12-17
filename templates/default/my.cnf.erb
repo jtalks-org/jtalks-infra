@@ -12,6 +12,7 @@ socket                         = /var/run/mysqld/mysqld.sock
 port                           = 3306
 datadir                        = /var/lib/mysql
 max_allowed_packet = 12000000
+transaction-isolation=READ-COMMITTED
 
 [mysql]
 !includedir /etc/mysql/conf.d
