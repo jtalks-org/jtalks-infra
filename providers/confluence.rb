@@ -58,6 +58,14 @@ def prepare
     notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 
+  directory "#{data_dir}/attachments" do
+    owner user
+    group user
+    mode "775"
+    recursive true
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
+  end
+
   template "#{data_dir}/confluence.cfg.xml" do
     source 'confluence.cfg.xml.erb'
     mode '775'
@@ -74,6 +82,25 @@ def prepare
 
   #if new installation than restore database
   if !(@current_resource.exists)
+    # Restore attachments
+
+    cookbook_file "#{data_dir}/attachments/attachments.tar.gz" do
+      owner user
+      group user
+      source "#{user}/attachments.tar.gz"
+      only_if { Pathname.new("#{node[:jtalks][:cookbook_path]}/#{user}/attachments.tar.gz").exist? }
+      notifies :restart, "service[#{current_resource.service_name}]", :delayed
+      notifies :run, "execute[unpack_and_remove_confluence_attachments]", :immediately
+    end
+
+    execute "unpack_and_remove_confluence_attachments" do
+      user user
+      group user
+      cwd "#{data_dir}/attachments"
+      command "tar xvfz attachments.tar.gz; rm -Rf attachments.tar.gz"
+      action :nothing
+    end
+
     # Restore database from backup
     if  Pathname.new("#{current_resource.db_backup_path}").exist?
       execute "restore_database_confluence" do
@@ -124,7 +151,7 @@ def configure
     group user
     content "confluence.home=#{data_dir}"
     notifies :restart, "service[#{service_name}]", :delayed
-    end
+  end
 
    file "#{app_dir}/conf/Catalina/localhost/ROOT.xml" do
     owner user

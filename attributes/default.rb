@@ -148,7 +148,7 @@ default[:confluence][:user] = "confluence"
 default[:confluence][:home_dir] = "/home/#{node[:confluence][:user]}/var"
 default[:tomcat][:instances][:confluence][:port] = 8050
 default[:tomcat][:instances][:confluence][:shutdown_port] = 8051
-default[:tomcat][:instances][:confluence][:jvm_opts] = "-Xmx768m -XX:MaxPermSize=384m"
+default[:tomcat][:instances][:confluence][:jvm_opts] = "-Xmx256m -XX:MaxPermSize=384m"
 default[:confluence][:version] = "5.6.5"
 default[:confluence][:source_url] = "http://downloads.atlassian.com/software/confluence/downloads/atlassian-confluence-#{node[:confluence][:version]}-war.tar.gz"
 default[:confluence][:crowd][:application] = "confluence"
