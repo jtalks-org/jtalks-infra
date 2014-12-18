@@ -19,6 +19,7 @@ default[:jtalks][:users][:aidjek][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w
 default[:jtalks][:users][:jenkins][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:crowd][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:confluence][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:jira][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:i_javatalks][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:i_beginintesting][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:i_autotests][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
@@ -46,11 +47,13 @@ default[:jtalks][:users][:i_javatalks][:known_hosts][:antarcticle] = ["jtalks.or
 default[:jtalks][:users][:root][:known_hosts][:u99356] = ["u99356.your-backup.de"]
 
 default[:jtalks][:dbs] = ["crowd","autotests","beginintesting","performance","preprod","preprod_antarcticle","dev_jcommune",
-                          "dev_poulpe","dev_antarcticle","qa","qa_antarcticle","sonar","fisheye", "confluence"]
+                          "dev_poulpe","dev_antarcticle","qa","qa_antarcticle","sonar","fisheye", "confluence","jira"]
 default[:jtalks][:db_users][:crowd][:password] = "crowd"
 default[:jtalks][:db_users][:crowd][:dbs][:crowd][:privileges] = [:all]
 default[:jtalks][:db_users][:confluence][:password] = "confluence"
 default[:jtalks][:db_users][:confluence][:dbs][:confluence][:privileges] = [:all]
+default[:jtalks][:db_users][:jira][:password] = "jira"
+default[:jtalks][:db_users][:jira][:dbs][:jira][:privileges] = [:all]
 default[:jtalks][:db_users][:fisheye][:password] = "fisheye"
 default[:jtalks][:db_users][:fisheye][:dbs][:fisheye][:privileges] = [:all]
 default[:jtalks][:db_users][:autotests_admin][:password] = "autotests_admin"
