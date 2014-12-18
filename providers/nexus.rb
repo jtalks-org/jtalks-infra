@@ -88,7 +88,6 @@ def install_or_update_nexus
     source crowd_plugin_source_url
     owner user
     group user
-    notifies :restart, "service[#{service_name}]", :delayed
     notifies :run, "execute[unpack_crowd_plugin_to_nexus]", :immediately
   end
 
