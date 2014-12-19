@@ -90,7 +90,7 @@ def prepare
         user "#{db_user}"
         password "#{db_password}"
         db "#{db_name}"
-        command "update propertytext set propertyvalue='#{license_text}' where id = (select id from propertyentry where property_key = 'License20')'"
+        command "update propertytext set propertyvalue='#{license_text}' where id = (select id from propertyentry where property_key = 'License20')"
       end
 
       mysql_execute "set_crowd_application_name_to_jira" do

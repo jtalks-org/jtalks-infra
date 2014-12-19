@@ -166,6 +166,22 @@ default[:confluence][:db][:user] = "confluence"
 default[:confluence][:db][:password] = "#{node[:jtalks][:db_users][:confluence][:password]}"
 default[:confluence][:db][:backup_path] = "#{node[:jtalks][:cookbook_path]}/confluence/confluence.sql"  # in dev version change password and url to crowd
 
+# Jira
+default[:jira][:user] = "jira"
+default[:jira][:home_dir] = "/home/#{node[:jira][:user]}/var"
+default[:tomcat][:instances][:jira][:port] = 8045
+default[:tomcat][:instances][:jira][:shutdown_port] = 8046
+default[:tomcat][:instances][:jira][:jvm_opts] = "-Xmx512m -XX:MaxPermSize=384m"
+default[:jira][:version] = "6.3.12"
+default[:jira][:source_url] = "http://downloads.atlassian.com/software/jira/downloads/binary/atlassian-jira-#{node[:jira][:version]}-war.tar.gz"
+default[:jira][:crowd][:application] = "jira"
+default[:jira][:crowd][:password] = "1"
+default[:jira][:license_text] = "fake"
+default[:jira][:db][:name] = "jira"
+default[:jira][:db][:user] = "jira"
+default[:jira][:db][:password] = "#{node[:jtalks][:db_users][:jira][:password]}"
+default[:jira][:db][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jira/jira.sql"  # in dev version change password,url to crowd and license (jira + plugins)
+
 # Pochta
 default[:pochta][:http][:port] = 9088
 default[:pochta][:smtp][:port] = 9025
