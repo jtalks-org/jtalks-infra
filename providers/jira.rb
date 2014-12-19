@@ -118,7 +118,33 @@ def prepare
 end
 
 def configure
+  user = "#{current_resource.user}"
+  app_dir = "#{user_home}/#{service_name}"
+  data_dir = "#{current_resource.data_dir}"
+  db_name = "#{current_resource.db_name}"
+  db_user = "#{current_resource.db_user}"
+  db_password = "#{current_resource.db_password}"
+  service_name = "#{current_resource.service_name}"
 
+  template "#{data_dir}/dbconfig.xml" do
+    source 'jira.dbconfig.xml.erb'
+    mode "775"
+    owner user
+    group user
+    variables({
+                  :db_name => db_name,
+                  :db_user => db_user,
+                  :db_password => db_password
+              })
+    notifies :restart, "service[#{service_name}]", :delayed
+  end
+
+  file "#{app_dir}/webapps/ROOT/WEB-INF/classes/jira-application.properties" do
+    owner user
+    group user
+    content "jira.home=#{data_dir}"
+    notifies :restart, "service[#{service_name}]", :delayed
+  end
 end
 
 def install_or_update_tomcat
@@ -145,7 +171,29 @@ def install_or_update_tomcat
 end
 
 def install_or_update_jira
+  user = "#{current_resource.user}"
+  dir = "/home/#{user}"
+  service_name = "#{current_resource.service_name}"
+  app_dir = "#{dir}/#{service_name}"
+  version = "#{current_resource.version}"
 
+  remote_file "#{app_dir}/webapps/jira-#{version}.tar.gz" do
+    source "#{current_resource.source_url}"
+    owner user
+    group user
+    notifies :run, "execute[unpack_and_remove_jira]", :immediately
+    notifies :restart, "service[#{service_name}]", :delayed
+    not_if { Pathname.new("#{app_dir}/webapps/jira-#{version}.tar.gz}").exist? }
+  end
+
+  execute "unpack_and_remove_jira" do
+    user user
+    group user
+    cwd "#{app_dir}/webapps"
+    command "rm -Rf #{app_dir}/webapps/ROOT; tar xvfz jira-#{version}.tar.gz;
+                     mv atlassian-jira-#{version}-war/webapp ROOT; rm -Rf atlassian-jira-#{version}-war"
+    action :nothing
+  end
 end
 
 

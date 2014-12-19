@@ -236,7 +236,6 @@ def install_or_update_confluence
                      mv confluence-#{version}/confluence ROOT; rm -Rf confluence-#{version}"
     action :nothing
   end
-
 end
 
 
