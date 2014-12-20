@@ -107,7 +107,7 @@ cd  ${DEST_DIR_D}
 # copying backup on remote FTP server
 while [ $(echo df -h | sftp $REMOTE_FTP | tail -n 1 | awk '{print $NF}' | cut -d\% -f1) -ge 80 ] ; do
 	echo "On REMOTE FTP there are not more disk space, rotating ...."  >> $LOG_FILE
-	for i in $(echo ls -lt | sftp $REMOTE_FTP | awk '{print $NF}' | tail -n 2) ; do
+	for i in $(echo ls -lt | sftp $REMOTE_FTP | awk '{print $NF}' | tail -n 3) ; do
 		echo rm $i/* | sftp $REMOTE_FTP
 		success_backup "removing on remote ftp old archive $i"
 		echo rmdir $i | sftp $REMOTE_FTP
