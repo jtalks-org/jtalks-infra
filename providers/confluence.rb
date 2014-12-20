@@ -140,7 +140,6 @@ def configure
                   :db_user => db_user,
                   :db_password => db_password
               })
-    notifies :restart, "service[#{service_name}]", :delayed
   end
 
   # Restore configs
