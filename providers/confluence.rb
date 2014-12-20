@@ -129,7 +129,7 @@ def configure
 
   template "#{data_dir}/confluence.cfg.xml" do
     source 'confluence.cfg.xml.erb'
-    mode '775'
+    mode '644'
     owner user
     group user
     variables({
