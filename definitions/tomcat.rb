@@ -1,5 +1,5 @@
 define :tomcat, :owner => 'root', :base => '/home', :owner_group => nil, :port => 8080, :shutdown_port => 8001,
- :jvm_opts => '-Xmx256m -XX:MaxPermSize=384m' do
+ :jvm_opts => '-Xmx256m -XX:MaxPermSize=384m', :tomcat_major_v => '8' do
   if params[:owner_group] == nil
     params[:owner_group] = params[:owner]
   end
@@ -7,10 +7,10 @@ define :tomcat, :owner => 'root', :base => '/home', :owner_group => nil, :port =
   setenv_sh = "#{params[:base]}/#{params[:name]}/bin/setenv.sh"
   webapps = "#{params[:base]}/#{params[:name]}/webapps"
 
-  result_folder_name = "apache-tomcat-#{node[:tomcat][:version]}"
+  result_folder_name = "apache-tomcat-#{node[:tomcat][params[:tomcat_major_v]][:version]}"
 
   ark result_folder_name do
-    url node[:tomcat][:download_url]
+    url node[:tomcat][params[:tomcat_major_v]][:download_url]
     path params[:base]
     owner params[:owner]
     action :put

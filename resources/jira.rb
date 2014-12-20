@@ -7,6 +7,7 @@ attribute :version       , :required => true,  :kind_of => String
 attribute :user       , :required => true,  :kind_of => String
 attribute :data_dir       , :required => true,  :kind_of => String
 attribute :source_url     , :required => true, :kind_of => String
+attribute :source_external_libs_url     , :required => true, :kind_of => String
 attribute :db_name     , :required => true, :kind_of => String
 attribute :db_user     , :required => true, :kind_of => String
 attribute :db_password     , :required => true, :kind_of => String

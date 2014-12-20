@@ -37,3 +37,5 @@ Chef Cookbook of JTalks's infrastructure
   if sonar have new version, need upgrade DB => <host>:<port>/setup
   check Application Links to applications (Atlassian)
   check plugins to applications (Atlassian)
+  copy jira-home/plugins/installed-plugins to new server
+  open Jira on web browser. And do reindex (System - Advanced - Indexing)

@@ -167,10 +167,14 @@ def configure
     not_if {  Pathname.new("#{app_dir}/conf/Catalina/localhost").exist? }
   end
 
-   file "#{app_dir}/conf/Catalina/localhost/ROOT.xml" do
+  template "#{app_dir}/conf/Catalina/localhost/ROOT.xml" do
+    source 'confluence.root.xml.erb'
+    mode "775"
     owner user
     group user
-    content "<Context path=\"\" docBase=\"#{app_dir}/webapps/ROOT\" debug=\"0\" reloadable=\"true\"></Context>"
+    variables({
+                  :app_dir => app_dir
+              })
     notifies :restart, "service[#{service_name}]", :delayed
   end
 

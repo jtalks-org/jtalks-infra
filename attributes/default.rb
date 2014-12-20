@@ -117,13 +117,17 @@ default[:java][:jdk]["7"]["x86_64"][:url] = "http://download.oracle.com/otn-pub/
 default[:maven]['3'][:version] = "3.2.3"
 default[:maven]['3'][:url] = "http://apache-mirror.rbc.ru/pub/apache/maven/maven-3/#{node[:maven]['3'][:version]}/binaries/apache-maven-#{node[:maven]['3'][:version]}-bin.tar.gz"
 
-#Tomcat variables
-default[:tomcat][:major_version] = "8"
-default[:tomcat][:minor_version] = "0.14"
-default[:tomcat][:version] = "#{node[:tomcat][:major_version]}.#{node[:tomcat][:minor_version]}"
-default[:tomcat][:download_url] = "http://archive.apache.org/dist/tomcat/tomcat-#{node[:tomcat][:major_version]}/v#{node[:tomcat][:version]}/bin/apache-tomcat-#{node[:tomcat][:version]}.zip"
+# Tomcat variables
+default[:tomcat]['8'][:major_version] = "8"
+default[:tomcat]['8'][:minor_version] = "0.14"
+default[:tomcat]['8'][:version] = "#{node[:tomcat]['8'][:major_version]}.#{node[:tomcat]['8'][:minor_version]}"
+default[:tomcat]['8'][:download_url] = "http://archive.apache.org/dist/tomcat/tomcat-#{node[:tomcat]['8'][:major_version]}/v#{node[:tomcat]['8'][:version]}/bin/apache-tomcat-#{node[:tomcat]['8'][:version]}.zip"
+default[:tomcat]['7'][:major_version] = "7"
+default[:tomcat]['7'][:minor_version] = "0.57"
+default[:tomcat]['7'][:version] = "#{node[:tomcat]['7'][:major_version]}.#{node[:tomcat]['7'][:minor_version]}"
+default[:tomcat]['7'][:download_url] = "http://archive.apache.org/dist/tomcat/tomcat-#{node[:tomcat]['7'][:major_version]}/v#{node[:tomcat]['7'][:version]}/bin/apache-tomcat-#{node[:tomcat]['7'][:version]}.zip"
 
-##crowd
+# Crowd
 default[:crowd][:user] = "crowd"
 default[:crowd][:home_dir] = "/home/#{node[:crowd][:user]}/var"
 default[:tomcat][:instances][:crowd][:port] = 8081
@@ -171,9 +175,10 @@ default[:jira][:user] = "jira"
 default[:jira][:home_dir] = "/home/#{node[:jira][:user]}/var"
 default[:tomcat][:instances][:jira][:port] = 8045
 default[:tomcat][:instances][:jira][:shutdown_port] = 8046
-default[:tomcat][:instances][:jira][:jvm_opts] = "-Xmx512m -XX:MaxPermSize=384m"
+default[:tomcat][:instances][:jira][:jvm_opts] = "-Xmx1G -XX:MaxPermSize=384m"
 default[:jira][:version] = "6.3.12"
-default[:jira][:source_url] = "http://downloads.atlassian.com/software/jira/downloads/binary/atlassian-jira-#{node[:jira][:version]}-war.tar.gz"
+default[:jira][:source_url] = "http://downloads.atlassian.com/software/jira/downloads/atlassian-jira-#{node[:jira][:version]}-war.tar.gz"
+default[:jira][:source_external_libs_url] = "https://downloads.atlassian.com/software/jira/downloads/jira-jars-tomcat-distribution-6.4-m12-tomcat-7x.zip"
 default[:jira][:crowd][:application] = "jira"
 default[:jira][:crowd][:password] = "1"
 default[:jira][:license_text] = "fake"

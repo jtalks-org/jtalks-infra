@@ -1,8 +1,10 @@
+# to test need add real backup of jira database (files/default/jira/jira.sql)
 jtalks_infra_jira "jira" do
   version node[:jira][:version]
   user node[:jira][:user]
   data_dir node[:jira][:home_dir]
   source_url node[:jira][:source_url]
+  source_external_libs_url node[:jira][:source_external_libs_url]
   db_name node[:jira][:db][:name]
   db_user node[:jira][:db][:user]
   db_password node[:jira][:db][:password]
