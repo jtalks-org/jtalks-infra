@@ -132,7 +132,7 @@ def configure
          <password>#{crowd_app_password}</password>
          <group>#{crowd_group}</group>
          <nestedGroups>false</nestedGroups>
-         <useSSO>true</useSSO>
+         <useSSO>false</useSSO>
          <sessionValidationInterval>10</sessionValidationInterval>
          <cookieDomain>#{crowd_cookie_domain}</cookieDomain>
          <cookieTokenkey>#{crowd_token}</cookieTokenkey>
