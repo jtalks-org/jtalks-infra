@@ -62,7 +62,7 @@
     <password>hgjd8rh#45</password>
     <group>jira-users</group>
     <nestedGroups>false</nestedGroups>
-    <useSSO>true</useSSO>
+    <useSSO>false</useSSO>
     <sessionValidationInterval>2</sessionValidationInterval>
     <cookieDomain>.jtalks.org</cookieDomain>
     <cookieTokenkey>crowd.token_key</cookieTokenkey>
