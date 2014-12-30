@@ -224,7 +224,7 @@ default[:jenkins][:maven][:users][:antarcticle][:password] = "fake"
 ## plugins
 default[:jenkins][:plugins]["ansicolor"] = "0.4.1"
 default[:jenkins][:plugins]["ant"] = "1.2"
-default[:jenkins][:plugins]["build-pipeline-plugin"] = "1.4.3"
+default[:jenkins][:plugins]["build-pipeline-plugin"] = "1.4"
 default[:jenkins][:plugins]["build-name-setter"] = "1.3"
 default[:jenkins][:plugins]["copy-to-slave"] = "1.4.3"
 default[:jenkins][:plugins]["createjobadvanced"] = "1.8"
