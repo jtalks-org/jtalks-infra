@@ -1,6 +1,5 @@
 require 'pathname'
 require 'net/http'
-require 'uri'
 
 def whyrun_supported?
   true
@@ -269,8 +268,8 @@ def install_or_update_postfix
       unless @db.admin_exist?(username)
         ruby_block "create_admin_#{username}" do
           block do
-            uri = URI("http://#{host}:#{port}/setup.php")
-            request = Net::HTTP::Post.new(uri)
+            uri = URI( "http://#{host}:#{port}/setup.php")
+            request = Net::HTTP::Post.new(uri.request_uri)
             request.set_form_data({"form" =>"createadmin", "setup_password" => setup_password,
                                    "username"=> username, "password" => data[:password],
                                    "password2"=>data[:password], "submit"=>"Add+Admin"})
@@ -290,7 +289,7 @@ def install_or_update_postfix
     username = "#{admin_username}@#{node[:jtalks][:postfix][:admins][admin_username][:domain]}"
     block do
       uri = URI("http://#{host}:#{port}/login.php")
-      request = Net::HTTP::Post.new(uri)
+      request = Net::HTTP::Post.new(uri.request_uri)
       request['Content-Type'] = "application/x-www-form-urlencoded"
       request.set_form_data({"fUsername" => username , "fPassword" => "#{node[:jtalks][:postfix][:admins][admin_username][:password]}",
                             "lang"=> "en",  "submit"=>"Login"})
@@ -310,7 +309,7 @@ def install_or_update_postfix
        ruby_block "create_domain_#{data[:name]}" do
          block do
            uri = URI("http://#{host}:#{port}/edit.php?table=domain")
-           request = Net::HTTP::Post.new(uri)
+           request = Net::HTTP::Post.new(uri.request_uri)
            request['Cookie'] = cookie
            request['Content-Type'] = "application/x-www-form-urlencoded"
            request.set_form_data({"table" => "domain","value[domain]" =>data[:name], "value[description]" => data[:description],
@@ -331,7 +330,7 @@ def install_or_update_postfix
       ruby_block "create_mailbox_and_aliases_#{username}" do
         block do
           uri = URI("http://#{host}:#{port}/edit.php?table=mailbox")
-          request = Net::HTTP::Post.new(uri)
+          request = Net::HTTP::Post.new(uri.request_uri)
           request['Cookie'] = cookie
           request['Content-Type'] = "application/x-www-form-urlencoded"
           request.set_form_data({"table" => "mailbox", "value[local_part]" => name,"value[domain]" =>data[:domain], "value[password]" => data[:password],
@@ -343,7 +342,7 @@ def install_or_update_postfix
           if data[:aliases]
             goto = data[:aliases].join("\r\n")
             uri = URI("http://#{host}:#{port}/edit.php?table=alias&edit=#{username}")
-            request = Net::HTTP::Post.new(uri)
+            request = Net::HTTP::Post.new(uri.request_uri)
             request['Cookie'] = cookie
             request['Content-Type'] = "application/x-www-form-urlencoded"
             request.set_form_data({"table" => "alias", "value[goto]" => goto,"value[goto_mailbox]" =>1, "value[active]" => 1, "submit"=>"Save changes"})
