@@ -1,0 +1,14 @@
+server {
+    listen 8000;
+    server_name mail.jtalks.org localhost;
+
+    root /home/postfix/postfixadmin;
+    index index.php index.html index.htm;
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/postfix.sock;
+        include fastcgi_params;
+    }
+
+    error_page 404 /404.html;
+}

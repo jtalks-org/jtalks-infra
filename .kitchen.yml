@@ -12,6 +12,7 @@ driver:
      - ["forwarded_port", {guest: 8082, host: 8082}]
      - ["forwarded_port", {guest: 8085, host: 8085}]
      - ["forwarded_port", {guest: 9000, host: 9000}]
+     - ["forwarded_port", {guest: 8000, host: 8000}]
 
 provisioner:
   name: chef_solo
@@ -125,6 +126,16 @@ suites:
        - recipe[jtalks-infra::mysql]
        - recipe[jtalks-infra::crowd]
        - recipe[jtalks-infra::jira]
+  - name: mail
+    run_list:
+       - recipe[ark]
+       - recipe[nginx]
+       - recipe[jtalks-infra::users]
+       - recipe[sudo]
+       - recipe[jtalks-infra::nginx]
+       - recipe[database::mysql]
+       - recipe[jtalks-infra::mysql]
+       - recipe[jtalks-infra::postfix]
   - name: server
     run_list:
        - recipe[sysctl2]
@@ -154,4 +165,5 @@ suites:
        - recipe[jtalks-infra::sonar]
        - recipe[jtalks-infra::confluence]
        - recipe[jtalks-infra::jira]
+       - recipe[jtalks-infra::postfix]
        - recipe[jtalks-infra::nginx]

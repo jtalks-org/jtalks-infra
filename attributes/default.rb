@@ -33,6 +33,8 @@ default[:jtalks][:users][:selenium][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF
 default[:jtalks][:users][:sonar][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:nexus][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:fisheye][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:postfix][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:postfix][:uid] = 3000 # uid = gid
 default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
 default[:jtalks][:users][:fisheye][:known_hosts][:fisheye] = ["github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
@@ -47,7 +49,7 @@ default[:jtalks][:users][:i_javatalks][:known_hosts][:antarcticle] = ["jtalks.or
 default[:jtalks][:users][:root][:known_hosts][:u99356] = ["u99356.your-backup.de"]
 
 default[:jtalks][:dbs] = ["crowd","autotests","beginintesting","performance","preprod","preprod_antarcticle","dev_jcommune",
-                          "dev_poulpe","dev_antarcticle","qa","qa_antarcticle","sonar","fisheye", "confluence","jira"]
+                          "dev_poulpe","dev_antarcticle","qa","qa_antarcticle","sonar","fisheye", "confluence","jira","postfix"]
 default[:jtalks][:db_users][:crowd][:password] = "crowd"
 default[:jtalks][:db_users][:crowd][:dbs][:crowd][:privileges] = [:all]
 default[:jtalks][:db_users][:confluence][:password] = "confluence"
@@ -90,9 +92,11 @@ default[:jtalks][:db_users][:qa_reader][:dbs][:qa][:privileges] = [:select]
 default[:jtalks][:db_users][:qa_reader][:dbs][:qa_antarcticle][:privileges] = [:select]
 default[:jtalks][:db_users][:sonar][:password] = "sonar"
 default[:jtalks][:db_users][:sonar][:dbs][:sonar][:privileges] = [:all]
+default[:jtalks][:db_users][:postfix][:password] = "postfix"
+default[:jtalks][:db_users][:postfix][:dbs][:postfix][:privileges] = [:all]
 
 # nginx
-default[:jtalks][:nginx][:custom_configs] = ["site", "dev_site", "logs"]
+default[:jtalks][:nginx][:custom_configs] = ["site", "dev_site", "logs","postfix_admin"]
 default[:nginx][:user] = "root"
 
 # vagrant user to test only
@@ -237,8 +241,8 @@ default[:jenkins][:plugins]["description-setter"] = "1.9"
 default[:jenkins][:plugins]["email-ext"] = "2.39"
 default[:jenkins][:plugins]["external-monitor-job"] = "1.4"
 default[:jenkins][:plugins]["extra-columns"] = "1.14"
-default[:jenkins][:plugins]["git-client"] = "1.14"
-default[:jenkins][:plugins]["git"] = "2.3.2"
+default[:jenkins][:plugins]["git-client"] = "1.15.0"
+default[:jenkins][:plugins]["git"] = "2.3.3"
 default[:jenkins][:plugins]["github-api"] = "1.59"
 default[:jenkins][:plugins]["github"] = "1.10"
 default[:jenkins][:plugins]["greenballs"] = "1.14"
@@ -274,7 +278,7 @@ default[:jenkins][:plugins]["sonar"] = "2.1"
 default[:jenkins][:plugins]["ssh-agent"] = "1.5"
 default[:jenkins][:plugins]["ssh-credentials"] = "1.10"
 default[:jenkins][:plugins]["ssh-slaves"] = "1.9"
-default[:jenkins][:plugins]["subversion"] = "2.4.5"
+default[:jenkins][:plugins]["subversion"] = "2.5"
 default[:jenkins][:plugins]["throttle-concurrents"] = "1.8.4"
 default[:jenkins][:plugins]["token-macro"] = "1.10"
 default[:jenkins][:plugins]["translation"] = "1.12"
@@ -362,3 +366,41 @@ default[:fisheye][:repositories][:jtalks_common][:key_name] = "id_rsa"
 default[:fisheye][:repositories][:poulpe][:location] = "git@github.com:jtalks-org/poulpe.git"
 default[:fisheye][:repositories][:poulpe][:key_name] = "id_rsa"
 default[:fisheye][:url] = "http://fisheye.jtalks.org"
+
+# Mail
+default[:jtalks][:postfix][:user] = "postfix"
+default[:jtalks][:postfix][:domain] = "jtalks.org"
+default[:jtalks][:postfix][:database][:host] = "localhost"
+default[:jtalks][:postfix][:database][:name] = "postfix"
+default[:jtalks][:postfix][:database][:user] = "postfix"
+default[:jtalks][:postfix][:database][:password] = "#{node[:jtalks][:db_users][:postfix][:password]}"
+default[:jtalks][:postfix][:admin][:username] = "admin"
+default[:jtalks][:postfix][:admins][:admin][:password] = "pas11"
+default[:jtalks][:postfix][:admins][:admin][:domain] = "jtalks.org"
+default[:jtalks][:postfix][:domains][:jtalks_org][:name] = "jtalks.org"
+default[:jtalks][:postfix][:domains][:jtalks_org][:description] = "Description jtalks.org"
+default[:jtalks][:postfix][:mailboxes][:info][:domain] = "jtalks.org"
+default[:jtalks][:postfix][:mailboxes][:info][:password] = "pas11"
+default[:jtalks][:postfix][:mailboxes][:info][:aliases] = ["test@ya.ru", "test2@ya.ru"]
+default[:jtalks][:postfix][:mailboxes][:info2][:domain] = "jtalks.org"
+default[:jtalks][:postfix][:mailboxes][:info2][:password] = "pas11"
+default[:jtalks][:postfixadmin][:host] = "localhost"
+default[:jtalks][:postfixadmin][:port] = 8000
+default[:jtalks][:postfixadmin][:setup_password] = "pas11"
+default[:jtalks][:postfixadmin][:setup_password_encoded] = "252baecffd29d699a58e159af148fb45:fd60f0cc48a587d233b06d92cd12cd21fc7ceb7c"
+default[:jtalks][:postfixadmin][:version] = "2.92"
+default[:jtalks][:postfixadmin][:source_url] = "http://sourceforge.net/projects/postfixadmin/files/postfixadmin/postfixadmin-#{node[:jtalks][:postfixadmin][:version]}/postfixadmin-#{node[:jtalks][:postfixadmin][:version]}.tar.gz"
+default[:jtalks][:postfixadmin][:conf][:encrypt] = "'md5crypt'"
+default[:jtalks][:postfixadmin][:conf][:domain_path] = "'YES'"
+default[:jtalks][:postfixadmin][:conf][:domain_in_mailbox] = "'NO'"
+default[:jtalks][:postfixadmin][:conf][:fetchmail] = "'NO'"
+default[:jtalks][:postfixadmin][:conf][:configured] = true
+default[:jtalks][:postfixadmin][:conf][:setup_password] = "'#{node[:jtalks][:postfixadmin][:setup_password_encoded]}'"
+default[:jtalks][:postfixadmin][:conf][:postfix_admin_url] = "''"
+default[:jtalks][:postfixadmin][:conf][:alias_control] = "'YES'"
+default[:jtalks][:postfixadmin][:conf][:default_aliases] = "array ()"
+default[:jtalks][:postfixadmin][:conf][:database_type] = "'mysqli'"
+default[:jtalks][:postfixadmin][:conf][:database_host] = "'#{node[:jtalks][:postfix][:database][:host]}'"
+default[:jtalks][:postfixadmin][:conf][:database_user] = "'#{node[:jtalks][:postfix][:database][:user]}'"
+default[:jtalks][:postfixadmin][:conf][:database_password] = "'#{node[:jtalks][:postfix][:database][:password]}'"
+default[:jtalks][:postfixadmin][:conf][:database_name] = "'#{node[:jtalks][:postfix][:database][:name]}'"

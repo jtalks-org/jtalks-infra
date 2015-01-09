@@ -8,6 +8,7 @@ node[:jtalks][:users].each do |user, data|
   end
 
   password = node[:jtalks][:users][user][:password]
+  uid = node[:jtalks][:users][user][:uid]
 
   # Add user
   user user do
@@ -15,6 +16,7 @@ node[:jtalks][:users].each do |user, data|
     password "#{password}"
     action :create
     home dir
+    uid uid
     supports :manage_home => true
   end
 
@@ -27,10 +29,6 @@ node[:jtalks][:users].each do |user, data|
   directory "#{dir}/backup" do
     owner user
     group user
-  end
-
-  group user do
-    action :create
   end
 
   ssh_settings user do

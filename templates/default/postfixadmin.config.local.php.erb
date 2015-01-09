@@ -1,0 +1,4 @@
+<?php
+<% @config.each do |name, data| -%>
+$CONF['<%= name %>'] = <%= data %>;
+<% end -%>

@@ -1,0 +1,5 @@
+driver = mysql
+connect = host=<%= @db_host %> dbname=<%= @db_name %> user=<%= @db_user %> password=<%= @db_password %>
+default_pass_scheme = MD5-CRYPT
+user_query = SELECT '<%= @mail_dir %>/%d/%n' as home, <%= @uid %> AS uid, <%= @uid %> AS gid FROM mailbox WHERE username = '%u'
+password_query = SELECT password FROM mailbox WHERE username = '%u'
