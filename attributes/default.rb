@@ -96,7 +96,7 @@ default[:jtalks][:db_users][:postfix][:password] = "postfix"
 default[:jtalks][:db_users][:postfix][:dbs][:postfix][:privileges] = [:all]
 
 # nginx
-default[:jtalks][:nginx][:custom_configs] = ["site", "dev_site", "logs","postfix_admin"]
+default[:jtalks][:nginx][:custom_configs] = ["site", "dev_site", "logs","postfixadmin"]
 default[:nginx][:user] = "root"
 
 # vagrant user to test only
