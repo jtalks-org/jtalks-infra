@@ -370,7 +370,7 @@ default[:fisheye][:url] = "http://fisheye.jtalks.org"
 # Mail
 default[:jtalks][:postfix][:user] = "postfix"
 default[:jtalks][:postfix][:domain] = "jtalks.org"
-default[:jtalks][:postfix][:database][:host] = "localhost"
+default[:jtalks][:postfix][:database][:host] = "127.0.0.1"
 default[:jtalks][:postfix][:database][:name] = "postfix"
 default[:jtalks][:postfix][:database][:user] = "postfix"
 default[:jtalks][:postfix][:database][:password] = "#{node[:jtalks][:db_users][:postfix][:password]}"
