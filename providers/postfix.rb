@@ -97,7 +97,6 @@ def install_or_update_postfix
     action :put
     not_if {Pathname.new("#{dir}/postfixadmin-#{postfixadmin_version}").exist?}
     notifies :create, "link[#{dir}/postfixadmin]", :immediately
-    notifies :run, "jtalks_infra_replacer[replace_host_in_postfixadmin_config]", :immediately
   end
 
   link "#{dir}/postfixadmin" do
@@ -107,13 +106,14 @@ def install_or_update_postfix
     action :nothing
   end
 
-  jtalks_infra_replacer "replace_host_in_postfixadmin_config" do
-    owner user
-    group user
-    file "#{dir}/postfixadmin/config.inc.php"
-    replace "change-this-to-your.domain.tld"
-    with "#{domain}"
-    action :nothing
+  if !(@current_resource.exists)
+    jtalks_infra_replacer "replace_host_in_postfixadmin_config" do
+      owner user
+      group user
+      file "#{dir}/postfixadmin/config.inc.php"
+      replace "change-this-to-your.domain.tld"
+      with "#{domain}"
+    end
   end
 
   template "#{dir}/postfixadmin/config.local.php" do
