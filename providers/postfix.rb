@@ -253,10 +253,7 @@ def install_or_update_postfix
     source "dovecot.master.conf.erb"
   end
 
-  service "dovecot" do
-    supports :restart => true
-    action [:enable, :restart]
-  end
+  execute "service dovecot restart"
 
   service "postfix" do
     supports :restart => true
