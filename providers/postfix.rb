@@ -89,6 +89,11 @@ def install_or_update_postfix
               })
   end
 
+  template "#{node[:jtalks][:path][:init_script]}/php5-fpm" do
+    source 'php.fpm.service.erb'
+    mode '775'
+  end
+
   #install postfixadmin
   ark "postfixadmin-#{postfixadmin_version}" do
     url  postfixadmin_source_url
