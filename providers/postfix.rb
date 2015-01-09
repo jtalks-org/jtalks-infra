@@ -164,6 +164,10 @@ def install_or_update_postfix
               })
   end
 
+  template "/etc/postfix/master.cf" do
+    source "postfix.master.cf.erb"
+  end
+
   template "/etc/postfix/mysql_virtual_mailbox_domains.cf" do
     source "postfix.mysql_virtual_mailbox_domains.cf.erb"
     variables({

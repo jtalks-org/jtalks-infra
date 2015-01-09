@@ -7,7 +7,7 @@ ftp = "#{node[:jtalks][:backup][:ftp]}"
 server_name = "#{node[:jtalks][:hostname]}"
 mysql_root_password = "#{node[:mysql][:server_root_password]}"
 
-package "mailutils"
+package "mailx"
 
 directory "#{backup_dir}" do
   owner user
