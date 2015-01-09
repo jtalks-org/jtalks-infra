@@ -1,5 +1,6 @@
 require 'pathname'
 require 'net/http'
+require 'uri'
 
 def whyrun_supported?
   true
