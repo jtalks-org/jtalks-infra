@@ -12,6 +12,7 @@ default[:jtalks][:backup][:ftp] = "u99356@u99356.your-backup.de"
 default[:jtalks][:backup][:exclude_dirs] = "/home/aidjek /home/masyan /home/ctapobep"
 #to generate password use command 'openssl passwd -1' and enter password
 default[:jtalks][:users][:root][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1
+default[:jtalks][:users][:git][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1
 default[:jtalks][:users][:masyan][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1
 default[:jtalks][:users][:qa][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1
 default[:jtalks][:users][:ctapobep][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
@@ -360,7 +361,7 @@ default[:fisheye][:url] = "http://fisheye.jtalks.org"
 
 # Mail
 default[:jtalks][:postfix][:user] = "postfix"
-default[:jtalks][:postfix][:domain] = "jtalks.org"
+default[:jtalks][:postfix][:domain] = "mail.jtalks.org"
 default[:jtalks][:postfix][:database][:host] = "127.0.0.1"
 default[:jtalks][:postfix][:database][:name] = "postfix"
 default[:jtalks][:postfix][:database][:user] = "postfix"
@@ -394,7 +395,13 @@ default[:jtalks][:postfixadmin][:conf][:database_user] = "'#{node[:jtalks][:post
 default[:jtalks][:postfixadmin][:conf][:database_password] = "'#{node[:jtalks][:postfix][:database][:password]}'"
 default[:jtalks][:postfixadmin][:conf][:database_name] = "'#{node[:jtalks][:postfix][:database][:name]}'"
 
-# nginx
+# Git
+default[:git][:user] = "git"
+default[:git][:version] = "2.2.1"
+default[:git][:server][:base_path] = "/home/#{node[:git][:user]}/server"
+default[:gitolite][:repository_url] = "git://github.com/sitaramc/gitolite.git"
+
+# Nginx
 default[:jtalks][:nginx][:custom_configs] = ["site", "dev", "qa", "preprod","selenium","logs","postfixadmin"]
 default[:nginx][:user] = "root"
 default[:nginx][:site][:confluence][:name] = "confluence"
