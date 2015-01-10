@@ -1,8 +1,12 @@
 server {
-   listen 144.76.64.105:80;
+   listen 80;
    server_name jtalks.org;
+   access_log  /var/log/nginx/site.access.log;
+   error_log  /var/log/nginx/site.error.log;
+
    location / {
      alias /home/site/www/jtalks-site-master/src/;
      index index.html;
+     include locations_default.conf;
    }
 }

@@ -95,10 +95,6 @@ default[:jtalks][:db_users][:sonar][:dbs][:sonar][:privileges] = [:all]
 default[:jtalks][:db_users][:postfix][:password] = "postfix"
 default[:jtalks][:db_users][:postfix][:dbs][:postfix][:privileges] = [:all]
 
-# nginx
-default[:jtalks][:nginx][:custom_configs] = ["site", "dev_site", "logs","postfixadmin"]
-default[:nginx][:user] = "root"
-
 # vagrant user to test only
 default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "jenkins", "vagrant"]
 default[:authorization][:sudo][:passwordless] = "true"
@@ -150,9 +146,7 @@ default[:crowd][:db][:name] = "crowd"
 default[:crowd][:db][:user] = "crowd"
 default[:crowd][:db][:password] = "#{node[:jtalks][:db_users][:crowd][:password]}"
 default[:crowd][:db][:backup_path] = "#{node[:jtalks][:cookbook_path]}/crowd/crowd.sql"   # for test backup contains all users  from production with password "1"
-default[:nginx][:site][:crowd][:name] = "crowd"
-default[:nginx][:site][:crowd][:host] = "crowd.#{node[:jtalks][:hostname]}"
-default[:nginx][:site][:crowd][:context_path] = "/"
+
 
 # Confluence
 default[:confluence][:user] = "confluence"
@@ -217,9 +211,6 @@ default[:jenkins][:crowd][:application] = "jenkins"
 default[:jenkins][:crowd][:password] = "1"
 default[:jenkins][:crowd][:group] = "jira-users"
 default[:jenkins][:config][:backup_path] = "#{node[:jtalks][:cookbook_path]}/jenkins"
-default[:nginx][:site][:jenkins][:name] = "#{node[:jenkins][:user][:name]}"
-default[:nginx][:site][:jenkins][:host] = "ci.#{node[:jtalks][:hostname]}"
-default[:nginx][:site][:jenkins][:context_path] = "/"
 default[:jenkins][:maven][:users][:deployment][:name] = "nexus-deployment"
 default[:jenkins][:maven][:users][:deployment][:password] = "fake"
 default[:jenkins][:maven][:users][:antarcticle][:name] = "jtalks"
@@ -402,3 +393,46 @@ default[:jtalks][:postfixadmin][:conf][:database_host] = "'#{node[:jtalks][:post
 default[:jtalks][:postfixadmin][:conf][:database_user] = "'#{node[:jtalks][:postfix][:database][:user]}'"
 default[:jtalks][:postfixadmin][:conf][:database_password] = "'#{node[:jtalks][:postfix][:database][:password]}'"
 default[:jtalks][:postfixadmin][:conf][:database_name] = "'#{node[:jtalks][:postfix][:database][:name]}'"
+
+# nginx
+default[:jtalks][:nginx][:custom_configs] = ["site", "dev", "qa", "preprod","selenium","logs","postfixadmin"]
+default[:nginx][:user] = "root"
+default[:nginx][:site][:confluence][:name] = "confluence"
+default[:nginx][:site][:confluence][:host] = "wiki.#{node[:jtalks][:hostname]}"
+default[:nginx][:site][:confluence][:context_path] = "/"
+default[:nginx][:site][:jira][:name] = "jira"
+default[:nginx][:site][:jira][:host] = "jira.#{node[:jtalks][:hostname]}"
+default[:nginx][:site][:jira][:context_path] = "/"
+default[:nginx][:site][:fisheye][:port]= node[:fisheye][:port]
+default[:nginx][:site][:fisheye][:name] = "fisheye"
+default[:nginx][:site][:fisheye][:host] = "fisheye.#{node[:jtalks][:hostname]}"
+default[:nginx][:site][:fisheye][:context_path] = "/"
+default[:nginx][:site][:nexus][:name] = "nexus"
+default[:nginx][:site][:nexus][:host] = "repo.#{node[:jtalks][:hostname]}"
+default[:nginx][:site][:nexus][:context_path] = "/"
+default[:nginx][:site][:pochta][:port] = node[:pochta][:http][:port]
+default[:nginx][:site][:pochta][:name] = "pochta"
+default[:nginx][:site][:pochta][:host] = "pochta.#{node[:jtalks][:hostname]}"
+default[:nginx][:site][:pochta][:context_path] = "/"
+default[:nginx][:site][:sonar][:port] = node[:sonar][:port]
+default[:nginx][:site][:sonar][:name] = "sonar"
+default[:nginx][:site][:sonar][:host] = "sonar.#{node[:jtalks][:hostname]}"
+default[:nginx][:site][:sonar][:context_path] = "/"
+default[:nginx][:site][:jenkins][:name] = "jenkins"
+default[:nginx][:site][:jenkins][:host] = "ci.#{node[:jtalks][:hostname]}"
+default[:nginx][:site][:jenkins][:context_path] = "/"
+default[:nginx][:site][:crowd][:name] = "crowd"
+default[:nginx][:site][:crowd][:host] = "crowd.#{node[:jtalks][:hostname]}"
+default[:nginx][:site][:crowd][:context_path] = "/"
+default[:nginx][:site][:performance][:port] =4090
+default[:nginx][:site][:performance][:name] = "performance"
+default[:nginx][:site][:performance][:host] = "performance.#{node[:jtalks][:hostname]}"
+default[:nginx][:site][:performance][:context_path] = "/"
+default[:nginx][:site][:beginintesting][:port] =4085
+default[:nginx][:site][:beginintesting][:name] = "beginintesting"
+default[:nginx][:site][:beginintesting][:host] = "beginintesting.#{node[:jtalks][:hostname]}"
+default[:nginx][:site][:beginintesting][:context_path] = "/"
+default[:nginx][:site][:autotests][:port] =4080
+default[:nginx][:site][:autotests][:name] = "autotests"
+default[:nginx][:site][:autotests][:host] = "autotests.#{node[:jtalks][:hostname]}"
+default[:nginx][:site][:autotests][:context_path] = "/"

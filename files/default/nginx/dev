@@ -1,0 +1,24 @@
+server {
+   listen 80;
+   server_name dev.jtalks.org;
+   access_log  /var/log/nginx/dev.access.log;
+   error_log  /var/log/nginx/dev.error.log;
+
+   location /jcommune {
+       proxy_pass http://localhost:8075/jcommune;
+       include locations_default.conf;
+     }
+     location /poulpe {
+       proxy_pass http://localhost:8075/poulpe;
+       include locations_default.conf;
+     }
+     location /antarcticle {
+       proxy_pass http://localhost:8075/antarcticle;
+       include locations_default.conf;
+     }
+   location /site {
+     alias /home/i_dev/www/jtalks-site-master/src/;
+     index index.html;
+     include locations_default.conf;
+   }
+}

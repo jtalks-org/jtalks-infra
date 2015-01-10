@@ -1,0 +1,19 @@
+server {
+  listen 80;
+  server_name qa.jtalks.org;
+  access_log /var/log/nginx/qa.access.log;
+  error_log /var/log/nginx/qa.error.log;
+
+  location /poulpe {
+    proxy_pass http://localhost:8070/poulpe;
+    include locations_default.conf;
+  }
+  location /jcommune {
+    proxy_pass http://localhost:8070/jcommune;
+    include locations_default.conf;
+  }
+  location /antarcticle {
+    proxy_pass http://localhost:8070/antarcticle;
+    include locations_default.conf;
+  }
+}

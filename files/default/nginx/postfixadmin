@@ -1,6 +1,8 @@
 server {
     listen 8000;
     server_name mail.jtalks.org localhost;
+    access_log  /var/log/nginx/postfixadmin.access.log;
+    error_log  /var/log/nginx/postfixadmin.error.log;
 
     root /home/postfix/postfixadmin;
     index index.php index.html index.htm;

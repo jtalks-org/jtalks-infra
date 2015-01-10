@@ -136,6 +136,11 @@ suites:
        - recipe[database::mysql]
        - recipe[jtalks-infra::mysql]
        - recipe[jtalks-infra::postfix]
+  - name: nginx
+    run_list:
+       - recipe[ark]
+       - recipe[nginx]
+       - recipe[jtalks-infra::nginx]
   - name: server
     run_list:
        - recipe[sysctl2]

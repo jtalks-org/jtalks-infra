@@ -5,10 +5,8 @@ access_log  /var/log/nginx/<%= @name %>.access.log;
 error_log  /var/log/nginx/<%= @name %>.error.log;
 
 location <%= @context_path %> {
-proxy_pass http://localhost:<%= @destination_port %>;
-proxy_set_header Host $http_host;
-proxy_set_header Remote-Addr $http_remote_addr;
-proxy_set_header X-Real-IP $remote_addr;
+    proxy_pass http://localhost:<%= @destination_port %>;
+    include locations_default.conf;
 }
 
 send_timeout               120;

@@ -1,6 +1,9 @@
 server {
-  listen 144.76.64.105:80;
+  listen 80;
   server_name logs.jtalks.org;
+  access_log  /var/log/nginx/logs.access.log;
+  error_log  /var/log/nginx/logs.error.log;
+
   location / {
     autoindex on;
     root /logs/public/;

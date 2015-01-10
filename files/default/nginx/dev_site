@@ -1,8 +1,0 @@
-server {
-   listen 127.0.0.1:80;
-   server_name dev.jtalks.org;
-   location /site {
-     alias /home/i_dev/www/jtalks-site-master/src/;
-     index index.html;
-   }
-}

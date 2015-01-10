@@ -1,0 +1,15 @@
+server {
+  listen 80;
+  server_name selenium.jtalks.org;
+  access_log /var/log/nginx/selenium.access.log;
+  error_log /var/log/nginx/selenium.error.log;
+
+  location / {
+    proxy_pass http://localhost:4444;
+    include locations_default.conf;
+  }
+  location /wd/hub {
+    proxy_pass http://localhost:4444/wd/hub;
+    include locations_default.conf;
+  }
+}
