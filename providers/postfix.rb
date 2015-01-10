@@ -87,11 +87,13 @@ def install_or_update_postfix
                   :user=> user,
                   :group=> user
               })
+    notifies :restart, "service[php5-fpm]", :delayed
   end
 
   template "#{node[:jtalks][:path][:init_script]}/php5-fpm" do
     source 'php.fpm.service.erb'
     mode '775'
+    notifies :restart, "service[php5-fpm]", :delayed
   end
 
   #install postfixadmin
@@ -128,14 +130,34 @@ def install_or_update_postfix
               })
   end
 
+  if !(@current_resource.exists)
+    jtalks_infra_replacer "replace_host_in_postfixadmin_config" do
+      owner user
+      group user
+      file "#{dir}/postfixadmin/config.inc.php"
+      replace "change-this-to-your.domain.tld"
+      with "#{domain}"
+    end
+
+    service "php5-fpm" do
+      supports :restart => true
+      action :restart
+    end
+
+    service "nginx" do
+      supports :restart => true
+      action :restart
+    end
+  end
+
   service "php5-fpm" do
     supports :restart => true
-    action [:enable, :restart]
+    action :enable
   end
 
   service "nginx" do
     supports :restart => true
-    action [:enable, :restart]
+    action :enable
   end
 
   # generate mysql structure to postfixadmin
@@ -149,10 +171,12 @@ def install_or_update_postfix
   end
 
   # install postfix
-  bash "install_postfix" do
-    code "debconf-set-selections <<< \"postfix postfix/mailname string #{domain}\";
-        debconf-set-selections <<< \"postfix postfix/main_mailer_type string 'Internet Site'\";
-        apt-get install -y postfix postfix-mysql"
+  if !(@current_resource.exists)
+      bash "install_postfix" do
+        code "debconf-set-selections <<< \"postfix postfix/mailname string #{domain}\";
+            debconf-set-selections <<< \"postfix postfix/main_mailer_type string 'Internet Site'\";
+            apt-get install -y postfix postfix-mysql"
+      end
   end
 
   template "/etc/postfix/main.cf" do
@@ -162,10 +186,12 @@ def install_or_update_postfix
                   :uid=> uid,
                   :mail_dir=> mail_dir
               })
+    notifies :restart, "service[postfix]", :delayed
   end
 
   template "/etc/postfix/master.cf" do
     source "postfix.master.cf.erb"
+    notifies :restart, "service[postfix]", :delayed
   end
 
   template "/etc/postfix/mysql_virtual_mailbox_domains.cf" do
@@ -176,6 +202,7 @@ def install_or_update_postfix
                   :db_user=> db_user,
                   :db_password=> db_password
               })
+    notifies :restart, "service[postfix]", :delayed
   end
 
   template "/etc/postfix/mysql_virtual_mailbox_maps.cf" do
@@ -186,6 +213,7 @@ def install_or_update_postfix
                   :db_user=> db_user,
                   :db_password=> db_password
               })
+    notifies :restart, "service[postfix]", :delayed
   end
 
   template "/etc/postfix/mysql_virtual_alias_maps.cf" do
@@ -196,6 +224,7 @@ def install_or_update_postfix
                   :db_user=> db_user,
                   :db_password=> db_password
               })
+    notifies :restart, "service[postfix]", :delayed
   end
 
   template "/etc/postfix/mysql_relay_domains.cf" do
@@ -206,12 +235,15 @@ def install_or_update_postfix
                   :db_user=> db_user,
                   :db_password=> db_password
               })
+    notifies :restart, "service[postfix]", :delayed
   end
 
   # install dovecot
-  bash "install_dovecot" do
-    code "debconf-set-selections <<< \"dovecot dovecot-core/create-ssl-cert boolean false\";
-        apt-get install -y dovecot-imapd dovecot-pop3d dovecot-mysql dovecot-lmtpd"
+  if !(@current_resource.exists)
+      bash "install_dovecot" do
+        code "debconf-set-selections <<< \"dovecot dovecot-core/create-ssl-cert boolean false\";
+            apt-get install -y dovecot-imapd dovecot-pop3d dovecot-mysql dovecot-lmtpd"
+      end
   end
 
   template "/etc/dovecot/dovecot-mysql.conf.ext" do
@@ -224,10 +256,12 @@ def install_or_update_postfix
                   :mail_dir=>  mail_dir,
                   :uid=> uid
               })
+    notifies :run, "execute[service dovecot restart]", :delayed
   end
 
   template "/etc/dovecot/conf.d/10-auth.conf" do
     source "dovecot.auth.conf.erb"
+    notifies :run, "execute[service dovecot restart]", :delayed
   end
 
   template "/etc/dovecot/conf.d/10-mail.conf" do
@@ -235,33 +269,41 @@ def install_or_update_postfix
     variables({
                   :mail_dir=>mail_dir
               })
+    notifies :run, "execute[service dovecot restart]", :delayed
   end
 
   template "/etc/dovecot/conf.d/10-ssl.conf" do
     source "dovecot.ssl.conf.erb"
+    notifies :run, "execute[service dovecot restart]", :delayed
   end
 
   template "/etc/dovecot/conf.d/20-imap.conf" do
     source "dovecot.imap.conf.erb"
+    notifies :run, "execute[service dovecot restart]", :delayed
   end
 
   template "/etc/dovecot/conf.d/20-imap.conf" do
     source "dovecot.imap.conf.erb"
+    notifies :run, "execute[service dovecot restart]", :delayed
   end
 
   template "/etc/dovecot/conf.d/auth-sql.conf.ext" do
     source "dovecot.auth.sql.conf.erb"
+    notifies :run, "execute[service dovecot restart]", :delayed
   end
 
   template "/etc/dovecot/conf.d/10-master.conf" do
     source "dovecot.master.conf.erb"
+    notifies :run, "execute[service dovecot restart]", :delayed
   end
 
-  execute "service dovecot restart"
+  execute "service dovecot restart" do
+    action :nothing
+  end
 
   service "postfix" do
     supports :restart => true
-    action [:enable, :restart]
+    action :enable
   end
 
   #create admins
