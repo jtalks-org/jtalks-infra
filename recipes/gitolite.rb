@@ -56,26 +56,18 @@ if first_install
    command "git clone git@localhost:gitolite-admin;"
  end
 
-  execute "configure_gitolite" do
+  bash "configure_gitolite" do
     user user
-    cwd "/tmp/gitolite-admin"
-    command "
-      git config --global push.default simple
-      rm -Rf conf/*; rm -Rf keydir/*;
-      tar xvfz  #{node[:jtalks][:cookbook_path]}/#{user}/keys.tar.gz -C /tmp/gitolite-admin/keydir;
-      cp  #{node[:jtalks][:cookbook_path]}/#{user}/gitolite.conf /tmp/gitolite-admin/conf/gitolite.conf;
-      git add *;
+    code "
+      cd /tmp/gitolite-admin
+      git config --local push.default simple
+      rm -Rf conf/*; rm -Rf keydir/*
+      tar xvfz  #{node[:jtalks][:cookbook_path]}/#{user}/keys.tar.gz -C /tmp/gitolite-admin/keydir
+      cp  #{node[:jtalks][:cookbook_path]}/#{user}/gitolite.conf /tmp/gitolite-admin/conf/gitolite.conf
+      git add --all
+      git commit -m jtalks-configuration
+      git push
    "
-  end
-
-  execute "git commit -m init" do
-    user user
-    cwd "/tmp/gitolite-admin"
-  end
-
-execute "git push" do
-    user user
-    cwd "/tmp/gitolite-admin"
   end
 
   execute "chown -R #{user}.#{user} #{dir}"
