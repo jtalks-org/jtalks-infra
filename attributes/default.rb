@@ -36,6 +36,7 @@ default[:jtalks][:users][:nexus][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w0
 default[:jtalks][:users][:fisheye][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:postfix][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:postfix][:uid] = 3000 # uid = gid
+default[:jtalks][:users][:git][:known_hosts][:git] = ["localhost"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jenkins] = ["github.com"]
 default[:jtalks][:users][:fisheye][:known_hosts][:fisheye] = ["github.com"]
 default[:jtalks][:users][:jenkins][:known_hosts][:jtalks] = ["213.239.201.68"]
@@ -409,7 +410,7 @@ default[:nginx][:site][:confluence][:context_path] = "/"
 default[:nginx][:site][:jira][:name] = "jira"
 default[:nginx][:site][:jira][:host] = "jira.#{node[:jtalks][:hostname]}"
 default[:nginx][:site][:jira][:context_path] = "/"
-default[:nginx][:site][:fisheye][:port]= node[:fisheye][:port]
+default[:nginx][:site][:fisheye][:port]= node[:fisheye][:yaport]
 default[:nginx][:site][:fisheye][:name] = "fisheye"
 default[:nginx][:site][:fisheye][:host] = "fisheye.#{node[:jtalks][:hostname]}"
 default[:nginx][:site][:fisheye][:context_path] = "/"
