@@ -13,6 +13,7 @@ driver:
      - ["forwarded_port", {guest: 8085, host: 8085}]
      - ["forwarded_port", {guest: 9000, host: 9000}]
      - ["forwarded_port", {guest: 8000, host: 8000}]
+     - ["forwarded_port", {guest: 22, host: 22}]
 
 provisioner:
   name: chef_solo
@@ -141,6 +142,12 @@ suites:
        - recipe[ark]
        - recipe[nginx]
        - recipe[jtalks-infra::nginx]
+  - name: git
+    run_list:
+       - recipe[ark]
+       - recipe[jtalks-infra::users]
+       - recipe[git::server]
+       - recipe[jtalks-infra::gitolite]
   - name: server
     run_list:
        - recipe[sysctl2]
@@ -150,7 +157,9 @@ suites:
        - recipe[cron]
        - recipe[vim]
        - recipe[ark]
-       - recipe[git]
+       - recipe[jtalks-infra::users]
+       - recipe[git::server]
+       - recipe[jtalks-infra::gitolite]
        - recipe[git_user]
        - recipe[java]
        - recipe[database::mysql]
@@ -158,7 +167,6 @@ suites:
        - recipe[newrelic-sysmond]
        - recipe[jtalks-infra::logs]
        - recipe[jtalks-infra::mysql]
-       - recipe[jtalks-infra::users]
        - recipe[jtalks-infra::selenium]
        - recipe[jtalks-infra::pochta]
        - recipe[jtalks-infra::cicd]
