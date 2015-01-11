@@ -24,7 +24,7 @@ template "#{node[:nginx][:dir]}/locations_default.conf" do
 
 node[:nginx][:site].each do |site_attribute_node|
   site = site_attribute_node[0] #hash with values of attribute
-
+  Chef::Log.info("!!!!!!!!!SITE!!!!!!!!!: " +site)
   if node[:nginx][:site][site][:port]
     destination_port =  node[:nginx][:site][site][:port]
   else
