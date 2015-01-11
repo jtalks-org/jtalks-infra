@@ -50,29 +50,9 @@ if first_install
     environment "HOME" => dir
   end
 
- execute "clone_gitolite_admin" do
-   user user
-   cwd "/tmp"
-   command "git clone git@localhost:gitolite-admin;"
- end
-
-  bash "configure_gitolite" do
-    user user
-    code "
-      cd /tmp/gitolite-admin
-      git config --local push.default simple
-      rm -Rf conf/*; rm -Rf keydir/*
-      tar xvfz  #{node[:jtalks][:cookbook_path]}/#{user}/keys.tar.gz -C /tmp/gitolite-admin/keydir
-      cp  #{node[:jtalks][:cookbook_path]}/#{user}/gitolite.conf /tmp/gitolite-admin/conf/gitolite.conf
-      git add --all
-      git commit -m jtalks-configuration
-      git push
-   "
-  end
-
   execute "chown -R #{user}.#{user} #{dir}"
 
-  # execute  "rm -Rf /tmp/gitolite; rm -Rf #{dir}/git.pub; rm -Rf /tmp/gitolite-admin"
+  execute  "rm -Rf /tmp/gitolite; rm -Rf #{dir}/git.pub"
 
 end
 
