@@ -59,7 +59,7 @@ if first_install
   execute "configure_gitolite" do
     user user
     cwd "/tmp/gitolite-admin"
-    code "
+    command "
       git config --global push.default simple
       rm -Rf conf/*; rm -Rf keydir/*;
       tar xvfz  #{node[:jtalks][:cookbook_path]}/#{user}/keys.tar.gz -C /tmp/gitolite-admin/keydir;
@@ -68,13 +68,14 @@ if first_install
    "
   end
 
-  execute "save_change_of_gitolite" do
+  execute "git commit -m init" do
     user user
     cwd "/tmp/gitolite-admin"
-    code "
-      git commit -m init;
-      git push;
-   "
+  end
+
+execute "git push" do
+    user user
+    cwd "/tmp/gitolite-admin"
   end
 
   execute "chown -R #{user}.#{user} #{dir}"
