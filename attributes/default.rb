@@ -397,7 +397,6 @@ default[:jtalks][:postfixadmin][:conf][:database_name] = "'#{node[:jtalks][:post
 
 # Git
 default[:git][:user] = "git"
-default[:git][:version] = "2.2.1"
 default[:git][:server][:base_path] = "/home/#{node[:git][:user]}"
 default[:gitolite][:repository_url] = "git://github.com/sitaramc/gitolite.git"
 
