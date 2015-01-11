@@ -72,7 +72,7 @@ if first_install
 
   execute "chown -R #{user}.#{user} #{dir}"
 
-  execute  "rm -Rf /tmp/gitolite; rm -Rf #{dir}/git.pub; rm -Rf /tmp/gitolite-admin"
+  # execute  "rm -Rf /tmp/gitolite; rm -Rf #{dir}/git.pub; rm -Rf /tmp/gitolite-admin"
 
 end
 
