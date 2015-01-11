@@ -13,7 +13,6 @@ driver:
      - ["forwarded_port", {guest: 8085, host: 8085}]
      - ["forwarded_port", {guest: 9000, host: 9000}]
      - ["forwarded_port", {guest: 8000, host: 8000}]
-     - ["forwarded_port", {guest: 22, host: 22}]
 
 provisioner:
   name: chef_solo
