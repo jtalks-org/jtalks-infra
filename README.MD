@@ -8,7 +8,7 @@ Chef Cookbook of JTalks's infrastructure
 - Install ruby   `apt-get install build-essential autoconf ruby ruby-bundler`
 - Install depends `bundle install`
 
-## testing
+## Testing
 
 - add content from private repository (jtalks-infra-files) to files/.
 - replace dummy backups of databases
