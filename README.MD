@@ -36,4 +36,5 @@ Chef Cookbook of JTalks's infrastructure
   * check plugins to applications (Atlassian)
   * copy jira-home/plugins/installed-plugins to new server
   * open Jira on web browser. And do reindex (System - Advanced - Indexing)
+  * open confluence on web browser. And do reindex (General Configuration - Content Indexing)
   * move git repositories
