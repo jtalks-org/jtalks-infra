@@ -2,7 +2,8 @@ Chef Cookbook of JTalks's infrastructure
 ----
 
 ## Develop
-
+- Install Virtualbox and Vagrant compatible versions (Virtualbox 4.1.36, Vagrant 1.4.3)
+- Install Vagrant `apt-get install vagrant`
 - Clone repository
 - `cd jtalks-infra`
 - Install ruby   `apt-get install build-essential autoconf ruby ruby-bundler`
@@ -14,7 +15,7 @@ Chef Cookbook of JTalks's infrastructure
 
 ## Usage on server
 
-- install Chef  `apt-get install build-essential autoconf ruby ruby-bundler chef`
+- install Chef  `apt-get install build-essential autoconf ruby1.9.3 ruby-bundler chef`
 - create solo.rb (config file)
 	    `log_level          :info
      	log_location	   STDOUT
