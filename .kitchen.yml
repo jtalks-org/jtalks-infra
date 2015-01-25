@@ -24,6 +24,7 @@ platforms:
 suites:
   - name: jenkins
     run_list:
+      - recipe[apt]
       - recipe[ark]
       - recipe[git]
       - recipe[git_user]
@@ -36,6 +37,7 @@ suites:
       - recipe[jtalks-infra::jenkins]
   - name: crowd
     run_list:
+       - recipe[apt]
        - recipe[ark]
        - recipe[java]
        - recipe[jtalks-infra::users]
@@ -45,33 +47,40 @@ suites:
        - recipe[jtalks-infra::crowd]
   - name: users
     run_list:
+       - recipe[apt]
        - recipe[jtalks-infra::users]
        - recipe[sudo]
   - name: db-users
     run_list:
+       - recipe[apt]
        - recipe[database::mysql]
        - recipe[jtalks-infra::mysql]
   - name: cicd
     run_list:
+       - recipe[apt]
        - recipe[build-essential]
        - recipe[python]
        - recipe[jtalks-infra::cicd]
   - name: backup
     run_list:
+       - recipe[apt]
        - recipe[cron]
        - recipe[jtalks-infra::backup]
   - name: pochta
     run_list:
+       - recipe[apt]
        - recipe[jtalks-infra::users]
        - recipe[sudo]
        - recipe[jtalks-infra::pochta]
   - name: selenium
     run_list:
+       - recipe[apt]
        - recipe[jtalks-infra::users]
        - recipe[sudo]
        - recipe[jtalks-infra::selenium]
   - name: sonar
     run_list:
+       - recipe[apt]
        - recipe[ark]
        - recipe[java]
        - recipe[jtalks-infra::users]
@@ -82,6 +91,7 @@ suites:
        - recipe[jtalks-infra::sonar]
   - name: nexus
     run_list:
+       - recipe[apt]
        - recipe[ark]
        - recipe[java]
        - recipe[jtalks-infra::users]
@@ -92,6 +102,7 @@ suites:
        - recipe[jtalks-infra::nexus]
   - name: fisheye
     run_list:
+       - recipe[apt]
        - recipe[ark]
        - recipe[git]
        - recipe[git_user]
@@ -104,6 +115,7 @@ suites:
        - recipe[jtalks-infra::fisheye]
   - name: confluence
     run_list:
+       - recipe[apt]
        - recipe[ark]
        - recipe[git]
        - recipe[git_user]
@@ -116,6 +128,7 @@ suites:
        - recipe[jtalks-infra::confluence]
   - name: jira
     run_list:
+       - recipe[apt]
        - recipe[ark]
        - recipe[git]
        - recipe[git_user]
@@ -128,6 +141,7 @@ suites:
        - recipe[jtalks-infra::jira]
   - name: mail
     run_list:
+       - recipe[apt]
        - recipe[ark]
        - recipe[nginx]
        - recipe[jtalks-infra::users]
@@ -138,11 +152,13 @@ suites:
        - recipe[jtalks-infra::postfix]
   - name: nginx
     run_list:
+       - recipe[apt]
        - recipe[ark]
        - recipe[nginx]
        - recipe[jtalks-infra::nginx]
   - name: git
     run_list:
+       - recipe[apt]
        - recipe[ark]
        - recipe[jtalks-infra::users]
        - recipe[git::server]
@@ -150,6 +166,7 @@ suites:
        - recipe[jtalks-infra::gitolite]
   - name: server
     run_list:
+       - recipe[apt]
        - recipe[sysctl2]
        - recipe[build-essential]
        - recipe[python]

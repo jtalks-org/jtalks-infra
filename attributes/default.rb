@@ -7,6 +7,8 @@ default[:jtalks][:smtp][:host] = "smpt.host"
 default[:jtalks][:smtp][:port] = "587"
 # sysctl
 default[:sysctl][:params]["net.core.rmem_max"] = 512000
+# apt
+default[:apt][:compile_time_update] = true
 # backup
 default[:jtalks][:backup][:ftp] = "u99356@u99356.your-backup.de"
 default[:jtalks][:backup][:exclude_dirs] = "/home/aidjek /home/masyan /home/ctapobep"
