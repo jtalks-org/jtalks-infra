@@ -297,6 +297,24 @@ def install_or_update_postfix
     notifies :run, "execute[service dovecot restart]", :delayed
   end
 
+  admin_email = ""
+  admins.each do |name, data|
+    admin_email  = "#{name}@#{data[:domain]}";
+  end
+
+  template "/etc/dovecot/conf.d/20-lmtp.conf" do
+    source "dovecot.lmtp.conf.erb"
+    variables({
+                  :admin_mail=> admin_email
+              })
+    notifies :run, "execute[service dovecot restart]", :delayed
+  end
+
+  template "/etc/dovecot/conf.d/15-mailboxes.conf" do
+    source "dovecot.mailboxes.conf.erb"
+    notifies :run, "execute[service dovecot restart]", :delayed
+  end
+
   execute "service dovecot restart" do
     action :nothing
   end
