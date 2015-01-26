@@ -195,7 +195,7 @@ default[:pochta][:smtp][:port] = 9025
 default[:pochta][:http][:threads_count] = 5
 default[:pochta][:smtp][:threads_count] = 5
 default[:pochta][:user] = "pochta"
-default[:pochta][:version] = "1.3"
+default[:pochta][:version] = "1.4"
 default[:pochta][:source_url] = "http://repo.jtalks.org/content/repositories/releases/org/jtalks/jtalks-pochta/#{node[:pochta][:version]}/jtalks-pochta-#{node[:pochta][:version]}.jar"
 
 # Selenium
