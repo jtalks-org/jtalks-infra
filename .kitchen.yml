@@ -65,6 +65,9 @@ suites:
     run_list:
        - recipe[apt]
        - recipe[cron]
+       - recipe[database::mysql]
+       - recipe[jtalks-infra::users]
+       - recipe[jtalks-infra::mysql]
        - recipe[jtalks-infra::backup]
   - name: pochta
     run_list:

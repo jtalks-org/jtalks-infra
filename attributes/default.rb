@@ -11,7 +11,7 @@ default[:sysctl][:params]["net.core.rmem_max"] = 512000
 default[:apt][:compile_time_update] = true
 # backup
 default[:jtalks][:backup][:ftp] = "u99356@u99356.your-backup.de"
-default[:jtalks][:backup][:exclude_dirs] = "/home/aidjek /home/masyan /home/ctapobep"
+default[:jtalks][:backup][:exclude_dirs] = "/home/aidjek /home/masyan /home/ctapobep /home/*/backup /home/*/.jtalks"
 #to generate password use command 'openssl passwd -1' and enter password
 default[:jtalks][:users][:root][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1
 default[:jtalks][:users][:git][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00"  # 1

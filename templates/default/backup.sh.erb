@@ -86,7 +86,7 @@ for i in $LIST_OF_FOLDERS; do
 done > $EXCLUDED_LIST
 
 for directory in $LIST_OF_FOLDERS_TO_EXCLUDE ; do
-	echo $directory | sed 's/\/home\///' >> $EXCLUDED_LIST
+	find $directory -maxdepth 0 >> $EXCLUDED_LIST
 done
 
 rm -rf ${BACKUP_DIR}/daily/home
@@ -101,7 +101,7 @@ done
         success_backup "rsync /var/www/html dir"
 
 cd  ${DEST_DIR_D}
-(time tar -cjvf home.tar.bz2 ../home/) 2>> $LOG_FILE
+(time tar -cjvf home.tar.bz2 ../home/ | split -d -b 5G - home.tar.bz2.) 2>> $LOG_FILE
         success_backup "bzipped home dir"
 
 # copying backup on remote FTP server
@@ -119,7 +119,7 @@ cd ${DEST_DIR_D}/mysql
 (time scp * $REMOTE_FTP:$(/bin/date '+%d_%m_%Y'))  2>&1>> $LOG_FILE
 success_backup "backuping on remote ftp mysql folder"
 cd ${DEST_DIR_D}
-(time scp home.tar.bz2 $REMOTE_FTP:$(/bin/date '+%d_%m_%Y'))  2>&1>> $LOG_FILE
+(time scp home.tar.bz2* $REMOTE_FTP:$(/bin/date '+%d_%m_%Y'))  2>&1>> $LOG_FILE
 success_backup "backuping on remote ftp home archive"
 
 #Weekly
