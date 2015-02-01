@@ -101,7 +101,7 @@ done
         success_backup "rsync /var/www/html dir"
 
 cd  ${DEST_DIR_D}
-(time tar -cjvf home.tar.bz2 ../home/ | split -d -b 5G - home.tar.bz2.) 2>> $LOG_FILE
+(time tar -cvjp ../home/ | split -d -b 5G - home.tar.bz2.) 2>> $LOG_FILE
         success_backup "bzipped home dir"
 
 # copying backup on remote FTP server
