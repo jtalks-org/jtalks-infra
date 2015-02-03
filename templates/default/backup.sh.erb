@@ -86,7 +86,7 @@ for i in $LIST_OF_FOLDERS; do
 done > $EXCLUDED_LIST
 
 for directory in $LIST_OF_FOLDERS_TO_EXCLUDE ; do
-	find $directory -maxdepth 0 >> $EXCLUDED_LIST
+	find $directory -maxdepth 0 | sed 's/\/home\///' >> $EXCLUDED_LIST
 done
 
 rm -rf ${BACKUP_DIR}/daily/home
