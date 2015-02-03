@@ -12,6 +12,7 @@ alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 mydestination = <%= @host %>, localhost, localhost.localdomain, 127.0.0.1
 mailbox_size_limit = 0
+message_size_limit = 52428800
 recipient_delimiter = +
 inet_interfaces = all
 virtual_uid_maps = static:<%= @uid %>
