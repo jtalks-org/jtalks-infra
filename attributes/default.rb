@@ -36,6 +36,8 @@ default[:jtalks][:users][:selenium][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF
 default[:jtalks][:users][:sonar][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:nexus][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:fisheye][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:docker][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:docker][:system] = true
 default[:jtalks][:users][:postfix][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:postfix][:uid] = 3000 # uid = gid
 default[:jtalks][:users][:git][:known_hosts][:git] = ["localhost"]
@@ -100,7 +102,7 @@ default[:jtalks][:db_users][:postfix][:password] = "postfix"
 default[:jtalks][:db_users][:postfix][:dbs][:postfix][:privileges] = [:all]
 
 # vagrant user to test only
-default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "jenkins", "vagrant"]
+default[:authorization][:sudo][:users] = ["masyan", "ctapobep", "aidjek", "jenkins", "vagrant", "docker"]
 default[:authorization][:sudo][:passwordless] = "true"
 default[:authorization][:sudo][:include_sudoers_d] = "true"
 
@@ -447,3 +449,14 @@ default[:nginx][:site][:autotests][:port] =4080
 default[:nginx][:site][:autotests][:name] = "autotests"
 default[:nginx][:site][:autotests][:host] = "autotests.#{node[:jtalks][:hostname]}"
 default[:nginx][:site][:autotests][:context_path] = "/"
+
+# Docker
+default[:docker][:group_members] = "docker"
+default[:docker][:install_type] = "package"
+default[:docker][:install_dir] = "/home/docker/instance"
+default[:docker][:package][:name] = "docker.io"
+default[:docker][:graph] = "/home/docker/var"
+default[:docker][:group] = "docker"
+
+#Hubot
+default[:jtalks][:hubot][:token] = "fake"

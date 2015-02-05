@@ -9,15 +9,22 @@ node[:jtalks][:users].each do |user, data|
 
   password = node[:jtalks][:users][user][:password]
   uid = node[:jtalks][:users][user][:uid]
+  system = data[:system] || false
 
   # Add user
   user user do
     shell '/bin/bash'
-    password "#{password}"
+    password password
     action :create
     home dir
+    system system
     uid uid
     supports :manage_home => true
+  end
+
+  group user do
+    gid uid
+    system system
   end
 
   directory dir do

@@ -168,6 +168,19 @@ suites:
        - recipe[git::server]
        - recipe[git_user]
        - recipe[jtalks-infra::gitolite]
+  - name: docker
+    run_list:
+       - recipe[apt]
+       - recipe[ark]
+       - recipe[jtalks-infra::users]
+       - recipe[docker::default]
+  - name: hubot
+    run_list:
+       - recipe[apt]
+       - recipe[ark]
+       - recipe[jtalks-infra::users]
+       - recipe[docker::default]
+       - recipe[jtalks-infra::hubot]
   - name: server
     run_list:
        - recipe[apt]
@@ -184,6 +197,7 @@ suites:
        - recipe[jtalks-infra::gitolite]
        - recipe[java]
        - recipe[database::mysql]
+       - recipe[docker::default]
        - recipe[nginx]
        - recipe[newrelic-sysmond]
        - recipe[jtalks-infra::logs]
@@ -200,4 +214,5 @@ suites:
        - recipe[jtalks-infra::jira]
        - recipe[jtalks-infra::nginx]
        - recipe[jtalks-infra::postfix]
+       - recipe[jtalks-infra::hubot]
        - recipe[jtalks-infra::backup]
