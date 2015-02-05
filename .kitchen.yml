@@ -15,8 +15,9 @@ driver:
      - ["forwarded_port", {guest: 8000, host: 8000}]
 
 provisioner:
-  name: chef_solo
+  name: chef_zero *or* chef_solo
   require_chef_omnibus: true
+  chef_omnibus_url: https://www.chef.io/chef/install.sh
 
 platforms:
   - name: ubuntu-14.04

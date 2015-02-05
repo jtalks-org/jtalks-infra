@@ -15,7 +15,8 @@ Chef Cookbook of JTalks's infrastructure
 
 ## Usage on server
 
-- install Chef  `apt-get install build-essential autoconf ruby1.9.3 ruby-bundler chef`
+- install Ruby  `apt-get install build-essential autoconf ruby1.9.3 ruby-bundler`
+- install chef https://www.chef.io/download-chef-client/   (v. 12.0.3)
 - create solo.rb (config file)
 	    `log_level          :info
      	log_location	   STDOUT

@@ -281,7 +281,8 @@ default[:jenkins][:plugins]["windows-slaves"] = "1.0"
 
 # NewRelic
 # license key neen to sysmond
-default[:new_relic][:license_key] = "fake"
+default["newrelic-sysmond"][:package_action] = "upgrade"
+default["newrelic-sysmond"][:license_key] = "fake"
 
 # Sonar
 default[:sonar][:user] = "sonar"
