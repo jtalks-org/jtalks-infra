@@ -280,7 +280,7 @@ default[:jenkins][:plugins]["translation"] = "1.12"
 default[:jenkins][:plugins]["windows-slaves"] = "1.0"
 
 # NewRelic
-default[:new_relic][:license_key] = "fake"
+default["newrelic-sysmond"][:package_action] = "upgrade"
 
 # Sonar
 default[:sonar][:user] = "sonar"
