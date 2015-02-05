@@ -6,7 +6,7 @@ default[:jtalks][:logs_instances_web] = ["qa","dev","preprod","beginintesting","
 default[:jtalks][:smtp][:host] = "smpt.host"
 default[:jtalks][:smtp][:port] = "587"
 # sysctl
-default[:sysctl][:params]["net.core.rmem_max"] = 512000
+default[:sysctl][:params][:net][:core][:rmem_max] = 512000
 # apt
 default[:apt][:compile_time_update] = true
 # backup

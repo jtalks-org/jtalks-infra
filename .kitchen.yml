@@ -184,7 +184,7 @@ suites:
   - name: server
     run_list:
        - recipe[apt]
-       - recipe[sysctl2]
+       - recipe[sysctl::apply]
        - recipe[build-essential]
        - recipe[python]
        - recipe[sudo]
