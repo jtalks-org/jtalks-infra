@@ -1,6 +1,6 @@
 server {
    listen 80;
-   server_name jtalks.org;
+   server_name www.jtalks.org  jtalks.org;
    access_log  /var/log/nginx/site.access.log;
    error_log  /var/log/nginx/site.error.log;
 
