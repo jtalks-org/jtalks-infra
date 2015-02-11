@@ -49,6 +49,7 @@ end
 #create directories to QA command
 user = "qa"
 perm = "0755"
+full_perm = "0777"
 
 directory "/home/#{user}" do
   owner user
