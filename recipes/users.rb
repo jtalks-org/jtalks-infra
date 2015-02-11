@@ -76,6 +76,7 @@ instances.each do | instance |
   directory "/home/#{user}/.jtalks/plugins/#{instance}" do
     owner user
     group user
-    mode perm
+    mode full_perm
+    recursive true
   end
 end
