@@ -46,6 +46,20 @@ node[:jtalks][:users].each do |user, data|
   end
 end
 
+# add to additional groups
+node[:jtalks][:users].each do |user, data|
+  additional_groups = data[:additional_groups] || nil
+  if additional_groups then
+    additional_groups.each do |group|
+      group group do
+        append true
+        members [user]
+        action :manage
+      end
+    end
+  end
+end
+
 #create directories to QA command
 user = "qa"
 perm = "0755"

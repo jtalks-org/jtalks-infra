@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.3.6)
+    addressable (2.3.7)
     berkshelf (3.2.1)
       addressable (~> 2.3.4)
       berkshelf-api-client (~> 1.2)
@@ -128,13 +128,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  addressable (~> 2.3.6)
+  addressable (= 2.3.7)
   berkshelf (= 3.2.1)
-  kitchen-vagrant
+  kitchen-vagrant (= 0.15.0)
   rspec (= 3.0.0)
   rspec-core (= 3.0.0)
   rspec-expectations (= 3.0.0)
   ruby-shadow (= 2.3.4)
   sequel (= 4.18.0)
   serverspec (= 2.0.1)
-  test-kitchen
+  test-kitchen (= 1.2.1)

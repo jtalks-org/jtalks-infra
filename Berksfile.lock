@@ -76,7 +76,7 @@ GRAPH
     python (= 1.4.6)
     ssh-util (= 0.6.3)
     sudo (= 2.7.1)
-    sysctl2 (= 0.6.2)
+    sysctl (= 0.6.2)
     vim (= 1.1.2)
   lxc (2.0.0)
     dpkg_autostart (>= 0.1.10)
