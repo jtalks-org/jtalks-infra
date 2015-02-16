@@ -453,10 +453,30 @@ default[:nginx][:site][:autotests][:host] = "autotests.#{node[:jtalks][:hostname
 default[:nginx][:site][:autotests][:context_path] = "/"
 
 # Docker
-default[:docker][:group_members] = "docker"
-default[:docker][:install_type] = "package"
-default[:docker][:install_dir] = "/home/docker/instance"
-default[:docker][:package][:name] = "docker.io"
+default[:docker][:group_members] = ["docker"]
+default[:docker][:install_type] = "binary"
+default[:docker][:binary][:version] = "1.5.0"
+default[:docker][:binary][:url] = "http://get.docker.io/builds/#{node[:kernel][:name]}/#{node[:docker][:arch]}/docker-#{node[:docker][:binary][:version]}"
+default[:docker][:binary][:checksum] =
+    case node[:docker][:binary][:version]
+      when '0.10.0' then
+        'ce1f5bc88a99f8b2331614ede7199f872bd20e4ac1806de7332cbac8e441d1a0'
+      when '0.11.0' then
+        'f80ba82acc0a6255960d3ff6fe145a8fdd0c07f136543fcd4676bb304daaf598'
+      when '0.11.1' then
+        'ed2f2437fd6b9af69484db152d65c0b025aa55aae6e0991de92d9efa2511a7a3'
+      when '0.12.0' then
+        '0f611f7031642a60716e132a6c39ec52479e927dfbda550973e1574640135313'
+      when '1.0.0' then
+        '55cf74ea4c65fe36e9b47ca112218459cc905ede687ebfde21b2ba91c707db94'
+      when '1.0.1' then
+        '1d9aea20ec8e640ec9feb6757819ce01ca4d007f208979e3156ed687b809a75b'
+      when '1.4.1' then
+        'b4fb75be087eafe6cda26038a045854ab2d497adad9276a45c37d7d55da764fc'
+      when '1.5.0' then
+        '5729164f6ed53c47b5c18e0c0a64fe03b8548e3fd16028fa961ea5ae5e5946c6'
+    end
+default[:docker][:install_dir] = "/bin"
 default[:docker][:graph] = "/home/docker/var"
 default[:docker][:group] = "docker"
 
