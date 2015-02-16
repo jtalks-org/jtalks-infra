@@ -482,3 +482,9 @@ default[:docker][:group] = "docker"
 
 #Hubot
 default[:jtalks][:hubot][:token] = "fake"
+
+# iptables
+default[:iptables][:install_rules] = false
+default[:iptables][:rules] =[
+    "iptables -I INPUT 1 -p tcp -m state --state NEW -m multiport --dports ssh,smtp,http,https -j ACCEPT"
+]

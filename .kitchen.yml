@@ -200,6 +200,7 @@ suites:
        - recipe[docker::default]
        - recipe[nginx]
        - recipe[newrelic-sysmond]
+       - recipe[iptables]
        - recipe[jtalks-infra::logs]
        - recipe[jtalks-infra::mysql]
        - recipe[jtalks-infra::selenium]
@@ -216,3 +217,4 @@ suites:
        - recipe[jtalks-infra::postfix]
        - recipe[jtalks-infra::hubot]
        - recipe[jtalks-infra::backup]
+       - recipe[jtalks-infra::iptables]
