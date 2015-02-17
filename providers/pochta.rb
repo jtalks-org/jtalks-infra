@@ -109,7 +109,7 @@ def install_or_update_pochta
 
   service service_name do
     supports :restart => true
-    action :enbale
+    action :enable
   end
 
 end
