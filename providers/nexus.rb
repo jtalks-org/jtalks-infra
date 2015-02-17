@@ -314,6 +314,32 @@ def configure
               </externalConfiguration>
             </repository>
             <repository>
+              <id>builds</id>
+              <name>Builds</name>
+              <providerRole>org.sonatype.nexus.proxy.repository.Repository</providerRole>
+              <providerHint>maven2</providerHint>
+              <localStatus>IN_SERVICE</localStatus>
+              <notFoundCacheTTL>1440</notFoundCacheTTL>
+              <userManaged>true</userManaged>
+              <exposed>true</exposed>
+              <browseable>true</browseable>
+              <writePolicy>ALLOW_WRITE</writePolicy>
+              <indexable>true</indexable>
+              <searchable>true</searchable>
+              <localStorage>
+                <provider>file</provider>
+              </localStorage>
+              <externalConfiguration>
+                <proxyMode>ALLOW</proxyMode>
+                <artifactMaxAge>-1</artifactMaxAge>
+                <itemMaxAge>1440</itemMaxAge>
+                <cleanseRepositoryMetadata>false</cleanseRepositoryMetadata>
+                <downloadRemoteIndex>false</downloadRemoteIndex>
+                <checksumPolicy>WARN</checksumPolicy>
+                <repositoryPolicy>RELEASE</repositoryPolicy>
+              </externalConfiguration>
+            </repository>
+            <repository>
               <id>snapshots</id>
               <name>Snapshots</name>
               <providerRole>org.sonatype.nexus.proxy.repository.Repository</providerRole>
