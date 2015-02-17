@@ -20,11 +20,10 @@ USER=<%= @user %>
 GROUP=<%= @user %>
 BIN_PATH=<%= @bin_path %>
 PID_FILE=/var/run/<%= @service_name %>/pid
+JAVA_BIN=$(which java)
 
 start() {
-    start-stop-daemon --start -b -u "$USER" -g "$GROUP" \
-    -c "$USER"  -p "$CATALINA_PID" \
-    -x /bin/bash -- -c "java -jar  $BIN_PATH"
+    start-stop-daemon --start -b --user "$USER" --group "$GROUP" --pidfile "$PID_FILE" --exec "$JAVA_BIN" -- -jar "$BIN_PATH"
 
     status="$?"
     set +a -e
@@ -35,9 +34,7 @@ stop() {
     if [ -f $PID_FILE ];
     then
         echo 'Stopping Pochta service...'
-        start-stop-daemon --stop --pidfile "$PID_FILE" \
-        --user "$USER" \
-        --retry=TERM/20/KILL/5 >/dev/null
+        start-stop-daemon --stop --pidfile "$PID_FILE"  --user "$USER"  --retry=TERM/20/KILL/5 >/dev/null
         echo 'Service stopped'
     else
         echo 'Pochta service is not running, ignoring STOP command'
