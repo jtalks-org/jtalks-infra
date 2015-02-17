@@ -66,7 +66,7 @@ def configure
                   :smtp_port => smtp_port,
                   :smtp_threads_count => smtp_threads_count
               })
-    notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 end
 
@@ -92,7 +92,7 @@ def install_or_update_pochta
                   :user => user,
                   :bin_path => bin_path,
                   :service_name => service_name})
-    notifies :run, "execute[#{service_name}_restart]", :delayed
+    notifies :restart, "service[#{service_name}]", :delayed
   end
 
   service "#{service_name}" do
@@ -104,11 +104,12 @@ def install_or_update_pochta
     source "#{current_resource.url_source}"
     owner user
     group user
-    notifies :run, "execute[#{service_name}_restart]", :delayed
+    notifies :restart, "service[#{service_name}]", :delayed
   end
 
-  restart_service service_name do
-    user user
+  service service_name do
+    supports :restart => true
+    action :enbale
   end
 
 end
