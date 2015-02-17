@@ -11,61 +11,33 @@
 # 1. change pochta.jar location below to point on your Pochta installation
 # 2. place this script in /etc/init.d
 # 3. make it executable: 'sudo chmod 755 /etc/init.d pochta'
-# 4a. (Debian and compatible) call 'sudo update-rc.d pochta defalults' to bind the service to an appropriate run level
-# 4b. (RedHat and compatible) call 'sudo chkconfig --level 35 pochta on' to bind the service to an appropriate run level
-# 5. create /var/run/pochta and make it accessible:
-#    'sudo mkdir /var/run/pochta'
-#    'sudo chmod 777 /var/run/pochta'
-# 6. service is installed, you can control it with 'service pochta start | stop | restart'
+# 4. service is installed, you can control it with 'service pochta start | stop | restart'
 #
 
 set -u
 
+USER=<%= @user %>
+GROUP=<%= @user %>
+BIN_PATH=<%= @bin_path %>
+PID_FILE=/var/run/<%= @service_name %>/pid
+
 start() {
-    # don't forget to put your specific path to pochta.jar here
-    BIN_PATH=<%= @bin_path %>
-    PID_FILE=/var/run/<%= @service_name %>/pid
-    PID_DIR=/var/run/<%= @service_name %>
+    start-stop-daemon --start -b -u "$USER" -g "$GROUP" \
+    -c "$USER"  -p "$CATALINA_PID" \
+    -x /bin/bash -- -c "java -jar  $BIN_PATH"
 
-    # check access permissions for pid-file folder
-    if [ ! -w ${PID_DIR} ] ;
-    then
-        echo 'Cannot create pid file ${PID_FILE}, path is not accessible' ;
-        exit 1
-    fi
-
-    # do we have a pid file? is the specified process still alive?
-    if [ -f ${PID_FILE} ];
-    then
-        EXISTING_PID=$(cat ${PID_FILE})
-        if [ -d "/proc/${EXISTING_PID}" ];
-        then
-            echo 'Pochta service is already running, ignoring START command'
-            exit 1
-        else
-            rm -f ${PID_FILE}
-        fi
-    fi
-
-    # Everything seems ok, launching the service
-    echo 'Starting Pochta service...'
-    java -jar ${BIN_PATH} >/dev/null &
-    PID=$!
-    sleep 1
-    if [ -d "/proc/${PID}" ];
-    then
-        echo ${PID} > $PID_FILE
-        echo 'Service is up and running'
-    fi
+    status="$?"
+    set +a -e
+    echo "Status $status"
 }
 
 stop() {
-    PID_FILE=/var/run/pochta/pid
     if [ -f $PID_FILE ];
     then
         echo 'Stopping Pochta service...'
-        kill $(cat $PID_FILE)
-        rm -f $PID_FILE
+        start-stop-daemon --stop --pidfile "$PID_FILE" \
+        --user "$USER" \
+        --retry=TERM/20/KILL/5 >/dev/null
         echo 'Service stopped'
     else
         echo 'Pochta service is not running, ignoring STOP command'

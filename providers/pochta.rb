@@ -89,6 +89,7 @@ def install_or_update_pochta
     owner user
     group user
     variables({
+                  :user => user,
                   :bin_path => bin_path,
                   :service_name => service_name})
     notifies :run, "execute[#{service_name}_restart]", :delayed
