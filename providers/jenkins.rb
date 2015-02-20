@@ -282,25 +282,26 @@ end
 def install_or_update_jenkins
   owner = "#{current_resource.user}"
   dir = "/home/#{owner}"
+  backup_dir = "/home/#{owner}/backup"
   plugins_map = current_resource.plugins_map
   app_dir = "#{dir}/#{current_resource.service_name}"
   version = "#{current_resource.version}"
 
-  remote_file "#{dir}/#{current_resource.service_name}/webapps/jenkins-#{version}" do
+  remote_file "#{backup_dir}/jenkins-#{version}.war" do
     source   "#{current_resource.download_url}"
     owner owner
     group owner
     notifies :run, "execute[remove_previous_version]", :immediately
     notifies :restart, "service[#{current_resource.service_name}]", :delayed
-    not_if { Pathname.new("#{dir}/#{current_resource.service_name}/webapps/jenkins-#{version}").exist? }
+    not_if { Pathname.new("#{backup_dir}/jenkins-#{version}.war").exist? }
   end
 
   execute "remove_previous_version" do
     user owner
     group owner
     command "
-     rm -Rf #{app_dir}/webapps/ROOT;
-     cp #{dir}/#{current_resource.service_name}/webapps/jenkins-#{version} #{dir}/#{current_resource.service_name}/webapps/ROOT.war;
+     rm -Rf #{app_dir}/webapps/*;
+     cp #{backup_dir}/jenkins-#{version} #{dir}/#{current_resource.service_name}/webapps/ROOT.war;
      rm -Rf #{dir}/.jenkins/plugins/*;"
     action :nothing
   end
