@@ -479,6 +479,7 @@ default[:docker][:binary][:checksum] =
 default[:docker][:install_dir] = "/bin"
 default[:docker][:graph] = "/home/docker/var"
 default[:docker][:group] = "docker"
+default[:docker][:dns] = ["8.8.8.8", "8.8.4.4"]
 
 #Hubot
 default[:jtalks][:hubot][:token] = "fake"
