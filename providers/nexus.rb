@@ -160,14 +160,14 @@ def configure
               <externalConfiguration>
                 <proxyMode>ALLOW</proxyMode>
                 <artifactMaxAge>-1</artifactMaxAge>
-                <itemMaxAge>1440</itemMaxAge>
+                <itemMaxAge>-1</itemMaxAge>
                 <cleanseRepositoryMetadata>false</cleanseRepositoryMetadata>
                 <downloadRemoteIndex>true</downloadRemoteIndex>
                 <checksumPolicy>WARN</checksumPolicy>
                 <repositoryPolicy>RELEASE</repositoryPolicy>
                 <autoBlockActive>true</autoBlockActive>
                 <fileTypeValidation>true</fileTypeValidation>
-                <metadataMaxAge>1440</metadataMaxAge>
+                <metadataMaxAge>-1</metadataMaxAge>
               </externalConfiguration>
             </repository>
             <repository>
@@ -193,7 +193,7 @@ def configure
               <externalConfiguration>
                 <proxyMode>ALLOW</proxyMode>
                 <artifactMaxAge>-1</artifactMaxAge>
-                <itemMaxAge>1440</itemMaxAge>
+                <itemMaxAge>-1</itemMaxAge>
                 <cleanseRepositoryMetadata>false</cleanseRepositoryMetadata>
                 <downloadRemoteIndex>false</downloadRemoteIndex>
                 <checksumPolicy>WARN</checksumPolicy>
@@ -223,7 +223,7 @@ def configure
               <externalConfiguration>
                 <proxyMode>ALLOW</proxyMode>
                 <artifactMaxAge>-1</artifactMaxAge>
-                <itemMaxAge>1440</itemMaxAge>
+                <itemMaxAge>-1</itemMaxAge>
                 <cleanseRepositoryMetadata>false</cleanseRepositoryMetadata>
                 <downloadRemoteIndex>false</downloadRemoteIndex>
                 <checksumPolicy>WARN</checksumPolicy>
@@ -253,7 +253,7 @@ def configure
                 <checksumPolicy>WARN</checksumPolicy>
                 <downloadRemoteIndex>false</downloadRemoteIndex>
                 <artifactMaxAge>-1</artifactMaxAge>
-                <metadataMaxAge>1440</metadataMaxAge>
+                <metadataMaxAge>-1</metadataMaxAge>
                 <proxyMode>ALLOW</proxyMode>
               </externalConfiguration>
             </repository>
@@ -279,8 +279,8 @@ def configure
               </remoteStorage>
               <externalConfiguration>
                 <proxyMode>ALLOW</proxyMode>
-                <artifactMaxAge>1440</artifactMaxAge>
-                <itemMaxAge>1440</itemMaxAge>
+                <artifactMaxAge>-1</artifactMaxAge>
+                <itemMaxAge>-1</itemMaxAge>
                 <cleanseRepositoryMetadata>false</cleanseRepositoryMetadata>
                 <downloadRemoteIndex>false</downloadRemoteIndex>
                 <checksumPolicy>WARN</checksumPolicy>
@@ -306,7 +306,7 @@ def configure
               <externalConfiguration>
                 <proxyMode>ALLOW</proxyMode>
                 <artifactMaxAge>-1</artifactMaxAge>
-                <itemMaxAge>1440</itemMaxAge>
+                <itemMaxAge>-1</itemMaxAge>
                 <cleanseRepositoryMetadata>false</cleanseRepositoryMetadata>
                 <downloadRemoteIndex>false</downloadRemoteIndex>
                 <checksumPolicy>WARN</checksumPolicy>
@@ -332,7 +332,7 @@ def configure
               <externalConfiguration>
                 <proxyMode>ALLOW</proxyMode>
                 <artifactMaxAge>-1</artifactMaxAge>
-                <itemMaxAge>1440</itemMaxAge>
+                <itemMaxAge>-1</itemMaxAge>
                 <cleanseRepositoryMetadata>false</cleanseRepositoryMetadata>
                 <downloadRemoteIndex>false</downloadRemoteIndex>
                 <checksumPolicy>WARN</checksumPolicy>
@@ -357,8 +357,8 @@ def configure
               </localStorage>
               <externalConfiguration>
                 <proxyMode>ALLOW</proxyMode>
-                <artifactMaxAge>1440</artifactMaxAge>
-                <itemMaxAge>1440</itemMaxAge>
+                <artifactMaxAge>-1</artifactMaxAge>
+                <itemMaxAge>-1</itemMaxAge>
                 <cleanseRepositoryMetadata>false</cleanseRepositoryMetadata>
                 <downloadRemoteIndex>false</downloadRemoteIndex>
                 <checksumPolicy>WARN</checksumPolicy>
@@ -384,7 +384,7 @@ def configure
               <externalConfiguration>
                 <proxyMode>ALLOW</proxyMode>
                 <artifactMaxAge>-1</artifactMaxAge>
-                <itemMaxAge>1440</itemMaxAge>
+                <itemMaxAge>-1</itemMaxAge>
                 <cleanseRepositoryMetadata>false</cleanseRepositoryMetadata>
                 <downloadRemoteIndex>false</downloadRemoteIndex>
                 <checksumPolicy>WARN</checksumPolicy>
@@ -490,8 +490,8 @@ def configure
                 <checksumPolicy>WARN</checksumPolicy>
                 <fileTypeValidation>true</fileTypeValidation>
                 <downloadRemoteIndex>true</downloadRemoteIndex>
-                <artifactMaxAge>1440</artifactMaxAge>
-                <metadataMaxAge>1440</metadataMaxAge>
+                <artifactMaxAge>-1</artifactMaxAge>
+                <metadataMaxAge>-1</metadataMaxAge>
                 <autoBlockActive>true</autoBlockActive>
                 <proxyMode>ALLOW</proxyMode>
               </externalConfiguration>
@@ -522,7 +522,7 @@ def configure
                 <fileTypeValidation>true</fileTypeValidation>
                 <downloadRemoteIndex>true</downloadRemoteIndex>
                 <artifactMaxAge>-1</artifactMaxAge>
-                <metadataMaxAge>1440</metadataMaxAge>
+                <metadataMaxAge>-1</metadataMaxAge>
                 <autoBlockActive>true</autoBlockActive>
                 <proxyMode>ALLOW</proxyMode>
               </externalConfiguration>
@@ -553,7 +553,7 @@ def configure
                 <fileTypeValidation>true</fileTypeValidation>
                 <downloadRemoteIndex>true</downloadRemoteIndex>
                 <artifactMaxAge>-1</artifactMaxAge>
-                <metadataMaxAge>1440</metadataMaxAge>
+                <metadataMaxAge>-1</metadataMaxAge>
                 <autoBlockActive>true</autoBlockActive>
                 <proxyMode>ALLOW</proxyMode>
               </externalConfiguration>
@@ -584,7 +584,7 @@ def configure
                 <fileTypeValidation>true</fileTypeValidation>
                 <downloadRemoteIndex>true</downloadRemoteIndex>
                 <artifactMaxAge>-1</artifactMaxAge>
-                <metadataMaxAge>1440</metadataMaxAge>
+                <metadataMaxAge>-1</metadataMaxAge>
                 <autoBlockActive>true</autoBlockActive>
                 <proxyMode>BLOCKED_AUTO</proxyMode>
               </externalConfiguration>
@@ -635,8 +635,8 @@ def configure
                 <fileTypeValidation>true</fileTypeValidation>
                 <downloadRemoteIndex>true</downloadRemoteIndex>
                 <artifactMaxAge>-1</artifactMaxAge>
-                <metadataMaxAge>1440</metadataMaxAge>
-                <itemMaxAge>1440</itemMaxAge>
+                <metadataMaxAge>-1</metadataMaxAge>
+                <itemMaxAge>-1</itemMaxAge>
                 <autoBlockActive>true</autoBlockActive>
                 <proxyMode>ALLOW</proxyMode>
               </externalConfiguration>
@@ -667,8 +667,8 @@ def configure
                 <fileTypeValidation>true</fileTypeValidation>
                 <downloadRemoteIndex>true</downloadRemoteIndex>
                 <artifactMaxAge>-1</artifactMaxAge>
-                <metadataMaxAge>1440</metadataMaxAge>
-                <itemMaxAge>1440</itemMaxAge>
+                <metadataMaxAge>-1</metadataMaxAge>
+                <itemMaxAge>-1</itemMaxAge>
                 <autoBlockActive>true</autoBlockActive>
                 <proxyMode>ALLOW</proxyMode>
               </externalConfiguration>
