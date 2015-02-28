@@ -33,7 +33,6 @@ suites:
       - recipe[sudo]
       - recipe[java]
       - recipe[database::mysql]
-      - recipe[nginx]
       - recipe[jtalks-infra::crowd]
       - recipe[jtalks-infra::jenkins]
   - name: crowd
@@ -44,7 +43,7 @@ suites:
        - recipe[jtalks-infra::users]
        - recipe[sudo]
        - recipe[database::mysql]
-       - recipe[nginx]
+       - recipe[jtalks-infra::mysql]
        - recipe[jtalks-infra::crowd]
   - name: os-users
     run_list:
