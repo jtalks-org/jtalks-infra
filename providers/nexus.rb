@@ -8,6 +8,8 @@ use_inline_resources
 
 action :install_or_update do
 
+  backup
+
   install_or_update_tomcat
 
   install_or_update_nexus
@@ -19,6 +21,7 @@ end
 def load_current_resource
   @current_resource = Chef::Resource::JtalksInfraNexus.new(@new_resource.name)
   @current_resource.service_name(@new_resource.service_name)
+  @current_resource.version(@new_resource.version)
   @current_resource.source_url(@new_resource.source_url)
   @current_resource.user(@new_resource.user)
   @current_resource.port(@new_resource.port)
@@ -33,6 +36,21 @@ def load_current_resource
 
   if Pathname.new("/home/#{@new_resource.user}/#{@new_resource.service_name}/webapps/ROOT.war").exist?
     @current_resource.exists = true
+  end
+end
+
+def backup
+  owner = "#{current_resource.user}"
+  service_name = "#{current_resource.service_name}"
+  app_dir = "/home/#{owner}/#{service_name}"
+  data_dir = "/home/#{owner}/sonatype-work/nexus"
+  version = "#{current_resource.version}"
+
+  stable_backup "backup_stable_nexus" do
+    user owner
+    service_name service_name
+    version version
+    paths [app_dir, "#{data_dir}/conf", "#{data_dir}/plugin-repository"]
   end
 end
 
