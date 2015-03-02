@@ -132,7 +132,7 @@ def install_or_update_sonar
     "
     user user
     group user
-    only_if { @current_resource.exists }
+    only_if { current_resource.exists? }
   end
 
   directory "#{app_dir}/extensions/jdbc-driver/mysql" do
