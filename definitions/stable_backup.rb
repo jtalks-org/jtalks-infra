@@ -58,15 +58,22 @@ define :stable_backup, :user => nil, :service_name => "", :tomcat_version => "8"
          echo '#Restore files \n' >>  #{backup_dir}/stable/restore
           for p in ${paths[@]}
           do
-             if [ $(basename $p) = "#{service_name}" ]; then
-               p=$(echo $p | sed -r 's/#{service_name}$/apache-tomcat-#{node[:tomcat][tomcat_version][:version]}/g')
-             fi
-             cp -LR $p #{backup_dir}/stable
-             echo  'rm -R ' $p >> #{backup_dir}/stable/restore
-             echo  'cp -R #{backup_dir}/stable/'$(basename $p) $p >> #{backup_dir}/stable/restore
-             echo  'echo "Restored ' $p '"' >> #{backup_dir}/stable/restore
-             echo 'chown -R #{user}.#{user} '$p  >> #{backup_dir}/stable/restore
-             echo  'echo "Set owner to ' $p '" \n' >> #{backup_dir}/stable/restore
+
+            filesByRegex=$(find p -maxdepth 0)
+            if [ ! "${filesByRegex[@]}" = "0" ]; then
+               for fileByRegex in ${p[@]}
+                 do
+                    if [ $(basename $fileByRegex) = "#{service_name}" ]; then
+                     fileByRegex=$(echo $fileByRegex | sed -r 's/#{service_name}$/apache-tomcat-#{node[:tomcat][tomcat_version][:version]}/g' | sed -r 's/ /\\ /g')
+                   fi
+                   cp -LR $fileByRegex #{backup_dir}/stable
+                   echo  'rm -R ' $fileByRegex >> #{backup_dir}/stable/restore
+                   echo  'cp -R #{backup_dir}/stable/'$(basename $fileByRegex) $fileByRegex >> #{backup_dir}/stable/restore
+                   echo  'echo "Restored ' $fileByRegex '"' >> #{backup_dir}/stable/restore
+                   echo 'chown -R #{user}.#{user} '$fileByRegex  >> #{backup_dir}/stable/restore
+                   echo  'echo "Set owner to ' $fileByRegex '" \n' >> #{backup_dir}/stable/restore
+                 done
+            fi
           done
 
            if [ ! "#{service_name}" = "" ]; then
