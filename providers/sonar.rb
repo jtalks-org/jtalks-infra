@@ -116,6 +116,7 @@ def install_or_update_sonar
   app_dir = "#{dir}/#{service_name}"
   plugins_map = current_resource.plugins_map
   plugins_dir = "#{app_dir}/extensions/plugins"
+  version = "#{current_resource.version}"
 
   ark current_resource.service_name do
     url current_resource.source_url
@@ -128,11 +129,10 @@ def install_or_update_sonar
 
   execute "remove_old_libs_sonar" do
     command "
-         rm -Rf #{app_dir}/lib/core-plugins/*
+        find #{app_dir}/lib/core-plugins -type f ! -iname '*#{version}*' -exec rm -v {} \;
     "
     user user
     group user
-    only_if  @current_resource.exists?false
   end
 
   directory "#{app_dir}/extensions/jdbc-driver/mysql" do
