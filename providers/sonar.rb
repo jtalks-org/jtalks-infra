@@ -129,8 +129,8 @@ def install_or_update_sonar
 
   execute "replace_old_sonar" do
     command "
-        rm -Rf #{app_dir}/sonar;
-        mv #{app_dir}/sonar_tmp #{app_dir}/sonar ;
+        rm -Rf #{app_dir};
+        mv #{dir}/sonar_tmp #{app_dir} ;
     "
     user user
     group user
