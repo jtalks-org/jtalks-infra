@@ -36,6 +36,7 @@ def backup
     user owner
     service_name service_name
     version version
+    tomcat_container false
     paths [app_dir]
   end
 end

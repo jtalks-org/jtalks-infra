@@ -1,4 +1,4 @@
-define :stable_backup, :user => nil, :service_name => "", :tomcat_version => "8",:version => nil, :db_name => nil, :db_user => nil, :db_pass => nil, :paths => [] do
+define :stable_backup, :user => nil, :service_name => "", :tomcat_version => "8", :tomcat_container => true, :version => nil, :db_name => nil, :db_user => nil, :db_pass => nil, :paths => [] do
   init_dir = "#{node[:jtalks][:path][:init_script]}"
   file_separator = "/"
   user = params[:user]
@@ -6,6 +6,7 @@ define :stable_backup, :user => nil, :service_name => "", :tomcat_version => "8"
   backup_dir = "/home/#{user}/backup"
   version = params[:version]
   tomcat_version = params[:tomcat_version]
+  tomcat_container = params[:tomcat_container]
   paths = params[:paths]
   db_name = params[:db_name]
   db_user = params[:db_user]
@@ -63,9 +64,12 @@ define :stable_backup, :user => nil, :service_name => "", :tomcat_version => "8"
             if [ ! "${filesByRegex[@]}" = "0" ]; then
                for fileByRegex in ${p[@]}
                  do
-                    if [ $(basename $fileByRegex) = "#{service_name}" ]; then
-                     fileByRegex=$(echo $fileByRegex | sed -r 's/#{service_name}$/apache-tomcat-#{node[:tomcat][tomcat_version][:version]}/g' | sed -r 's/ /\\ /g')
+                   fileByRegex=$(echo $fileByRegex | sed -r 's/ /\\ /g')
+
+                   if [ "#{tomcat_container}" = "true" ]; then
+                     fileByRegex=$(echo $fileByRegex | sed -r 's/#{service_name}$/apache-tomcat-#{node[:tomcat][tomcat_version][:version]}/g')
                    fi
+
                    cp -LR $fileByRegex #{backup_dir}/stable
                    echo  'rm -R ' $fileByRegex >> #{backup_dir}/stable/restore
                    echo  'cp -R #{backup_dir}/stable/'$(basename $fileByRegex) $fileByRegex >> #{backup_dir}/stable/restore
@@ -76,7 +80,7 @@ define :stable_backup, :user => nil, :service_name => "", :tomcat_version => "8"
             fi
           done
 
-           if [ ! "#{service_name}" = "" ]; then
+           if [ "#{tomcat_container}" = "true" ]; then
                echo 'rm -Rf /home/#{user}/#{service_name}'  >> #{backup_dir}/stable/restore
                echo 'ln -s /home/#{user}/apache-tomcat-#{node[:tomcat][tomcat_version][:version]} /home/#{user}/#{service_name}'  >> #{backup_dir}/stable/restore
                echo  'echo "Recreated link" \n' >> #{backup_dir}/stable/restore
