@@ -124,7 +124,7 @@ def install_or_update_sonar
     owner user
     action :put
     notifies :run, "execute[#{service_name}_restart]", :delayed
-    notifies :run, "execute[replace_old_sonar]", :immediately
+    notifies :run, "execute[replace_old_sonar]", :delayed
   end
 
   execute "replace_old_sonar" do
@@ -134,6 +134,7 @@ def install_or_update_sonar
     "
     user user
     group user
+    only_if  { Pathname.new("#{app_dir}_tmp").exist? }
   end
 
   directory "#{app_dir}/extensions/jdbc-driver/mysql" do
