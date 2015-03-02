@@ -122,6 +122,17 @@ def install_or_update_sonar
     path dir
     owner user
     action :put
+    notifies :run, "execute[#{service_name}_restart]", :delayed
+    notifies :run, "execute[remove_old_libs_sonar]", :immediately
+  end
+
+  execute "remove_old_libs_sonar" do
+    command "
+         rm -Rf #{app_dir}/lib/core-plugins/*
+    "
+    user user
+    group user
+    not_if { @current_resource.exists }
   end
 
   directory "#{app_dir}/extensions/jdbc-driver/mysql" do
