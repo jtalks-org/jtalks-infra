@@ -8,6 +8,8 @@ use_inline_resources
 
 action :install_or_update do
 
+  backup
+
   install_or_update_sonar
 
   configure
@@ -15,6 +17,7 @@ end
 
 def load_current_resource
   @current_resource = Chef::Resource::JtalksInfraSonar.new(@new_resource.name)
+  @current_resource.version(@new_resource.version)
   @current_resource.service_name(@new_resource.service_name)
   @current_resource.source_url(@new_resource.source_url)
   @current_resource.user(@new_resource.user)
@@ -31,6 +34,26 @@ def load_current_resource
 
   if Pathname.new("/home/#{@new_resource.user}/#{@current_resource.service_name}").exist?
     @current_resource.exists = true
+  end
+end
+
+def backup
+  owner = "#{current_resource.user}"
+  service_name = "#{current_resource.service_name}"
+  app_dir = "/home/#{owner}/#{service_name}"
+  db_name = "#{current_resource.db_name}"
+  db_user = "#{current_resource.db_user}"
+  db_password = "#{current_resource.db_password}"
+  version = "#{current_resource.version}"
+
+  stable_backup "backup_stable_sonar" do
+    user owner
+    service_name service_name
+    version version
+    db_name db_name
+    db_user db_user
+    db_pass db_password
+    paths [app_dir]
   end
 end
 

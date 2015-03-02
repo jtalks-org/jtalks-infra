@@ -8,6 +8,8 @@ use_inline_resources
 
 action :install_or_update do
 
+  backup
+
   install_or_update_selenium
 
 end
@@ -21,6 +23,20 @@ def load_current_resource
 
   if Pathname.new("/home/#{@new_resource.user}/#{@new_resource.service_name}").exist?
     @current_resource.exists = true
+  end
+end
+
+def backup
+  owner = "#{current_resource.user}"
+  service_name = "#{current_resource.service_name}"
+  app_dir = "/home/#{owner}/#{service_name}"
+  version = "#{current_resource.version}"
+
+  stable_backup "backup_stable_selenium" do
+    user owner
+    service_name service_name
+    version version
+    paths [app_dir]
   end
 end
 

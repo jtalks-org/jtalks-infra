@@ -9,6 +9,8 @@ use_inline_resources
 action :install_or_update do
   prepare
 
+  backup
+
   install_or_update_tomcat
 
   install_or_update_jenkins
@@ -45,6 +47,24 @@ def load_current_resource
 
   if Pathname.new("/home/#{@new_resource.user}/#{@current_resource.service_name}/webapps/ROOT").exist?
     @current_resource.exists = true
+  end
+end
+
+def backup
+  owner = "#{current_resource.user}"
+  service_name = "#{current_resource.service_name}"
+  app_dir = "/home/#{owner}/#{service_name}"
+  data_dir = "/home/#{owner}/.jenkins"
+  version = "#{current_resource.version}"
+
+  stable_backup "backup_stable_jenkins" do
+    user owner
+    service_name service_name
+    version version
+    paths [app_dir, "#{data_dir}/*.xml", "#{data_dir}/plugins", "#{data_dir}/*.key*", "#{data_dir}/secrets", "#{data_dir}/updates",
+             "#{data_dir}/userContent", "#{data_dir}/users", "#{data_dir}/jobs/*/*.xml",
+             "#{data_dir}/jobs/*/nextBuildNumber", "#{data_dir}/jobs/*/builds", "#{data_dir}/jobs/*/lastStable",
+             "#{data_dir}/jobs/*/lastSuccessful"]
   end
 end
 

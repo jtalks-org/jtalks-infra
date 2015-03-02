@@ -1,4 +1,5 @@
 jtalks_infra_sonar "sonar" do
+  version node[:sonar][:version]
   user node[:sonar][:user]
   port node[:sonar][:port]
   jvm_opts node[:sonar][:jvm_opts]
