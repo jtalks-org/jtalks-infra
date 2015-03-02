@@ -57,7 +57,7 @@ define :stable_backup, :user => nil, :service_name => "", :tomcat_version => "8"
            fi
 
          echo '#Restore files \n' >>  #{backup_dir}/stable/restore
-          for p in ${paths[@]}
+         for p in ${paths[@]}
           do
 
             filesByRegex=$(find p -maxdepth 0)
