@@ -12,6 +12,7 @@ case "$1" in
 
     stop)
         $SONAR_DIRECTORY/bin/linux-x86-64/sonar.sh stop 2>&1
+        pkill -9 -f sonar 2>&1
         echo stopped.
         exit 0
     ;;
