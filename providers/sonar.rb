@@ -118,19 +118,19 @@ def install_or_update_sonar
   plugins_dir = "#{app_dir}/extensions/plugins"
   version = "#{current_resource.version}"
 
-  ark current_resource.service_name do
+  ark "#{current_resource.service_name}_tmp" do
     url current_resource.source_url
     path dir
     owner user
     action :put
     notifies :run, "execute[#{service_name}_restart]", :delayed
-    notifies :run, "execute[remove_old_libs_sonar]", :immediately
+    notifies :run, "execute[replace_old_sonar]", :immediately
   end
 
-  execute "remove_old_libs_sonar" do
+  execute "replace_old_sonar" do
     command "
-        find #{app_dir}/lib -type f ! -name '*#{version}*' -and  -name 'sonar-application*jar' -exec rm -v {} \\;
-        find #{app_dir}/lib/core-plugins -type f ! -iname '*#{version}*' -exec rm -v {} \\;
+        rm -Rf #{app_dir}/sonar;
+        mv #{app_dir}/sonar_tmp #{app_dir}/sonar ;
     "
     user user
     group user
