@@ -129,6 +129,7 @@ def install_or_update_sonar
 
   execute "remove_old_libs_sonar" do
     command "
+        find #{app_dir}/lib -type f ! -name '*#{version}*' -and  -name 'sonar-application*jar' -exec rm -v {} \\;
         find #{app_dir}/lib/core-plugins -type f ! -iname '*#{version}*' -exec rm -v {} \\;
     "
     user user
