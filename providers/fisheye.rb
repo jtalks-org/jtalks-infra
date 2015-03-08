@@ -67,6 +67,7 @@ def backup
     db_name db_name
     db_user db_user
     db_pass db_password
+    tomcat_container false
     paths [data_dir, app_dir]
   end
 end

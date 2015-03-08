@@ -61,10 +61,7 @@ def backup
     user owner
     service_name service_name
     version version
-    paths [app_dir, "#{data_dir}/*.xml", "#{data_dir}/plugins", "#{data_dir}/*.key*", "#{data_dir}/secrets", "#{data_dir}/updates",
-             "#{data_dir}/userContent", "#{data_dir}/users", "#{data_dir}/jobs/*/*.xml",
-             "#{data_dir}/jobs/*/nextBuildNumber", "#{data_dir}/jobs/*/builds", "#{data_dir}/jobs/*/lastStable",
-             "#{data_dir}/jobs/*/lastSuccessful"]
+    paths [app_dir, "#{data_dir}/*.xml", "#{data_dir}/plugins", "#{data_dir}/*.key*", "#{data_dir}/secrets", "#{data_dir}/updates", "#{data_dir}/userContent"]
   end
 end
 
