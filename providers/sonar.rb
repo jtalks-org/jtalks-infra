@@ -123,6 +123,7 @@ def install_or_update_sonar
     path dir
     owner user
     action :put
+    notifies :stop, "service[sonar]", :immediately
     notifies :run, "execute[#{service_name}_restart]", :delayed
     notifies :run, "execute[replace_old_sonar]", :delayed
   end
@@ -131,6 +132,7 @@ def install_or_update_sonar
     command "
         rm -Rf #{app_dir};
         mv #{dir}/sonar_tmp #{app_dir} ;
+        chown -R #{user}.#{user} #{app_dir}
     "
     user user
     group user

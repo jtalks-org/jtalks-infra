@@ -25,7 +25,7 @@ define :stable_backup, :user => nil, :service_name => "", :tomcat_version => "8"
     cwd backup_dir
     code <<-EOH
        paths=#{pathsArrayBash}
-       filename=$(find . -type f -name 'current_*')
+       filename=$(find current_* -maxdepth 0)
        if [ $filename ]; then
          version=$(cut -d '_' -f 2 <<< $filename)
        else
@@ -59,25 +59,22 @@ define :stable_backup, :user => nil, :service_name => "", :tomcat_version => "8"
          echo '#Restore files \n' >>  #{backup_dir}/stable/restore
          for p in ${paths[@]}
           do
+            filesByRegex=$(find $p -maxdepth 0)
+            for fileByRegex in ${filesByRegex[@]}
+              do
+                fileByRegex=$(echo $fileByRegex | sed -r 's/ /\\ /g')
 
-            filesByRegex=$(find p -maxdepth 0)
-            if [ ! "${filesByRegex[@]}" = "0" ]; then
-               for fileByRegex in ${p[@]}
-                 do
-                   fileByRegex=$(echo $fileByRegex | sed -r 's/ /\\ /g')
+                if [ "#{tomcat_container}" = "true" ]; then
+                  fileByRegex=$(echo $fileByRegex | sed -r 's/#{service_name}$/apache-tomcat-#{node[:tomcat][tomcat_version][:version]}/g')
+                fi
 
-                   if [ "#{tomcat_container}" = "true" ]; then
-                     fileByRegex=$(echo $fileByRegex | sed -r 's/#{service_name}$/apache-tomcat-#{node[:tomcat][tomcat_version][:version]}/g')
-                   fi
-
-                   cp -LR $fileByRegex #{backup_dir}/stable
-                   echo  'rm -R ' $fileByRegex >> #{backup_dir}/stable/restore
-                   echo  'cp -R #{backup_dir}/stable/'$(basename $fileByRegex) $fileByRegex >> #{backup_dir}/stable/restore
-                   echo  'echo "Restored ' $fileByRegex '"' >> #{backup_dir}/stable/restore
-                   echo 'chown -R #{user}.#{user} '$fileByRegex  >> #{backup_dir}/stable/restore
-                   echo  'echo "Set owner to ' $fileByRegex '" \n' >> #{backup_dir}/stable/restore
-                 done
-            fi
+                cp -LR $fileByRegex #{backup_dir}/stable
+                echo  'rm -R ' $fileByRegex >> #{backup_dir}/stable/restore
+                echo  'cp -R #{backup_dir}/stable/'$(basename $fileByRegex) $fileByRegex >> #{backup_dir}/stable/restore
+                echo  'echo "Restored ' $fileByRegex '"' >> #{backup_dir}/stable/restore
+                echo 'chown -R #{user}.#{user} '$fileByRegex  >> #{backup_dir}/stable/restore
+                echo  'echo "Set owner to ' $fileByRegex '" \n' >> #{backup_dir}/stable/restore
+              done
           done
 
            if [ "#{tomcat_container}" = "true" ]; then

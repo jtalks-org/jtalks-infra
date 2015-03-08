@@ -17,7 +17,8 @@ sonar.web.port=<%= @port %>
 sonar.web.http.maxThreads=50
 sonar.web.https.maxThreads=50
 
-sonar.authenticator.class=org.sonar.plugins.crowd.CrowdAuthenticator
+sonar.security.realm=Crowd
+sonar.security.localUsers=admin
 crowd.url=<%= @crowd_url %>
 crowd.application=<%= @crowd_app %>
 crowd.password=<%= @crowd_password %>
