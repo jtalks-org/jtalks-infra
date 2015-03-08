@@ -318,7 +318,7 @@ def install_or_update_jenkins
     group owner
     command "
      rm -Rf #{app_dir}/webapps/*;
-     cp #{backup_dir}/jenkins-#{version} #{dir}/#{current_resource.service_name}/webapps/ROOT.war;
+     cp #{backup_dir}/jenkins-#{version}.war #{dir}/#{current_resource.service_name}/webapps/ROOT.war;
      rm -Rf #{dir}/.jenkins/plugins/*;"
     action :nothing
   end
