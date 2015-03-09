@@ -203,6 +203,7 @@ def install_or_update_fisheye
   service_name = "#{current_resource.service_name}"
   app_dir = "#{dir}/#{service_name}"
   version = "#{current_resource.version}"
+  data_dir = "#{current_resource.data_dir}"
 
   template "#{node[:jtalks][:path][:init_script]}/#{service_name}" do
     source 'fisheye.service.erb'
@@ -229,7 +230,8 @@ def install_or_update_fisheye
     command "
         rm -Rf #{app_dir};
         cp -R #{dir}/backup/#{service_name}-#{version} #{app_dir} ;
-        chown -R #{user}.#{user} #{app_dir}
+        chown -R #{user}.#{user} #{app_dir};
+        chown -R #{user}.#{user} #{data_dir};
             "
     user user
     group user
