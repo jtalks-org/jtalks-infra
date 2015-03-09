@@ -131,7 +131,7 @@ def install_or_update_sonar
   execute "replace_old_sonar" do
     command "
         rm -Rf #{app_dir};
-        mv #{dir}/sonar_tmp #{app_dir} ;
+        cp -R #{dir}/sonar_tmp #{app_dir} ;
         chown -R #{user}.#{user} #{app_dir}
     "
     user user
