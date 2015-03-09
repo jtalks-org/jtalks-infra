@@ -118,25 +118,25 @@ def install_or_update_sonar
   plugins_dir = "#{app_dir}/extensions/plugins"
   version = "#{current_resource.version}"
 
-  ark "#{current_resource.service_name}_tmp" do
+  ark "#{dir}/backup/#{current_resource.service_name}-#{version}" do
     url current_resource.source_url
-    path dir
     owner user
     action :put
     notifies :stop, "service[sonar]", :immediately
     notifies :run, "execute[#{service_name}_restart]", :delayed
     notifies :run, "execute[replace_old_sonar]", :delayed
+    not_if  { Pathname.new("#{dir}/backup/#{current_resource.service_name}-#{version}").exist? }
   end
 
   execute "replace_old_sonar" do
     command "
         rm -Rf #{app_dir};
-        cp -R #{dir}/sonar_tmp #{app_dir} ;
+        cp -R #{dir}/backup/#{current_resource.service_name}-#{version} #{app_dir} ;
         chown -R #{user}.#{user} #{app_dir}
     "
     user user
     group user
-    only_if  { Pathname.new("#{app_dir}_tmp").exist? }
+    action :nothing
   end
 
   directory "#{app_dir}/extensions/jdbc-driver/mysql" do

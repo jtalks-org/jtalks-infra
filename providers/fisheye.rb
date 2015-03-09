@@ -214,18 +214,23 @@ def install_or_update_fisheye
     notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 
-  ark "#{service_name}-#{version}" do
+  ark "#{dir}/backup/#{service_name}-#{version}" do
     url current_resource.source_url
-    path dir
     owner user
     action :put
-    notifies :create, "link[create_link_to_fisheye]", :immediately
+    notifies :stop, "service[fisheye]", :immediately
+    notifies :run, "execute[#{service_name}_restart]", :delayed
+    notifies :run, "execute[replace_old_fisheye]", :delayed
+    not_if  { Pathname.new("#{dir}/backup/#{service_name}-#{version}").exist? }
   end
 
-  link "create_link_to_fisheye" do
-    target_file "#{app_dir}"
-    to "#{dir}/#{service_name}-#{version}"
-    owner user
+  execute "replace_old_fisheye" do
+    command "
+        rm -Rf #{app_dir};
+        cp -R #{dir}/backup/#{service_name}-#{version} #{app_dir} ;
+        chown -R #{user}.#{user} #{app_dir}
+            "
+    user user
     group user
     action :nothing
   end
