@@ -118,8 +118,9 @@ def install_or_update_sonar
   plugins_dir = "#{app_dir}/extensions/plugins"
   version = "#{current_resource.version}"
 
-  ark "#{dir}/backup/#{current_resource.service_name}-#{version}" do
+  ark "#{current_resource.service_name}-#{version}" do
     url current_resource.source_url
+    path "#{dir}/backup"
     owner user
     action :put
     notifies :stop, "service[sonar]", :immediately

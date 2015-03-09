@@ -214,8 +214,9 @@ def install_or_update_fisheye
     notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 
-  ark "#{dir}/backup/#{service_name}-#{version}" do
+  ark "#{service_name}-#{version}" do
     url current_resource.source_url
+    path "#{dir}/backup"
     owner user
     action :put
     notifies :stop, "service[fisheye]", :immediately
