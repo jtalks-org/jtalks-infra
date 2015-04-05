@@ -1,3 +1,7 @@
+package "lftp" do
+  action :install
+end
+
 package "python-dev" do
   action :install
 end
