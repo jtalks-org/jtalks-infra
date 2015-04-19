@@ -177,13 +177,15 @@ def configure
           <default>
             <comparator class=\"hudson.util.CaseInsensitiveComparator\"/>
           </default>
-          <int>20</int>
+          <int>21</int>
           <string>INST_AUTOTESTS_SSH</string>
           <string>i_autotests@144.76.64.105</string>
           <string>INST_BEGININTESTING_SSH</string>
           <string>i_beginintesting@144.76.64.105</string>
           <string>INST_DEV_SSH</string>
           <string>i_dev@144.76.64.105</string>
+          <string>INST_JAVATALKS_ARTICLES_SSH</string>
+          <string>i_javatalks@144.76.64.105</string>
           <string>INST_DEV_USER</string>
           <string>dev_admin</string>
           <string>INST_QA_SSH</string>
