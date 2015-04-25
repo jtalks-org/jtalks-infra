@@ -220,7 +220,7 @@ def install_or_update_fisheye
     path "#{dir}/backup"
     owner user
     action :put
-    notifies :stop, "service[fisheye]", :immediately
+    notifies :stop, "service[#{service_name}]", :immediately
     notifies :run, "execute[#{service_name}_restart]", :delayed
     notifies :run, "execute[replace_old_fisheye]", :delayed
     not_if  { Pathname.new("#{dir}/backup/#{service_name}-#{version}").exist? }
