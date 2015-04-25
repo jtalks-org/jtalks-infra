@@ -233,8 +233,6 @@ def install_or_update_fisheye
         chown -R #{user}.#{user} #{app_dir};
         chown -R #{user}.#{user} #{data_dir};
             "
-    user user
-    group user
     action :nothing
   end
 
