@@ -1,0 +1,33 @@
+#!/bin/bash
+# Start and stop Nexus server
+
+NEXUS_DIRECTORY=<%= @dir %>
+
+case "$1" in
+    start)
+        $NEXUS_DIRECTORY/bin/nexus start
+        echo started.
+        exit 0
+    ;;
+
+    stop)
+        $NEXUS_DIRECTORY/bin/nexus stop
+        echo stopped.
+        exit 0
+    ;;
+
+    restart)
+        $0 stop
+        sleep 5
+        $0 start
+        exit 0
+    ;;
+*)
+
+echo "Usage: $0 {start|stop|restart}"
+exit 1
+;;
+
+esac
+
+

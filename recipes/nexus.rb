@@ -1,9 +1,7 @@
 jtalks_infra_nexus "nexus" do
   user node[:nexus][:user]
   version node[:nexus][:version]
-  port node[:tomcat][:instances][:nexus][:port]
-  shutdown_port node[:tomcat][:instances][:nexus][:shutdown_port]
-  jvm_opts node[:tomcat][:instances][:nexus][:jvm_opts]
+  port node[:nexus][:port]
   source_url node[:nexus][:source_url]
   admin_password node[:nexus][:admin_password]
   crowd_url node[:crowd][:app][:server_url]

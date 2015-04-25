@@ -324,11 +324,10 @@ default[:sonar][:plugins][:cobertura][:url] = "#{node[:sonar][:repo]}/sonar-cobe
 
 # Nexus
 default[:nexus][:user] = "nexus"
-default[:tomcat][:instances][:nexus][:port] = 8082
-default[:tomcat][:instances][:nexus][:shutdown_port] = 8083
-default[:tomcat][:instances][:nexus][:jvm_opts] = "-Xmx256m -XX:MaxPermSize=384m"
-default[:nexus][:version] = "2.11.0"
-default[:nexus][:source_url] = "http://download.sonatype.com/nexus/oss/nexus-#{node[:nexus][:version]}.war"
+default[:nexus][:port] = 8082
+# version > 2.11.2-06
+default[:nexus][:version] = "2.11.2-06"
+default[:nexus][:source_url] = "https://sonatype-download.global.ssl.fastly.net/nexus/oss/nexus-#{node[:nexus][:version]}-bundle.tar.gz"
 default[:nexus][:admin_password] = "$shiro1$SHA-512$1024$HFmQ+Qwygzm0Yy1jJjKTUw==$6Wim7rxO++llnf6DG5b5JtdYQSH9FzgWv4FJKu/pJCiPsZADP3al9fBmLaBYvLyySURYcqGSVk66J8ts22Rb8g==" # for test backup user "admin" with password "1"
 default[:nexus][:crowd][:application] = "nexus"
 default[:nexus][:crowd][:password] = "1"

@@ -10,8 +10,6 @@ action :install_or_update do
 
   backup
 
-  install_or_update_tomcat
-
   install_or_update_nexus
 
   configure
@@ -25,8 +23,6 @@ def load_current_resource
   @current_resource.source_url(@new_resource.source_url)
   @current_resource.user(@new_resource.user)
   @current_resource.port(@new_resource.port)
-  @current_resource.shutdown_port(@new_resource.shutdown_port)
-  @current_resource.jvm_opts(@new_resource.jvm_opts)
   @current_resource.crowd_url(@new_resource.crowd_url)
   @current_resource.crowd_app_name(@new_resource.crowd_app_name)
   @current_resource.crowd_app_password(@new_resource.crowd_app_password)
@@ -50,26 +46,9 @@ def backup
     user owner
     service_name service_name
     version version
+    tomcat_container false
     paths [app_dir, "#{data_dir}/conf", "#{data_dir}/plugin-repository"]
   end
-end
-
-def install_or_update_tomcat
-  user = "#{current_resource.user}"
-  dir = "/home/#{user}"
-  service_name = "#{current_resource.service_name}"
-  port = "#{current_resource.port}"
-  shutdown_port = "#{current_resource.shutdown_port}"
-  jvm_opts = "#{current_resource.jvm_opts}"
-
-  tomcat "#{service_name}" do
-    owner user
-    base dir
-    port port
-    shutdown_port shutdown_port
-    jvm_opts jvm_opts
-  end
-
 end
 
 def install_or_update_nexus
@@ -77,20 +56,76 @@ def install_or_update_nexus
   dir = "/home/#{user}"
   service_name = "#{current_resource.service_name}"
   app_dir = "#{dir}/#{service_name}"
+  data_dir = "/home/#{user}/sonatype-work"
   crowd_plugin_source_url = "#{current_resource.crowd_plugin_source_url}"
+  version = "#{current_resource.version}"
 
-  remote_file "#{app_dir}/webapps/ROOT.war" do
-    source "#{current_resource.source_url}"
+  directory "#{data_dir}" do
     owner user
     group user
-    notifies :run, "execute[remove_previous_nexus]", :immediately
-    notifies :restart, "service[#{service_name}]", :delayed
+  end
+
+  directory "#{data_dir}/nexus" do
+    owner user
+    group user
+  end
+
+  directory "#{data_dir}/nexus/plugin-repository" do
+    owner user
+    group user
+  end
+
+  directory "#{data_dir}/nexus/conf" do
+    owner user
+    group user
+  end
+
+  template "#{node[:jtalks][:path][:init_script]}/#{service_name}" do
+    source 'nexus.service.erb'
+    mode '775'
+    owner user
+    group user
+    variables({
+                  :dir => app_dir})
+    notifies :run, "execute[#{service_name}_restart]", :delayed
+  end
+
+  service "#{service_name}" do
+    supports :restart => true
+    action :enable
+  end
+
+  restart_service service_name do
+    user user
+  end
+
+  ark "#{service_name}-#{version}" do
+    url current_resource.source_url
+    path "#{dir}/backup"
+    owner user
+    action :put
+    strip_components 1
+    notifies :stop, "service[#{service_name}]", :immediately
+    notifies :run, "execute[replace_old_nexus]", :immediately
+    not_if  { Pathname.new("#{dir}/backup/#{service_name}-#{version}").exist? }
+  end
+
+  execute "replace_old_nexus" do
+    command "
+        rm -Rf #{app_dir};
+        cp -R #{dir}/backup/#{service_name}-#{version}/ #{app_dir} ;
+        chown -R #{user}.#{user} #{app_dir};
+        chown -R #{user}.#{user} #{data_dir};
+            "
+    action :nothing
+    notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 
   #if new installation than start service to deploy (install plugins)
   if !(@current_resource.exists)
-    service "#{service_name}" do
-      action :restart
+    restart_service service_name do
+      user user
+      action :run
     end
 
     bash "install_nexus_wait_wait_3_minutes_after_start" do
@@ -107,6 +142,7 @@ def install_or_update_nexus
     owner user
     group user
     notifies :run, "execute[unpack_crowd_plugin_to_nexus]", :immediately
+    notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 
   execute "unpack_crowd_plugin_to_nexus" do
@@ -115,20 +151,17 @@ def install_or_update_nexus
     cwd "#{dir}/sonatype-work/nexus/plugin-repository"
     command "rm -Rf nexus-crowd-plugin*; unzip crowd-plugin.zip; rm -Rf crowd-plugin.zip"
     action :nothing
+    notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 
-  execute "remove_previous_nexus" do
-    user user
-    group user
-    command "rm -Rf #{app_dir}/webapps/ROOT"
-    action :nothing
-  end
 end
 
 def configure
   user = "#{current_resource.user}"
   dir = "/home/#{user}"
+  port = "#{current_resource.port}"
   service_name = "#{current_resource.service_name}"
+  app_dir = "/home/#{user}/#{service_name}"
   crowd_url = "#{current_resource.crowd_url}/".gsub(/\\/, "")
   crowd_app_name = "#{current_resource.crowd_app_name}"
   crowd_app_password = "#{current_resource.crowd_app_password}"
@@ -136,7 +169,7 @@ def configure
   admin_password = "#{current_resource.admin_password}"
   conf_dir = "#{dir}/sonatype-work/nexus/conf"
 
-  template "#{dir}/sonatype-work/nexus/conf/crowd-plugin.xml" do
+  template "#{conf_dir}/crowd-plugin.xml" do
     source 'nexus.crowd.plugin.xml.erb'
     mode '775'
     owner user
@@ -146,7 +179,7 @@ def configure
                   :crowd_app_name => crowd_app_name,
                   :crowd_app_password => crowd_app_password
               })
-    notifies :restart, "service[#{service_name}]", :delayed
+    notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 
   jtalks_infra_replacer "nexus_repositories_config" do
@@ -705,7 +738,7 @@ def configure
             </repository>
           </repositories>
           <repositoryGrouping>"
-    notifies :restart, "service[#{service_name}]", :delayed
+    notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 
   jtalks_infra_replacer "nexus_realm_config" do
@@ -718,7 +751,7 @@ def configure
             <realm>XmlAuthorizingRealm</realm>
             <realm>NexusCrowdAuthenticationRealm</realm>
           </realms>"
-    notifies :restart, "service[#{service_name}]", :delayed
+    notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 
   template "#{conf_dir}/security.xml" do
@@ -730,7 +763,29 @@ def configure
                   :crowd_group => crowd_group,
                   :admin_password => admin_password
               })
-    notifies :restart, "service[#{service_name}]", :delayed
+    notifies :run, "execute[#{service_name}_restart]", :delayed
+  end
+
+  template "#{app_dir}/conf/nexus.properties" do
+    source 'nexus.app.conf.properties.erb'
+    mode '775'
+    owner user
+    group user
+    variables({
+                  :port => port
+              })
+    notifies :run, "execute[#{service_name}_restart]", :delayed
+  end
+
+  template "#{app_dir}/nexus/WEB-INF/classes/nexus.properties" do
+    source 'nexus.webapp.conf.properties.erb'
+    mode '775'
+    owner user
+    group user
+    variables({
+                  :work_dir => "/home/#{user}/sonatype-work/nexus"
+              })
+    notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 end
 
