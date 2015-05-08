@@ -321,6 +321,8 @@ default[:sonar][:plugins][:crowd][:version] = "2.0"
 default[:sonar][:plugins][:crowd][:url] = "#{node[:sonar][:repo]}/sonar-crowd-plugin/#{node[:sonar][:plugins][:crowd][:version]}/sonar-crowd-plugin-#{node[:sonar][:plugins][:crowd][:version]}.jar"
 default[:sonar][:plugins][:cobertura][:version] = "1.6.3"
 default[:sonar][:plugins][:cobertura][:url] = "#{node[:sonar][:repo]}/sonar-cobertura-plugin/#{node[:sonar][:plugins][:cobertura][:version]}/sonar-cobertura-plugin-#{node[:sonar][:plugins][:cobertura][:version]}.jar"
+default[:sonar][:plugins][:issues_destiny][:version] = "1.0"
+default[:sonar][:plugins][:issues_density][:url] = "#{node[:sonar][:repo]}/sonar-issues-density-plugin/#{node[:sonar][:plugins][:issues_density][:version]}/sonar-issues-density-plugin-#{node[:sonar][:plugins][:issues_density][:version]}.jar"
 
 # Nexus
 default[:nexus][:user] = "nexus"
