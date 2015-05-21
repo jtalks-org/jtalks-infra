@@ -208,7 +208,7 @@ default[:selenium][:user] = "selenium"
 
 #Jenkins
 default[:jenkins][:user][:name] = "jenkins"
-default[:jenkins][:version] = "1.580.2"
+default[:jenkins][:version] = "1.596.3"
 default[:jenkins][:download_url] = "http://mirrors.jenkins-ci.org/war-stable/#{node[:jenkins][:version]}/jenkins.war"
 default[:jenkins][:plugins_download_url] = "http://updates.jenkins-ci.org/download/plugins"
 default[:tomcat][:instances][:jenkins][:port] = 8080
