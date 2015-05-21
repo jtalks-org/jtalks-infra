@@ -30,7 +30,7 @@ def load_current_resource
   @current_resource.crowd_group(@new_resource.crowd_group)
   @current_resource.admin_password(@new_resource.admin_password)
 
-  if Pathname.new("/home/#{@new_resource.user}/#{@new_resource.service_name}/webapps/ROOT.war").exist?
+  if Pathname.new("/home/#{@new_resource.user}/#{@new_resource.service_name}").exist?
     @current_resource.exists = true
   end
 end
