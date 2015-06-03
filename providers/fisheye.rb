@@ -211,7 +211,8 @@ def install_or_update_fisheye
     owner user
     group user
     variables({
-                  :dir => app_dir})
+                  :dir => app_dir,
+                  :data_dir => data_dir})
     notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 

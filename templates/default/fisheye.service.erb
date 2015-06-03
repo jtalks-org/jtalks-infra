@@ -2,7 +2,7 @@
 # Start and stop Fisheye server
 
 FISHEYE_DIRECTORY=<%= @dir %>
-
+export FISHEYE_INST=<%= @data_dir %>
 case "$1" in
     start)
         $FISHEYE_DIRECTORY/bin/fisheyectl.sh start
