@@ -7,7 +7,7 @@ SELENIUM_LOGS=<%= @dir %>/selenium.log
 
 case "$1" in
     start)
-        java -jar <%= @bin_path %> -port 4444 > $SELENIUM_LOGS &
+        java -jar <%= @bin_path %> -port 4458 > $SELENIUM_LOGS &
         echo started.
         exit 0
     ;;
