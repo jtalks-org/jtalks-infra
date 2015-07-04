@@ -408,7 +408,7 @@ default[:git][:server][:base_path] = "/home/#{node[:git][:user]}"
 default[:gitolite][:repository_url] = "git://github.com/sitaramc/gitolite.git"
 
 # Nginx
-default[:jtalks][:nginx][:custom_configs] = ["site", "dev", "qa", "preprod","selenium","logs","postfixadmin"]
+default[:jtalks][:nginx][:custom_configs] = ["site", "dev", "qa", "preprod","selenium","logs","postfixadmin", "qala"]
 default[:nginx][:user] = "root"
 default[:nginx][:site][:confluence][:name] = "confluence"
 default[:nginx][:site][:confluence][:host] = "wiki.#{node[:jtalks][:hostname]}"
