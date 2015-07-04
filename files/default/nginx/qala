@@ -1,0 +1,12 @@
+server {
+   listen 80;
+   server_name www.qala.io  qala.io;
+   access_log  /var/log/nginx/qala.access.log;
+   error_log  /var/log/nginx/qala.error.log;
+
+   location / {
+     alias /home/site/www/qala-site/;
+     index blog.html;
+     include locations_default.conf;
+   }
+}
