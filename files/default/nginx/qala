@@ -5,7 +5,7 @@ server {
    error_log  /var/log/nginx/qala.error.log;
 
    location / {
-     alias /home/site/www/qala-site/;
+     alias /home/qala/www/qala-site/;
      index blog.html;
      include locations_default.conf;
    }
