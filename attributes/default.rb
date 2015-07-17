@@ -119,6 +119,7 @@ default[:java][:install_flavor] = "oracle"
 default[:java][:jdk_version] = 7
 default[:java][:oracle][:accept_oracle_download_terms] = true
 default[:java][:jdk]["7"]["x86_64"][:url] = "http://download.oracle.com/otn-pub/java/jdk/7u67-b01/jdk-7u67-linux-x64.tar.gz"
+default[:java][:jdk]["8"]["x86_64"][:url] = "http://download.oracle.com/otn-pub/java/jdk/8u51-b16/jdk-8u51-linux-x64.tar.gz"
 
 # Maven
 default[:maven]['3'][:version] = "3.2.3"
@@ -267,7 +268,7 @@ default[:jenkins][:plugins]["performance"] = "1.13"
 default[:jenkins][:plugins]["rebuild"] = "1.25"
 default[:jenkins][:plugins]["remote-terminal-access"] = "1.6"
 default[:jenkins][:plugins]["run-condition"] = "1.0"
-default[:jenkins][:plugins]["sauce-ondemand"] = "1.130"
+default[:jenkins][:plugins]["sauce-ondemand"] = "1.129"
 default[:jenkins][:plugins]["scm-api"] = "0.2"
 default[:jenkins][:plugins]["sectioned-view"] = "1.19"
 default[:jenkins][:plugins]["script-realm"] = "1.5"
