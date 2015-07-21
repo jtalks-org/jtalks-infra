@@ -120,6 +120,7 @@ default[:java][:jdk_version] = 7
 default[:java][:oracle][:accept_oracle_download_terms] = true
 default[:java][:jdk]["7"]["x86_64"][:url] = "http://download.oracle.com/otn-pub/java/jdk/7u67-b01/jdk-7u67-linux-x64.tar.gz"
 default[:java][:jdk]["8"]["x86_64"][:url] = "http://download.oracle.com/otn-pub/java/jdk/8u51-b16/jdk-8u51-linux-x64.tar.gz"
+default[:java][:jdk]["8"][:home]="/usr/lib/jvm/jdk1.8.0_51"
 
 # Maven
 default[:maven]['3'][:version] = "3.2.3"
@@ -159,9 +160,9 @@ default[:crowd][:db][:backup_path] = "#{node[:jtalks][:cookbook_path]}/crowd/cro
 # Confluence
 default[:confluence][:user] = "confluence"
 default[:confluence][:home_dir] = "/home/#{node[:confluence][:user]}/var"
-default[:tomcat][:instances][:confluence][:port] = 8050
-default[:tomcat][:instances][:confluence][:shutdown_port] = 8051
-default[:tomcat][:instances][:confluence][:jvm_opts] = "-Xmx512m -XX:MaxPermSize=384m"
+default[:confluence][:port] = 8050
+default[:confluence][:control_port] = 8051
+default[:confluence][:jvm_opts] = "-Xmx1024m -XX:MaxPermSize=384m"
 default[:confluence][:version] = "5.6.5"
 # page with build numbers https://developer.atlassian.com/display/CONFDEV/Confluence+Build+Information
 # it version need to check database version
@@ -170,11 +171,11 @@ default[:confluence][:source_url] = "http://downloads.atlassian.com/software/con
 default[:confluence][:crowd][:application] = "confluence"
 default[:confluence][:crowd][:password] = "1"
 default[:confluence][:license_text] = "fake"
-default[:confluence][:license_hash] = "fake"
 default[:confluence][:db][:name] = "confluence"
 default[:confluence][:db][:user] = "confluence"
 default[:confluence][:db][:password] = "#{node[:jtalks][:db_users][:confluence][:password]}"
 default[:confluence][:db][:backup_path] = "#{node[:jtalks][:cookbook_path]}/confluence/confluence.sql"  # in dev version change password and url to crowd
+default[:confluence][:url] = "http://wiki.jtalks.org"
 
 # Jira
 default[:jira][:user] = "jira"
