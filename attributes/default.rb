@@ -415,6 +415,7 @@ default[:nginx][:user] = "root"
 default[:nginx][:site][:confluence][:name] = "confluence"
 default[:nginx][:site][:confluence][:host] = "wiki.#{node[:jtalks][:hostname]}"
 default[:nginx][:site][:confluence][:context_path] = "/"
+default[:nginx][:site][:confluence][:port]= node[:confluence][:port]
 default[:nginx][:site][:jira][:name] = "jira"
 default[:nginx][:site][:jira][:host] = "jira.#{node[:jtalks][:hostname]}"
 default[:nginx][:site][:jira][:context_path] = "/"
