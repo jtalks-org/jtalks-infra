@@ -6,7 +6,7 @@ Chef Cookbook of JTalks's infrastructure
 - Install Vagrant `apt-get install vagrant`
 - Clone repository
 - `cd jtalks-infra`
-- Install ruby   `apt-get install build-essential autoconf ruby ruby-bundler`
+- Install ruby   `apt-get install build-essential autoconf ruby1.9.3 ruby-bundler` (or just bundler, search in repository)
 - Install depends `bundle install`
 - add content from private repository (jtalks-infra-files) to files/.
 - replace dummy backups of databases

@@ -16,5 +16,5 @@ jtalks_infra_confluence "confluence" do
   crowd_app_password node[:confluence][:crowd][:password]
   host node[:confluence][:url]
   build_number node[:confluence][:build_number]
-  java_home node[:java][:jdk]["8"][:home]
+  java_home "#{node[:java][:jdk]["8"][:home]}_alt"
 end

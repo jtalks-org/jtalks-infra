@@ -92,12 +92,7 @@ def prepare
     notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
   end
 
-  #libraries copying always but notify restart server only if have change (need to update tomcat)
-  mysql_connector "copy_mysql_connector_for_confluence" do
-    user user
-    path "#{app_dir}/confluence/WEB-INF/lib"
-  end
-end
+ end
 
 def configure
   user = "#{current_resource.user}"
@@ -220,6 +215,12 @@ def install_or_update_confluence
         chown -R #{user}.#{user} #{data_dir};
             "
     action :nothing
+  end
+
+  #libraries copying always but notify restart server only if have change (need to update tomcat)
+  mysql_connector "copy_mysql_connector_for_confluence" do
+    user user
+    path "#{app_dir}/confluence/WEB-INF/lib"
   end
 
   service "#{service_name}" do
