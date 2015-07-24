@@ -175,7 +175,7 @@ default[:confluence][:db][:name] = "confluence"
 default[:confluence][:db][:user] = "confluence"
 default[:confluence][:db][:password] = "#{node[:jtalks][:db_users][:confluence][:password]}"
 default[:confluence][:db][:backup_path] = "#{node[:jtalks][:cookbook_path]}/confluence/confluence.sql"  # in dev version change password and url to crowd
-default[:confluence][:url] = "http://wiki.jtalks.org"
+default[:confluence][:url] = "http://localhost:#{node[:confluence][:port]}"
 
 # Jira
 default[:jira][:user] = "jira"
