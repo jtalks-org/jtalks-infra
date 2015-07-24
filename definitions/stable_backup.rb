@@ -52,7 +52,7 @@ define :stable_backup, :user => nil, :service_name => "", :tomcat_version => "8"
            if [ ! ''#{db_name}'' = '' ]; then
               mysqldump -u #{db_user} --password=\"#{db_pass}\" --opt  #{db_name} >  #{backup_dir}/stable/db.sql
               echo '#Restore db \n' >>  #{backup_dir}/stable/restore
-              echo 'mysql -u #{db_user} --password=\"#{db_pass}\" -D #{db_name} -e \"drop database #{db_name}; create database #{db_name}  CHARACTER SET utf8 COLLATE utf8_general_ci; \" '  >>  #{backup_dir}/stable/restore
+              echo 'mysql -u #{db_user} --password=\"#{db_pass}\" -D #{db_name} -e \"drop database #{db_name}; create database #{db_name}  CHARACTER SET utf8 COLLATE utf8_bin; \" '  >>  #{backup_dir}/stable/restore
               echo 'mysql -u #{db_user} --password=\"#{db_pass}\" -D #{db_name}  < #{backup_dir}/stable/db.sql \n\n'  >>  #{backup_dir}/stable/restore
            fi
 
