@@ -40,3 +40,4 @@ Chef Cookbook of JTalks's infrastructure
   * open Jira on web browser. And do reindex (System - Advanced - Indexing)
   * open confluence on web browser. And do reindex (General Configuration - Content Indexing)
   * move git repositories
+  * if after update confluence not started with errors of license -> http://wiki.jtalks.org/fixonly/fixlicense.action
