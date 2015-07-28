@@ -54,6 +54,7 @@ default[:jtalks][:users][:site][:known_hosts][:site] = ["jtalks.org","#{node[:jt
 default[:jtalks][:users][:i_preprod][:known_hosts][:u98642] = ["u98642.your-backup.de"]
 default[:jtalks][:users][:i_javatalks][:known_hosts][:antarcticle] = ["jtalks.org","github.com"]
 default[:jtalks][:users][:root][:known_hosts][:u99356] = ["u99356.your-backup.de"]
+default[:jtalks][:users][:mixas][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 
 default[:jtalks][:dbs] = ["crowd","autotests","beginintesting","performance","preprod","preprod_antarcticle","dev_jcommune",
                           "dev_poulpe","dev_antarcticle","qa","qa_antarcticle","sonar","fisheye", "confluence","jira","postfix"]

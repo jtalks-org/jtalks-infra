@@ -60,6 +60,17 @@ node[:jtalks][:users].each do |user, data|
   end
 end
 
+#additional users
+sudo "mixas" do
+  user      "mixas"
+  runas     "i_dev"
+end
+
+sudo "mixas" do
+  user      "mixas"
+  runas     "i_autotests"
+end
+
 #create directories to QA command
 user = "qa"
 perm = "0755"
