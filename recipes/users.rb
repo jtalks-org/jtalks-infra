@@ -63,7 +63,7 @@ end
 #additional users
 sudo "mixas" do
   user      "mixas"
-  runas     "i_dev i_autotests"
+  runas     "i_dev"
 end
 
 #create directories to QA command
