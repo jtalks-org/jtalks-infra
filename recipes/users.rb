@@ -60,12 +60,6 @@ node[:jtalks][:users].each do |user, data|
   end
 end
 
-#additional users
-sudo "mixas" do
-  user      "mixas"
-  runas     "i_dev:i_autotests"
-end
-
 #create directories to QA command
 user = "qa"
 perm = "0755"
@@ -99,4 +93,11 @@ instances.each do | instance |
     mode full_perm
     recursive true
   end
+end
+
+#sudo
+include_recipe 'sudo'
+
+sudo "mixas" do
+  template  "sudoers/mixas.erb"
 end

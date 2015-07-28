@@ -30,7 +30,6 @@ suites:
       - recipe[git]
       - recipe[git_user]
       - recipe[jtalks-infra::users]
-      - recipe[sudo]
       - recipe[jtalks-infra::java]
       - recipe[database::mysql]
       - recipe[jtalks-infra::crowd]
@@ -41,7 +40,6 @@ suites:
        - recipe[ark]
        - recipe[jtalks-infra::java]
        - recipe[jtalks-infra::users]
-       - recipe[sudo]
        - recipe[database::mysql]
        - recipe[jtalks-infra::mysql]
        - recipe[jtalks-infra::crowd]
@@ -49,7 +47,6 @@ suites:
     run_list:
        - recipe[apt]
        - recipe[jtalks-infra::users]
-       - recipe[sudo]
   - name: db-users
     run_list:
        - recipe[apt]
@@ -73,13 +70,11 @@ suites:
     run_list:
        - recipe[apt]
        - recipe[jtalks-infra::users]
-       - recipe[sudo]
        - recipe[jtalks-infra::pochta]
   - name: selenium
     run_list:
        - recipe[apt]
        - recipe[jtalks-infra::users]
-       - recipe[sudo]
        - recipe[jtalks-infra::selenium]
   - name: sonar
     run_list:
@@ -87,7 +82,6 @@ suites:
        - recipe[ark]
        - recipe[jtalks-infra::java]
        - recipe[jtalks-infra::users]
-       - recipe[sudo]
        - recipe[database::mysql]
        - recipe[jtalks-infra::mysql]
        - recipe[jtalks-infra::crowd]
@@ -98,7 +92,6 @@ suites:
        - recipe[ark]
        - recipe[jtalks-infra::java]
        - recipe[jtalks-infra::users]
-       - recipe[sudo]
        - recipe[database::mysql]
        - recipe[jtalks-infra::mysql]
        - recipe[jtalks-infra::crowd]
@@ -111,7 +104,6 @@ suites:
        - recipe[git_user]
        - recipe[jtalks-infra::java]
        - recipe[jtalks-infra::users]
-       - recipe[sudo]
        - recipe[database::mysql]
        - recipe[jtalks-infra::mysql]
        - recipe[jtalks-infra::crowd]
@@ -124,7 +116,6 @@ suites:
        - recipe[git_user]
        - recipe[jtalks-infra::java]
        - recipe[jtalks-infra::users]
-       - recipe[sudo]
        - recipe[database::mysql]
        - recipe[jtalks-infra::mysql]
        - recipe[jtalks-infra::crowd]
@@ -137,7 +128,6 @@ suites:
        - recipe[git_user]
        - recipe[jtalks-infra::java]
        - recipe[jtalks-infra::users]
-       - recipe[sudo]
        - recipe[database::mysql]
        - recipe[jtalks-infra::mysql]
        - recipe[jtalks-infra::crowd]
@@ -148,7 +138,6 @@ suites:
        - recipe[ark]
        - recipe[nginx]
        - recipe[jtalks-infra::users]
-       - recipe[sudo]
        - recipe[jtalks-infra::nginx]
        - recipe[database::mysql]
        - recipe[jtalks-infra::mysql]
@@ -186,7 +175,6 @@ suites:
        - recipe[sysctl::apply]
        - recipe[build-essential]
        - recipe[python]
-       - recipe[sudo]
        - recipe[cron]
        - recipe[vim]
        - recipe[ark]
