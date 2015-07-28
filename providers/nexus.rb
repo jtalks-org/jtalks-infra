@@ -142,7 +142,6 @@ def install_or_update_nexus
     owner user
     group user
     notifies :run, "execute[unpack_crowd_plugin_to_nexus]", :immediately
-    notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 
   execute "unpack_crowd_plugin_to_nexus" do
@@ -151,7 +150,6 @@ def install_or_update_nexus
     cwd "#{dir}/sonatype-work/nexus/plugin-repository"
     command "rm -Rf nexus-crowd-plugin*; unzip crowd-plugin.zip; rm -Rf crowd-plugin.zip"
     action :nothing
-    notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 
 end
