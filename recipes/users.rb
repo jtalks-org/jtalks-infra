@@ -84,7 +84,7 @@ directory "/home/#{user}/.jtalks/plugins" do
   mode perm
 end
 
-instances = ["preprod", "performance", "autotests", "beginintesting", "dev", "qa"]
+instances = ["preprod", "performance", "autotests", "dev", "qa"]
 
 instances.each do | instance |
   directory "/home/#{user}/.jtalks/plugins/#{instance}" do

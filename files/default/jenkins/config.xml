@@ -301,13 +301,11 @@ SM (Server Management) - builds to redeploy servers, backup/restore databases.&#
         <string>JC. Functional Tests. Linux + Firefox</string>
         <string>JC. Functional Tests. Win2012 + Chrome</string>
         <string>JC. Run Load Tests - 3 users</string>
-        <string>JC. To BeginInTesting</string>
         <string>JC. W3C Validation. iPad + Safari</string>
         <string>JTalksSite. To DEV</string>
         <string>JTalksSite. To PROD</string>
         <string>Pochta. Unit Tests</string>
         <string>Poulpe. To AUTOTESTS</string>
-        <string>Poulpe. To BeginInTesting</string>
         <string>Tort. Unit Tests</string>
       </jobNames>
       <jobFilters/>
