@@ -23,4 +23,5 @@ jtalks_infra_fisheye "fisheye" do
   smtp_user node[:jtalks][:smtp][:users][:fisheye][:name]
   smtp_password node[:jtalks][:smtp][:users][:fisheye][:password]
   repositories node[:fisheye][:repositories]
+  java_home "#{node[:java][:jdk]["8"][:home]}_alt"
 end

@@ -27,5 +27,6 @@ attribute :smtp_port     , :required => true, :kind_of => String
 attribute :smtp_user     , :required => true, :kind_of => String
 attribute :smtp_password     , :required => true, :kind_of => String
 attribute :repositories     , :required => true, :kind_of => Hash
+attribute :java_home     , :required => true, :kind_of => String
 
 attr_accessor :exists

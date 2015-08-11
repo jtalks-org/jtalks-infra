@@ -44,6 +44,7 @@ def load_current_resource
   @current_resource.smtp_user(@new_resource.smtp_user)
   @current_resource.smtp_password(@new_resource.smtp_password)
   @current_resource.repositories(@new_resource.repositories)
+  @current_resource.java_home(@new_resource.java_home)
 
   if Pathname.new("/home/#{@new_resource.user}/#{@current_resource.service_name}").exist?
     @current_resource.exists = true
@@ -204,6 +205,7 @@ def install_or_update_fisheye
   app_dir = "#{dir}/#{service_name}"
   version = "#{current_resource.version}"
   data_dir = "#{current_resource.data_dir}"
+  java_home = "#{current_resource.java_home}"
 
   template "#{node[:jtalks][:path][:init_script]}/#{service_name}" do
     source 'fisheye.service.erb'
@@ -212,7 +214,8 @@ def install_or_update_fisheye
     group user
     variables({
                   :dir => app_dir,
-                  :data_dir => data_dir})
+                  :data_dir => data_dir,
+                  :java_home => java_home})
     notifies :run, "execute[#{service_name}_restart]", :delayed
   end
 
