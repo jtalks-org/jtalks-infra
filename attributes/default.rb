@@ -199,8 +199,8 @@ default[:pochta][:version] = "1.4"
 default[:pochta][:source_url] = "http://repo.jtalks.org/content/repositories/releases/org/jtalks/jtalks-pochta/#{node[:pochta][:version]}/jtalks-pochta-#{node[:pochta][:version]}.jar"
 
 # Selenium
-default[:selenium][:major_version] = "2.47"
-default[:selenium][:minor_version] = "1"
+default[:selenium][:major_version] = "2.30"
+default[:selenium][:minor_version] = "0"
 default[:selenium][:version] = "#{node[:selenium][:major_version]}.#{node[:selenium][:minor_version]}"
 default[:selenium][:source_url] = "http://selenium-release.storage.googleapis.com/#{node[:selenium][:major_version]}/selenium-server-standalone-2.47.1.jar"
 default[:selenium][:user] = "selenium"
