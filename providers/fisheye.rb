@@ -194,7 +194,6 @@ def configure
     file "#{app_dir}/bin/fisheyectl.sh"
     replace "FISHEYE_INST=$FISHEYE_HOME"
     with "FISHEYE_INST=\"#{data_dir}\""
-    notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
   end
 end
 
