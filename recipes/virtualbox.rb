@@ -12,10 +12,12 @@ end
 # Get additions iso file
 remote_file "/tmp/vboxAdditions.iso" do
   source node[:virtualbox][:guest_additions][:iso_uri]
+  not_if { Pathname.new("/tmp/vboxAdditions.iso").exist? }
   end
 
 remote_file "/tmp/Oracle_VM_VirtualBox_Extension_Pack-#{node[:virtualbox][:guest_additions][:virtualbox_version]}.vbox-extpack" do
   source node[:virtualbox][:guest_additions][:ext_pack_uri]
+  not_if { Pathname.new("/tmp/Oracle_VM_VirtualBox_Extension_Pack-#{node[:virtualbox][:guest_additions][:virtualbox_version]}.vbox-extpack").exist? }
 end
 
 # Create the mount point
@@ -24,7 +26,7 @@ directory node[:virtualbox][:guest_additions][:mount_point] do
   group "root"
   mode "0755"
   action :create
-  not_if { Pathname.new("#{node[:virtualbox][:guest_additions][:mount_point]}").exist? }
+  not_if { Pathname.new("/tmp/vboxAdditions.iso").exist? }
 end
 
 # mount the iso
@@ -61,17 +63,7 @@ execute "vboxdrv kernel module" do
   command "sudo /etc/init.d/vboxdrv setup"
 end
 
-# Delete the ISO
-file "/tmp/vboxAdditions.iso" do
-  action :delete
-end
-
 # # Delete the mount point
 directory node[:virtualbox][:guest_additions][:mount_point] do
-  action :delete
-end
-
-# # Delete the pack
-file "/tmp/Oracle_VM_VirtualBox_Extension_Pack-#{node[:virtualbox][:guest_additions][:virtualbox_version]}.vbox-extpack" do
   action :delete
 end
