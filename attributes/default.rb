@@ -38,6 +38,10 @@ default[:jtalks][:users][:nexus][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w0
 default[:jtalks][:users][:fisheye][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:docker][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:docker][:system] = true
+default[:jtalks][:users][:virtualbox][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:virtualbox][:system] = true
+default[:jtalks][:users][:vagrant][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
+default[:jtalks][:users][:vagrant][:system] = true
 default[:jtalks][:users][:postfix][:password] = "$1$TJ90WtPC$fKIvRHNzA2ZLWofaFF9w00" # 1
 default[:jtalks][:users][:postfix][:uid] = 3000 # uid = gid
 default[:jtalks][:users][:git][:known_hosts][:git] = ["localhost"]
@@ -483,3 +487,18 @@ default[:iptables][:install_rules] = false
 default[:iptables][:rules] =[
     "iptables -I INPUT 1 -p tcp -m state --state NEW -m multiport --dports ssh,smtp,http,https -j ACCEPT"
 ]
+
+default[:virtualbox][:version] = "4.3"
+default[:virtualbox][:user] = "virtualbox"
+default[:virtualbox][:group] = "vboxusers"
+default[:virtualbox][:guest_additions][:virtualbox_version] = "4.3.30"
+default[:virtualbox][:guest_additions][:iso_uri] = "http://download.virtualbox.org/virtualbox/#{node[:virtualbox][:guest_additions][:virtualbox_version]}/VBoxGuestAdditions_#{node[:virtualbox][:guest_additions][:virtualbox_version]}.iso"
+default[:virtualbox][:guest_additions][:ext_pack_uri] = "http://download.virtualbox.org/virtualbox/#{node[:virtualbox][:guest_additions][:virtualbox_version]}/Oracle_VM_VirtualBox_Extension_Pack-#{node[:virtualbox][:guest_additions][:virtualbox_version]}.vbox-extpack"
+default[:virtualbox][:guest_additions][:packages] = ["make", "gcc", "dkms", "build-essential", "linux-headers-$(uname -r)"]
+default[:virtualbox][:guest_additions][:mount_point] = "/tmp/vboxAdditions"
+default[:vagrant][:version] = "1.7.4"
+default[:vagrant][:user] = "vagrant"
+default[:vagrant][:url]   = vagrant_package_uri(node[:vagrant][:version])
+default[:vagrant][:checksum]    = vagrant_sha256sum(node[:vagrant][:version])
+default[:vagrant][:plugins] = ["winrm-fs"]
+

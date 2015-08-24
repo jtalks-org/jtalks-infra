@@ -19,3 +19,6 @@ depends 'newrelic-sysmond', '2.0.0'
 depends 'sysctl', '0.6.2'
 depends 'docker', '0.36.0'
 depends 'iptables', '0.14.1'
+depends 'virtualbox', '1.0.3'
+depends 'vagrant', '0.3.0'
+

@@ -169,6 +169,11 @@ suites:
        - recipe[jtalks-infra::users]
        - recipe[docker::default]
        - recipe[jtalks-infra::hubot]
+  - name: selenium-grid
+    run_list:
+       - recipe[jtalks-infra::users]
+       - recipe[jtalks-infra::virtualbox]
+       - recipe[jtalks-infra::vagrant]
   - name: server
     run_list:
        - recipe[apt]
@@ -205,3 +210,5 @@ suites:
        - recipe[jtalks-infra::hubot]
        - recipe[jtalks-infra::backup]
        - recipe[jtalks-infra::iptables]
+       - recipe[jtalks-infra::virtualbox]
+       - recipe[jtalks-infra::vagrant]
