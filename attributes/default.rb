@@ -206,7 +206,7 @@ default[:pochta][:source_url] = "http://repo.jtalks.org/content/repositories/rel
 default[:selenium][:major_version] = "2.30"
 default[:selenium][:minor_version] = "0"
 default[:selenium][:version] = "#{node[:selenium][:major_version]}.#{node[:selenium][:minor_version]}"
-default[:selenium][:source_url] = "http://selenium-release.storage.googleapis.com/#{node[:selenium][:major_version]}/selenium-server-standalone-2.47.1.jar"
+default[:selenium][:source_url] = "http://selenium-release.storage.googleapis.com/#{node[:selenium][:major_version]}/selenium-server-standalone-#{node[:selenium][:version]}.jar"
 default[:selenium][:user] = "selenium"
 
 #Jenkins
