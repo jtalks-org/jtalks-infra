@@ -42,3 +42,4 @@ Chef Cookbook of JTalks's infrastructure
   * move git repositories
   * need update parameter buildnumber (Confluence) in jtalks-infra-files, if needed (current version in file /home/confluence/var/confluence.cfg.xml)
   * if after update confluence not started with errors of license -> http://wiki.jtalks.org/fixonly/fixlicense.action
+  * Add TXT items for DNS. For every domain generates mail.txt with parameters to items (see /home/opendkim/keys/*/mail.txt)

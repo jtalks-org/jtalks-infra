@@ -161,7 +161,7 @@ def install_or_update_postfix
   admin_username = current_resource.admin_username
   mail_dir = "#{dir}/mailbox"
   opendkim_port = current_resource.opendkim_port
-  opendkim_socket = "inet:#{opendkim_port}@localhost"
+  opendkim_socket = "inet:localhost:#{opendkim_port}"
 
   directory mail_dir do
     owner user
