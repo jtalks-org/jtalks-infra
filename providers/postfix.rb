@@ -9,6 +9,8 @@ use_inline_resources
 
 action :install_or_update do
 
+  install_opendkim
+
   install_or_update_postfix
 
 end
@@ -32,9 +34,106 @@ def load_current_resource
   @current_resource.mailboxes(@new_resource.mailboxes)
   @current_resource.domains(@new_resource.domains)
   @current_resource.admin_username(@new_resource.admin_username)
+  @current_resource.opendkim_port(@new_resource.opendkim_port)
+  @current_resource.opendkim_user(@new_resource.opendkim_user)
+  @current_resource.opendkim_conf_dir(@new_resource.opendkim_conf_dir)
 
   if Pathname.new("/home/#{@new_resource.user}/postfixadmin").exist?
     @current_resource.exists = true
+  end
+end
+
+def install_opendkim
+  if !(Pathname.new("/etc/opendkim.conf").exist?)
+    port = current_resource.opendkim_port
+    user = current_resource.opendkim_user
+    conf_dir = current_resource.opendkim_conf_dir
+    pid_dir = "/var/run/opendkim"
+    socket = "inet:#{port}@localhost"
+    service_name = "opendkim"
+    keys_dir = "#{conf_dir}/keys"
+    domains = current_resource.domains
+    selector = "mail"
+
+    package "opendkim" do
+      action :install
+    end
+    package "opendkim-tools" do
+      action :install
+    end
+
+    directory "#{conf_dir}" do
+      not_if { Pathname.new("#{conf_dir}").exist? }
+    end
+
+    directory "#{keys_dir}" do
+      not_if { Pathname.new("#{keys_dir}").exist? }
+    end
+
+    directory "#{pid_dir}" do
+      owner user
+      group user
+      not_if { Pathname.new("#{pid_dir}").exist? }
+    end
+
+    template "/etc/opendkim.conf" do
+      source 'opendkim.conf.erb'
+      variables({
+                    :user=> user,
+                    :socket=> socket,
+                    :conf_dir=> conf_dir,
+                    :pid => "#{pid_dir}/#{service_name}.pid"
+                })
+      notifies :restart, "service[#{service_name}]", :delayed
+    end
+
+    file "/etc/default/opendkim" do
+      content "SOCKET=\"#{socket}\""
+      notifies :restart, "service[#{service_name}]", :delayed
+    end
+
+    template "#{conf_dir}/TrustedHosts" do
+      source 'opendkim.trustedhosts.erb'
+      variables({
+                    :domains=> domains
+                })
+      notifies :restart, "service[#{service_name}]", :delayed
+    end
+
+    template "#{conf_dir}/KeyTable" do
+      source 'opendkim.keytable.erb'
+      variables({
+                    :domains=> domains,
+                    :selector => selector,
+                    :keys_dir => keys_dir
+                })
+      notifies :restart, "service[#{service_name}]", :delayed
+    end
+
+    template "#{conf_dir}/SigningTable" do
+      source 'opendkim.signingtable.erb'
+      variables({
+                    :domains=> domains,
+                    :selector => selector
+                })
+      notifies :restart, "service[#{service_name}]", :delayed
+    end
+
+    domains.each do |u, d|
+      directory  "#{keys_dir}/#{d[:name]}" do
+        owner user
+        group user
+        not_if { Pathname.new("#{keys_dir}/#{d[:name]}").exist? }
+      end
+      execute "opendkim-genkey -D #{keys_dir}/#{d[:name]} -d #{d[:name]} -s #{selector}"
+      execute "chown -R #{user}:#{user} #{keys_dir}/#{d[:name]}"
+    end
+
+    service service_name do
+      supports :restart => true
+      action :enable
+    end
+
   end
 end
 
@@ -61,6 +160,8 @@ def install_or_update_postfix
   setup_password = current_resource.setup_password
   admin_username = current_resource.admin_username
   mail_dir = "#{dir}/mailbox"
+  opendkim_port = current_resource.opendkim_port
+  opendkim_socket = "inet:#{opendkim_port}@localhost"
 
   directory mail_dir do
     owner user
@@ -184,7 +285,8 @@ def install_or_update_postfix
     variables({
                   :host=> domain,
                   :uid=> uid,
-                  :mail_dir=> mail_dir
+                  :mail_dir=> mail_dir,
+                  :opendkim_socket => opendkim_socket
               })
     notifies :restart, "service[postfix]", :delayed
   end

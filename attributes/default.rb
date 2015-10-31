@@ -405,6 +405,9 @@ default[:jtalks][:postfixadmin][:conf][:database_host] = "'#{node[:jtalks][:post
 default[:jtalks][:postfixadmin][:conf][:database_user] = "'#{node[:jtalks][:postfix][:database][:user]}'"
 default[:jtalks][:postfixadmin][:conf][:database_password] = "'#{node[:jtalks][:postfix][:database][:password]}'"
 default[:jtalks][:postfixadmin][:conf][:database_name] = "'#{node[:jtalks][:postfix][:database][:name]}'"
+default[:jtalks][:opendkim][:port] = 8891
+default[:jtalks][:opendkim][:user]  = "opendkim"
+default[:jtalks][:opendkim][:conf_dir] = "/etc/opendkim"
 
 # Git
 default[:git][:user] = "git"
@@ -425,6 +428,7 @@ default[:nginx][:site][:fisheye][:port]= node[:fisheye][:port]
 default[:nginx][:site][:fisheye][:name] = "fisheye"
 default[:nginx][:site][:fisheye][:host] = "fisheye.#{node[:jtalks][:hostname]}"
 default[:nginx][:site][:fisheye][:context_path] = "/"
+default[:nginx][:site][:nexus][:port] = node[:nexus][:port]
 default[:nginx][:site][:nexus][:name] = "nexus"
 default[:nginx][:site][:nexus][:host] = "repo.#{node[:jtalks][:hostname]}"
 default[:nginx][:site][:nexus][:context_path] = "/"

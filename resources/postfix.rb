@@ -20,5 +20,8 @@ attribute :admins       , :required => true,  :kind_of => Hash
 attribute :mailboxes       , :required => true,  :kind_of => Hash
 attribute :domains       , :required => true,  :kind_of => Hash
 attribute :admin_username       , :required => true,  :kind_of => String
+attribute :opendkim_port       , :required => true,  :kind_of => Integer
+attribute :opendkim_user       , :required => true,  :kind_of => String
+attribute :opendkim_conf_dir       , :required => true,  :kind_of => String
 
 attr_accessor :exists
