@@ -1,3 +1,3 @@
 <% @domains.each do |name, data| -%>
-    <%= @selector %>._domainkey.<%= data[:name] %> <%= data[:name] %>:<%= @selector %>:<%= @keys_dir %>/<%= data[:name] %>/<%= @selector %>.private
+<%= @selector %>._domainkey.<%= data[:name] %> <%= data[:name] %>:<%= @selector %>:<%= @keys_dir %>/<%= data[:name] %>/<%= @selector %>.private
 <% end -%>
