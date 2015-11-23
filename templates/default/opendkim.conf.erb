@@ -1,0 +1,22 @@
+AutoRestart             Yes
+AutoRestartRate         10/1h
+UMask                   002
+Syslog                  yes
+SyslogSuccess           Yes
+LogWhy                  Yes
+
+Canonicalization        relaxed/simple
+
+ExternalIgnoreList      refile:<%= @conf_dir %>/TrustedHosts
+InternalHosts           refile:<%= @conf_dir %>/TrustedHosts
+KeyTable                refile:<%= @conf_dir %>/KeyTable
+SigningTable            refile:<%= @conf_dir %>/SigningTable
+
+Mode                    sv
+PidFile                 <%= @pid %>
+SignatureAlgorithm      rsa-sha256
+
+UserID                  <%= @user %>:<%= @user %>
+
+Socket                  <%= @socket %>
+

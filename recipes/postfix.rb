@@ -16,6 +16,9 @@ jtalks_infra_postfix "postfix" do
   mailboxes  node[:jtalks][:postfix][:mailboxes]
   domains  node[:jtalks][:postfix][:domains]
   admin_username  node[:jtalks][:postfix][:admin][:username]
+  opendkim_port  node[:jtalks][:opendkim][:port]
+  opendkim_user  node[:jtalks][:opendkim][:user]
+  opendkim_conf_dir  node[:jtalks][:opendkim][:conf_dir]
 end
 
 

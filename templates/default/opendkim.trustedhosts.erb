@@ -1,0 +1,6 @@
+127.0.0.1
+localhost
+
+<% @domains.each do |name, data| -%>
+*.<%= data[:name] %>
+<% end -%>
