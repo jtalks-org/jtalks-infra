@@ -124,8 +124,8 @@ def install_or_update_sonar
     owner user
     action :put
     notifies :stop, "service[sonar]", :immediately
+    notifies :run, "execute[replace_old_sonar]", :immediately
     notifies :run, "execute[#{service_name}_restart]", :delayed
-    notifies :run, "execute[replace_old_sonar]", :delayed
     not_if  { Pathname.new("#{dir}/backup/#{current_resource.service_name}-#{version}").exist? }
   end
 
