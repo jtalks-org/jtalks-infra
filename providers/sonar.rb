@@ -136,8 +136,6 @@ def install_or_update_sonar
         cp -R #{dir}/backup/#{current_resource.service_name}-#{version}/* #{app_dir}/ ;
         chown -R #{user}.#{user} #{app_dir}
     "
-    user user
-    group user
     action :nothing
   end
 
