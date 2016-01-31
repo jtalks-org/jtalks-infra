@@ -131,6 +131,7 @@ def install_or_update_sonar
 
   execute "replace_old_sonar" do
     command "
+        chown -R #{user}.#{user}  #{app_dir};
         rm -Rf #{app_dir};
         cp -R #{dir}/backup/#{current_resource.service_name}-#{version} #{app_dir} ;
         chown -R #{user}.#{user} #{app_dir}
