@@ -295,7 +295,7 @@ default["newrelic-sysmond"][:license_key] = "fake"
 # Sonar
 default[:sonar][:user] = "sonar"
 default[:sonar][:version] = "5.1.2"
-default[:sonar][:source_url] = "http://dist.sonar.codehaus.org/sonarqube-#{node[:sonar][:version]}.zip"
+default[:sonar][:source_url] = "http://sonarsource.bintray.com/Distribution/sonarqube/-#{node[:sonar][:version]}.zip"
 default[:sonar][:port] = 9000
 default[:sonar][:jvm_opts] = "-Xmx768m -XX:MaxPermSize=384m"
 default[:sonar][:db][:name] = "sonar"
