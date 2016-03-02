@@ -500,7 +500,5 @@ default[:virtualbox][:guest_additions][:packages] = ["make", "gcc", "dkms", "bui
 default[:virtualbox][:guest_additions][:mount_point] = "/tmp/vboxAdditions"
 default[:vagrant][:version] = "1.7.4"
 default[:vagrant][:user] = "vagrant"
-default[:vagrant][:url]   = vagrant_package_uri(node[:vagrant][:version])
-default[:vagrant][:checksum]    = vagrant_sha256sum(node[:vagrant][:version])
 default[:vagrant][:plugins] = ["winrm-fs"]
 
