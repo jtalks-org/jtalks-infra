@@ -80,7 +80,7 @@ GRAPH
     ssh-util (= 0.6.3)
     sudo (= 2.7.1)
     sysctl (= 0.6.2)
-    vagrant (= 0.3.0)
+    vagrant (= 0.5.0)
     vim (= 1.1.2)
     virtualbox (= 1.0.3)
   lxc (2.0.0)
