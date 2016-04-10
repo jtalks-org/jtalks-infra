@@ -304,6 +304,11 @@ default[:jenkins][:plugins]["pipeline-input-step"] = "2.0"
 default[:jenkins][:plugins]["workflow-basic-steps"] = "2.0"
 default[:jenkins][:plugins]["workflow-support"] = "2.0"
 default[:jenkins][:plugins]["workflow-step-api"] = "2.0"
+default[:jenkins][:plugins]["structs"] = "1.1"
+default[:jenkins][:plugins]["branch-api"] = "1.5"
+default[:jenkins][:plugins]["git-server"] = "1.6"
+default[:jenkins][:plugins]["jquery-detached"] = "1.2.1"
+default[:jenkins][:plugins]["ace-editor"] = "1.1"
 
 # NewRelic
 # license key neen to sysmond
