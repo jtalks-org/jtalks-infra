@@ -89,7 +89,7 @@ def prepare
     owner user
     group user
     recursive true
-    notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
+    notifies :restart, "service[#{@current_resource.service_name}]", :delayed
   end
 
  end
@@ -125,7 +125,7 @@ def configure
                   :db_user => db_user,
                   :db_password => db_password
               })
-    notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
+    notifies :restart, "service[#{@current_resource.service_name}]", :delayed
   end
 
   template "#{app_dir}/confluence/WEB-INF/classes/confluence-init.properties" do
@@ -136,7 +136,7 @@ def configure
     variables({
                   :data_dir=> data_dir
               })
-    notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
+    notifies :restart, "service[#{@current_resource.service_name}]", :delayed
   end
 
   template "#{app_dir}/confluence/WEB-INF/classes/crowd.properties" do
@@ -149,7 +149,7 @@ def configure
                   :crowd_app_name => crowd_app_name,
                   :crowd_app_password => crowd_app_password
               })
-    notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
+    notifies :restart, "service[#{@current_resource.service_name}]", :delayed
   end
 
   template "#{app_dir}/conf/server.xml" do
@@ -161,7 +161,7 @@ def configure
                   :port => port,
                   :control_port => control_port
               })
-    notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
+    notifies :restart, "service[#{@current_resource.service_name}]", :delayed
   end
 
   template "#{app_dir}/bin/setenv.sh" do
@@ -173,7 +173,7 @@ def configure
                   :jvm_opts => jvm_opts,
                   :java_home => java_home
               })
-    notifies :run, "execute[#{current_resource.service_name}_restart]", :delayed
+    notifies :restart, "service[#{current_resource.service_name}]", :delayed
   end
 end
 
@@ -201,8 +201,8 @@ def install_or_update_confluence
     path "#{dir}/backup"
     owner user
     action :put
-    notifies :stop, "service[#{service_name}]", :immediately
-    notifies :run, "execute[#{service_name}_restart]", :delayed
+    notifies :sto, "service[#{service_name}]", :immediately
+    notifies :start, "service[#{service_name}]", :delayed
     notifies :run, "execute[replace_old_confluence]", :delayed
     not_if  { Pathname.new("#{dir}/backup/#{service_name}-#{version}").exist? }
   end
@@ -226,9 +226,5 @@ def install_or_update_confluence
   service "#{service_name}" do
     supports :restart => true
     action :enable
-  end
-
-  restart_service service_name do
-    user user
   end
 end
