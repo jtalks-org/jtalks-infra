@@ -87,7 +87,7 @@ def configure
                   :crowd_app => crowd_app,
                   :crowd_password => crowd_password
               })
-    notifies :run, "execute[#{service_name}_restart]", :delayed
+    notifies :restart, "service[#{service_name}]", :delayed
   end
 
   #if new installation than restore database
@@ -125,7 +125,7 @@ def install_or_update_sonar
     action :put
     notifies :stop, "service[sonar]", :immediately
     notifies :run, "execute[replace_old_sonar]", :immediately
-    notifies :run, "execute[#{service_name}_restart]", :delayed
+    notifies :restart, "service[#{service_name}]", :delayed
     not_if  { Pathname.new("#{dir}/backup/#{current_resource.service_name}-#{version}").exist? }
   end
 
@@ -156,7 +156,7 @@ def install_or_update_sonar
     group user
     variables({
                   :dir => app_dir})
-    notifies :run, "execute[#{service_name}_restart]", :delayed
+    notifies :restart, "service[#{service_name}]", :delayed
   end
 
   plugins_map.each do |name, data|
@@ -165,17 +165,13 @@ def install_or_update_sonar
       owner    user
       group    user
       not_if { Pathname.new("#{plugins_dir}/#{name}-#{data[:version]}.jar").exist? }
-      notifies :run, "execute[#{service_name}_restart]", :delayed
+      notifies :restart, "service[#{service_name}]", :delayed
     end
   end
 
   service "#{service_name}" do
     supports :restart => true
     action :enable
-  end
-
-  restart_service service_name do
-    user user
   end
 end
 
