@@ -5,15 +5,15 @@ SONAR_DIRECTORY=<%= @dir %>
 
 case "$1" in
     start)
-        $SONAR_DIRECTORY/bin/linux-x86-64/sonar.sh start 2>&1
+        $SONAR_DIRECTORY/bin/linux-x86-64/sonar.sh start
         echo started.
         exit 0
     ;;
 
     stop)
-        $SONAR_DIRECTORY/bin/linux-x86-64/sonar.sh stop 2>&1
-        pkill -9 -f org.sonar.application.App 2>&1
-        pkill -9 -f <%= @dir %> 2>&1
+        $SONAR_DIRECTORY/bin/linux-x86-64/sonar.sh stop
+        pkill -9 -f org.sonar.application.App
+        pkill -9 -f <%= @dir %>
         echo stopped.
         exit 0
     ;;
