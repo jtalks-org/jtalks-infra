@@ -3,7 +3,11 @@
 
 FISHEYE_DIRECTORY=<%= @dir %>
 export FISHEYE_INST=<%= @data_dir %>
-export JAVA_HOME=<%= @java_home %>
+<% if java_home != "" %>
+    JAVA_HOME="<%= @java_home %>"
+    export JAVA_HOME
+<% end %>
+
 case "$1" in
     start)
         $FISHEYE_DIRECTORY/bin/fisheyectl.sh start

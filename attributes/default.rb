@@ -115,11 +115,12 @@ default[:mysql][:connector][:download_url] = "http://dev.mysql.com/get/Downloads
 
 #Java
 default[:java][:install_flavor] = "oracle"
-default[:java][:jdk_version] = 7
+default[:java][:jdk_version] = 8
 default[:java][:oracle][:accept_oracle_download_terms] = true
 default[:java][:jdk]["7"]["x86_64"][:url] = "http://download.oracle.com/otn-pub/java/jdk/7u67-b01/jdk-7u67-linux-x64.tar.gz"
-default[:java][:jdk]["8"]["x86_64"][:url] = "http://download.oracle.com/otn-pub/java/jdk/8u51-b16/jdk-8u51-linux-x64.tar.gz"
-default[:java][:jdk]["8"][:home]="/usr/lib/jvm/jdk1.8.0_51"
+default[:java][:jdk]["8"]["x86_64"][:url] = "http://download.oracle.com/otn-pub/java/jdk/8u77-b03/jdk-8u77-linux-x64.tar.gz"
+default[:java][:jdk]["7"][:home]="/usr/lib/jvm/jdk1.7.0_67"
+default[:java][:jdk]["8"][:home]="/usr/lib/jvm/jdk1.8.0_77"
 
 # Maven
 default[:maven]['3'][:version] = "3.2.3"

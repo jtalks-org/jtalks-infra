@@ -41,5 +41,7 @@ CATALINA_OPTS="-Djava.awt.headless=true ${CATALINA_OPTS}"
 CATALINA_OPTS="-XX:+UseG1GC ${CATALINA_OPTS} <%= @jvm_opts %>"
 export CATALINA_OPTS
 
+<% if java_home != "" %>
 JAVA_HOME="<%= @java_home %>"
 export JAVA_HOME
+<% end %>
