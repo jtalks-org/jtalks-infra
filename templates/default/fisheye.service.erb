@@ -3,7 +3,7 @@
 
 FISHEYE_DIRECTORY=<%= @dir %>
 export FISHEYE_INST=<%= @data_dir %>
-<% if java_home != "" %>
+<% if @java_home != "" %>
     JAVA_HOME="<%= @java_home %>"
     export JAVA_HOME
 <% end %>
