@@ -20,8 +20,8 @@ root_connection_info = {
 node[:jtalks][:dbs].each do |db|
   mysql_database db do
     connection root_connection_info
-    encoding 'utf8'
-    collation 'utf8_bin'
+    encoding 'utf8mb4'
+    collation 'utf8mb4_unicode_ci'
     action :create
   end
 end
