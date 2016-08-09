@@ -1,7 +1,6 @@
 [client]
 port                           = 3306
 socket                         = /var/run/mysqld/mysqld.sock
-default-character-set = utf8mb4
 
 [mysqld_safe]
 socket                         = /var/run/mysqld/mysqld.sock
@@ -12,17 +11,10 @@ pid-file                       = /var/run/mysqld/mysql.pid
 socket                         = /var/run/mysqld/mysqld.sock
 port                           = 3306
 datadir                        = /var/lib/mysql
-character-set-client-handshake = FALSE
-character-set-server = utf8mb4
-collation-server = utf8mb4_unicode_ci
-innodb_file_format = barracuda
-innodb_file_per_table= on
-innodb_large_prefix = on
-innodb_default_row_format = DYNAMIC
 max_allowed_packet = 12000000
 transaction-isolation=READ-COMMITTED
 max_connections = 300
 
 [mysql]
 !includedir /etc/mysql/conf.d
-default-character-set = utf8mb4
+
